@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import csv
 import os
 
-filename = "/home/pgarcia/code/SabberStone/core-extensions/SabberStoneCoreAi/results/victories/inspyred-individuals-file-07202018-194904.csv"
+filename = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\results\victories\inspyred-individuals-file-07202018-194904.csv"
 files = [filename]
 
-directory = "/home/pgarcia/code/SabberStone/core-extensions/SabberStoneCoreAi/results/victories/"
+directory = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\results\victories\\"
 files = []
 
 for fname in os.listdir(directory):
@@ -19,7 +19,7 @@ for fname in os.listdir(directory):
 #files = [filename]
 
 
-print files
+print(files)
 
 
 def get_age_df(filename):

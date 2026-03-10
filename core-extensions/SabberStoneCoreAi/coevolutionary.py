@@ -1,3 +1,4 @@
+import signal
 from random import Random
 from random import randint
 
@@ -230,7 +231,6 @@ def execute_simulator_in_thread(battle):
 	print(thread_name+" FINISHING")
 
 def evaluate_hearthstone(candidates, args):
-
 	args["_dictionary_battles"] ={}
 
 	parents = args['_ec'].population
@@ -257,7 +257,6 @@ def evaluate_hearthstone(candidates, args):
 	turns_lose = []
 	health_win = []
 	health_lose = []
-
 
 	fitness = []
 
@@ -294,8 +293,6 @@ def evaluate_hearthstone(candidates, args):
 						#if DEBUG: print "\tVERSUS " + str(f2)
 						#if DEBUG: print ("\t\tCONFRONTING {0} vs {1} Ind{2} vs Ind{3}".format(d1,d2,f1,f2))
 						battles_list.append([i,j,f1,f2,d1,d2])
-
-
 
 	chunk_battles = chunks(battles_list,NUM_THREADS)
 
@@ -339,11 +336,6 @@ def evaluate_hearthstone(candidates, args):
 					turns_lose[i][j] = turns_lose[i][j] / ji
 					health_lose[i][j] = health_lose[i][j] / ji
 
-
-
-
-
-
 	print("TURNS TO WIN")
 	args["_matrix_turns_win"] = print_squared_array(turns_win)
 	print("TURNS TO LOSE")
@@ -352,8 +344,6 @@ def evaluate_hearthstone(candidates, args):
 	args["_matrix_health_win"] = print_squared_array(health_win)
 	print("HEALTH TO LOSE")
 	args["_matrix_health_lose"] =print_squared_array(health_lose)
-
-
 
 	return fitness
 
@@ -366,7 +356,7 @@ def run_one(prng=None, display=False):
 	time1 = time.time()
 	ea = inspyred.ec.ES(prng)
 	ea.terminator = [inspyred.ec.terminators.evaluation_termination] #inspyred.ec.terminators.diversity_termination
-	
+
 	ea.observer = [inspyred.ec.observers.stats_observer, my_file_observer]
 	final_pop = ea.evolve(generator=generate_weights,
 						  num_weights = NUM_WEIGHTS,
