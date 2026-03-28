@@ -16,7 +16,9 @@ NUM_GAMES = 8 #20
 POP_SIZE = 8 #10
 MAX_EVALUATIONS = 200 #1000
 NUM_THREADS = 12 #8
-NUM_WEIGHTS = 21  # 21
+NUM_WEIGHTS_PER_PHASE = 21
+NUM_PHASES = 1
+NUM_WEIGHTS = NUM_PHASES * NUM_WEIGHTS_PER_PHASE
 TEMP_FILE_NAME = "results.tmp"
 TEST_DUMMY = False
 
@@ -181,7 +183,7 @@ def launch_simulator(f1, f2, d1, d2, thread_id):
 		time.sleep(randint(0, 0))
 		command_line = "echo {0} {1} {2} {3} {4} {5} {6} > {7} ".format(w1, w2, NUM_GAMES, tw, tl, hw, hl, file_name)
 	else:
-		command_line = r"dotnet run --project D:\Pics_Movies\vids\PWr\Sem10\magisterka\PARALLEL_HS\SabberStone" + thread_id + r"\core-extensions\SabberStoneCoreAi\SabberStoneCoreAi.csproj"
+		command_line = r"dotnet run --project D:\Pics_Movies\vids\PWr\Sem10\magisterka\MODIFIED21DEPTH_PARALLEL_HS\SabberStone" + thread_id + r"\core-extensions\SabberStoneCoreAi\SabberStoneCoreAi.csproj"
 		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2],
 																  cml2, NUM_GAMES, " > " + file_name)
 

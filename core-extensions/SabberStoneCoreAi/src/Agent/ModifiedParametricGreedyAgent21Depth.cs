@@ -18,7 +18,7 @@ using System.Globalization;
 
 namespace SabberStoneCoreAi.src.Agent
 {
-	class ParametricGreedyAgent : AbstractAgent
+	class ModifiedParametricGreedyAgent21Depth : AbstractAgent
 	{
 		public override void FinalizeAgent()
 		{
@@ -31,6 +31,13 @@ namespace SabberStoneCoreAi.src.Agent
 		}
 
 		public static int NUM_PARAMETERS = 21;
+		public int LookaheadDepth = 2;
+		public int MaxDepth = 3;
+		public int MinDepth = 1;
+		public int OptionsDepth3Threshold = 6;
+		public int OptionsDepth2Threshold = 14;
+		public int LookaheadNodeBudget = 200;
+		public bool UseBudgetBasedDepth = true;
 		public static string HERO_HEALTH_REDUCED = "HERO_HEALTH_REDUCED";
 		public static string HERO_ATTACK_REDUCED = "HERO_ATTACK_REDUCED";
 		public static string MINION_HEALTH_REDUCED = "MINION_HEALTH_REDUCED";
@@ -60,14 +67,10 @@ namespace SabberStoneCoreAi.src.Agent
 
 		public override PlayerTask GetMove(POGame.POGame poGame)
 		{
-			
 			debug("CURRENT TURN: " + poGame.Turn);
-			KeyValuePair<PlayerTask,double> p = getBestTask(poGame);
-			debug("SELECTED TASK TO EXECUTE "+stringTask(p.Key)+ "HAS A SCORE OF "+p.Value);
-			
+			KeyValuePair<PlayerTask, double> p = getBestTask(poGame, LookaheadDepth);
+			debug("SELECTED TASK TO EXECUTE " + stringTask(p.Key) + " HAS A SCORE OF " + p.Value);
 			debug("-------------------------------------");
-			//Console.ReadKey();
-
 			return p.Key;
 		}
 
@@ -225,6 +228,7 @@ namespace SabberStoneCoreAi.src.Agent
 
 			score = score + m.Card.Cost*weights[M_MANA_COST];
 			score = score + rarityToInt(m.Card) * weights[M_RARITY];
+			score = score + rarityToInt(m.Card) * weights[M_RARITY];
 			if (m.Poisonous) {
 				score = score + weights[M_POISONOUS];
 			}
@@ -256,40 +260,108 @@ namespace SabberStoneCoreAi.src.Agent
 			return 0;
 		}
 
-		KeyValuePair<PlayerTask, double> getBestTask(POGame.POGame state) {
+		KeyValuePair<PlayerTask, double> getBestTask(POGame.POGame state, int depth)
+		{
 			double bestScore = Double.MinValue;
 			PlayerTask bestTask = null;
-			List<PlayerTask> list  = state.CurrentPlayer.Options();
-			foreach (PlayerTask t in list) {
-				debug("---->POSSIBLE "+stringTask(t));
-				
-				double score = 0;
-				POGame.POGame before = state;
-				if (t.PlayerTaskType == PlayerTaskType.END_TURN)
-				{
-					score = 0;
-				}
-				else
-				{
-					List<PlayerTask> toSimulate = new List<PlayerTask>();
-					toSimulate.Add(t);
-					Dictionary<PlayerTask, POGame.POGame> simulated = state.Simulate(toSimulate);
-					//Console.WriteLine("SIMULATION COMPLETE");
-					POGame.POGame nextState = simulated[t];
-					score = scoreTask(state, nextState); //Warning: if using tree, avoid overflow with max values!
-					
-					
-				}
-				debug("SCORE " + score);
+
+			List<PlayerTask> list = state.CurrentPlayer.Options();
+
+			foreach (PlayerTask t in list)
+			{
+				debug("---->POSSIBLE " + stringTask(t));
+
+				double score = evaluateSequence(state, t, depth);
+
+				debug("SEQUENCE SCORE " + score);
+
 				if (score >= bestScore)
 				{
 					bestTask = t;
 					bestScore = score;
 				}
-
 			}
 
-			return new KeyValuePair<PlayerTask, double>(bestTask,bestScore);
+			return new KeyValuePair<PlayerTask, double>(bestTask, bestScore);
+		}
+
+		double evaluateSequence(POGame.POGame state, PlayerTask task, int depthLeft)
+		{
+			if (task.PlayerTaskType == PlayerTaskType.END_TURN)
+				return 0;
+
+			List<PlayerTask> toSimulate = new List<PlayerTask>();
+			toSimulate.Add(task);
+
+			Dictionary<PlayerTask, POGame.POGame> simulated = state.Simulate(toSimulate);
+			POGame.POGame nextState = simulated[task];
+
+			if (nextState == null)
+				return 1;
+
+			double immediateScore = scoreTask(state, nextState);
+
+			if (depthLeft <= 1)
+				return immediateScore;
+
+			if (!isSamePlayersTurn(state, nextState))
+				return immediateScore;
+
+			double bestContinuation = 0;
+
+			List<PlayerTask> nextOptions = nextState.CurrentPlayer.Options();
+			foreach (PlayerTask nextTask in nextOptions)
+			{
+				double continuationScore = evaluateSequence(nextState, nextTask, depthLeft - 1);
+				if (continuationScore > bestContinuation)
+					bestContinuation = continuationScore;
+			}
+
+			return immediateScore + bestContinuation;
+		}
+
+		bool isSamePlayersTurn(POGame.POGame before, POGame.POGame after)
+		{
+			if (after == null)
+				return false;
+
+			return before.CurrentPlayer.PlayerId == after.CurrentPlayer.PlayerId;
+		}
+
+		int chooseDepth(POGame.POGame state)
+		{
+			int options = state.CurrentPlayer.Options().Count;
+
+			if (!UseBudgetBasedDepth)
+			{
+				if (options <= OptionsDepth3Threshold)
+					return Math.Min(MaxDepth, 3);
+
+				if (options <= OptionsDepth2Threshold)
+					return Math.Min(MaxDepth, 2);
+
+				return MinDepth;
+			}
+
+			int bestDepth = MinDepth;
+			long estimatedNodes = 0;
+			long levelNodes = 1;
+
+			for (int depth = 1; depth <= MaxDepth; depth++)
+			{
+				levelNodes *= Math.Max(1, options);
+				estimatedNodes += levelNodes;
+
+				if (estimatedNodes <= LookaheadNodeBudget)
+					bestDepth = depth;
+				else
+					break;
+			}
+
+			if (bestDepth < MinDepth)
+				bestDepth = MinDepth;
+
+			return bestDepth;
 		}
 
 		public override void InitializeAgent()
@@ -329,10 +401,10 @@ namespace SabberStoneCoreAi.src.Agent
 			debug("Setting agent weights from string");
 			string[] vs = weights.Split("#");
 
-			if (vs.Length != ParametricGreedyAgent.NUM_PARAMETERS)
+			if (vs.Length != ModifiedParametricGreedyAgent21Depth.NUM_PARAMETERS)
 				throw new Exception("NUM VALUES NOT CORRECT");
 
-			double[] ws = new double[ParametricGreedyAgent.NUM_PARAMETERS];
+			double[] ws = new double[ModifiedParametricGreedyAgent21Depth.NUM_PARAMETERS];
 			for (int i = 0; i < ws.Length; i++)
 			{
 				ws[i] = Double.Parse(vs[i], CultureInfo.InvariantCulture);

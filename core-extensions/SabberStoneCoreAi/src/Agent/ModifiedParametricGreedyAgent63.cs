@@ -1,9 +1,25 @@
 ﻿/*
-TODO
-1. nowe parametry
-2. wybór zestawu -> arbitralnie lub z parametrami
-3. odpalanie pythona i porównanie wag
-
+ * ParametricGreedyAgent.cs
+ * 
+ * Copyright (c) 2018, Pablo Garcia-Sanchez. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301  USA
+ * 
+ * Contributors:
+ * Alberto Tonda (INRA)
  */
 
 using SabberStoneCore.Model.Entities;
@@ -18,7 +34,7 @@ using System.Globalization;
 
 namespace SabberStoneCoreAi.src.Agent
 {
-	class ParametricGreedyAgent : AbstractAgent
+	class ModifiedParametricGreedyAgent63 : AbstractAgent
 	{
 		public override void FinalizeAgent()
 		{
@@ -30,7 +46,10 @@ namespace SabberStoneCoreAi.src.Agent
 			
 		}
 
-		public static int NUM_PARAMETERS = 21;
+		public static int NUM_PARAMETERS_PER_PHASE = 21;
+		public static int NUM_PHASES = 3;
+		public static int NUM_PARAMETERS = NUM_PARAMETERS_PER_PHASE * NUM_PHASES;
+		public Dictionary<string, double>[] phaseWeights;
 		public static string HERO_HEALTH_REDUCED = "HERO_HEALTH_REDUCED";
 		public static string HERO_ATTACK_REDUCED = "HERO_ATTACK_REDUCED";
 		public static string MINION_HEALTH_REDUCED = "MINION_HEALTH_REDUCED";
@@ -53,10 +72,22 @@ namespace SabberStoneCoreAi.src.Agent
 		public static string M_HAS_WINDFURY = "M_HAS_WINDFURY";
 		public static string M_RARITY = "M_RARITY";
 		public static string M_MANA_COST = "M_MANA_COST";
-		public static string M_POISONOUS = "M_POISONOUS";		
+		public static string M_POISONOUS = "M_POISONOUS";
+		private int getPhaseIndex(POGame.POGame game)
+		{
+			int turn = game.Turn;
 
-		public Dictionary<string, double> weights;
+			if (turn <= 3)
+				return 0;
+			if (turn <= 6)
+				return 1;
+			return 2;
+		}
 
+		private Dictionary<string, double> getWeightsForPhase(POGame.POGame game)
+		{
+			return phaseWeights[getPhaseIndex(game)];
+		}
 
 		public override PlayerTask GetMove(POGame.POGame poGame)
 		{
@@ -72,7 +103,7 @@ namespace SabberStoneCoreAi.src.Agent
 		}
 
 		//Mejor hacer esto con todas las posibles en cada movimiento
-		public double scoreTask(POGame.POGame before, POGame.POGame after) {
+		public double scoreTask(POGame.POGame before, POGame.POGame after, Dictionary<string, double> weights) {
 			if (after == null) { //There was an exception with the simullation function!
 				return 1; //better than END_TURN, just in case
 			}
@@ -91,23 +122,23 @@ namespace SabberStoneCoreAi.src.Agent
 
 			//Differences in Health
 			debug("CALCULATING ENEMY HEALTH SCORE");
-			double enemyPoints = calculateScoreHero(before.CurrentOpponent,after.CurrentOpponent);
+			double enemyPoints = calculateScoreHero(before.CurrentOpponent,after.CurrentOpponent, weights);
 			debug("CALCULATING MY HEALTH SCORE");
-			double myPoints    = calculateScoreHero(before.CurrentPlayer, after.CurrentPlayer);
+			double myPoints    = calculateScoreHero(before.CurrentPlayer, after.CurrentPlayer, weights);
 			debug("Enemy points: " + enemyPoints + " My points: " + myPoints);
 
 			//Differences in Minions
 			debug("CALCULATING ENEMY MINIONS");			
-			double scoreEnemyMinions = calculateScoreMinions(before.CurrentOpponent.BoardZone,after.CurrentOpponent.BoardZone);
+			double scoreEnemyMinions = calculateScoreMinions(before.CurrentOpponent.BoardZone,after.CurrentOpponent.BoardZone, weights);
 			debug("Score enemy minions: " +scoreEnemyMinions);
 			debug("CALCULATING MY MINIONS");
-			double scoreMyMinions = calculateScoreMinions(before.CurrentPlayer.BoardZone, after.CurrentPlayer.BoardZone);
+			double scoreMyMinions = calculateScoreMinions(before.CurrentPlayer.BoardZone, after.CurrentPlayer.BoardZone, weights);
 			debug("Score my minions: " + scoreMyMinions);
 
 			//Differences in Secrets
 			debug("CALCULATING SECRETS");			
-			double scoreEnemySecrets = calculateScoreSecretsRemoved(before.CurrentOpponent, after.CurrentOpponent);
-			double scoreMySecrets    = calculateScoreSecretsRemoved(before.CurrentPlayer, after.CurrentPlayer);
+			double scoreEnemySecrets = calculateScoreSecretsRemoved(before.CurrentOpponent, after.CurrentOpponent, weights);
+			double scoreMySecrets    = calculateScoreSecretsRemoved(before.CurrentPlayer, after.CurrentPlayer, weights);
 
 
 			//Difference in Mana
@@ -117,7 +148,7 @@ namespace SabberStoneCoreAi.src.Agent
 			return enemyPoints - myPoints + scoreEnemyMinions - scoreMyMinions+ scoreEnemySecrets - scoreMySecrets - scoreManaUsed;
 		}
 
-		double calculateScoreHero(Controller playerBefore, Controller playerAfter) {
+		double calculateScoreHero(Controller playerBefore, Controller playerAfter, Dictionary<string, double> weights) {
 			debug(playerBefore.Hero.Health + "("+playerBefore.Hero.Armor+")/"+playerBefore.Hero.AttackDamage+" --> "+
 				 playerAfter.Hero.Health + "(" + playerAfter.Hero.Armor + ")/" + playerAfter.Hero.AttackDamage
 				);
@@ -128,7 +159,7 @@ namespace SabberStoneCoreAi.src.Agent
 			return score;
 		}
 
-		double calculateScoreMinions(SabberStoneCore.Model.Zones.BoardZone before, SabberStoneCore.Model.Zones.BoardZone after) {
+		double calculateScoreMinions(SabberStoneCore.Model.Zones.BoardZone before, SabberStoneCore.Model.Zones.BoardZone after, Dictionary<string, double> weights) {
 			foreach (Minion m in before.GetAll())
 			{
 				debug("BEFORE "+stringMinion(m));
@@ -153,8 +184,8 @@ namespace SabberStoneCoreAi.src.Agent
 				{
 					if (ma.Id == mb.Id)
 					{
-						scoreHealthReduced = scoreHealthReduced + weights[MINION_HEALTH_REDUCED]*(mb.Health - ma.Health)*scoreMinion(mb); //Positive points if health is reduced
-						scoreAttackReduced = scoreAttackReduced + weights[MINION_ATTACK_REDUCED]*(mb.AttackDamage - ma.AttackDamage)*scoreMinion(mb); //Positive points if attack is reduced
+						scoreHealthReduced = scoreHealthReduced + weights[MINION_HEALTH_REDUCED]*(mb.Health - ma.Health)*scoreMinion(mb, weights); //Positive points if health is reduced
+						scoreAttackReduced = scoreAttackReduced + weights[MINION_ATTACK_REDUCED]*(mb.AttackDamage - ma.AttackDamage)*scoreMinion(mb, weights); //Positive points if attack is reduced
 						survived = true;
 						
 					}
@@ -163,7 +194,7 @@ namespace SabberStoneCoreAi.src.Agent
 				if (survived == false)
 				{
 					debug(stringMinion(mb) + " was killed");
-					scoreKilled = scoreKilled + scoreMinion(mb)*weights[MINION_KILLED]; //WHATEVER //Positive points if card is dead
+					scoreKilled = scoreKilled + scoreMinion(mb, weights)*weights[MINION_KILLED]; //WHATEVER //Positive points if card is dead
 				}
 
 			}
@@ -181,7 +212,7 @@ namespace SabberStoneCoreAi.src.Agent
 				}
 				if (existed == false) {
 					debug(stringMinion(ma)+ " is NEW!!");
-					scoreAppeared = scoreAppeared + scoreMinion(ma)*weights[MINION_APPEARED]; //Negative if a minion appeared (below)
+					scoreAppeared = scoreAppeared + scoreMinion(ma, weights)*weights[MINION_APPEARED]; //Negative if a minion appeared (below)
 				}
 			}
 
@@ -190,7 +221,7 @@ namespace SabberStoneCoreAi.src.Agent
 
 		}
 
-		double calculateScoreSecretsRemoved(Controller playerBefore, Controller playerAfter) {
+		double calculateScoreSecretsRemoved(Controller playerBefore, Controller playerAfter, Dictionary<string, double> weights) {
 
 			int dif = playerBefore.SecretZone.Count - playerAfter.SecretZone.Count;
 			/*if (dif != 0) {
@@ -200,7 +231,7 @@ namespace SabberStoneCoreAi.src.Agent
 			return dif * weights[SECRET_REMOVED];
 		}
 
-		double scoreMinion(Minion m) {
+		double scoreMinion(Minion m, Dictionary<string, double> weights) {
 			//return 1;
 
 			double score = m.Health*weights[M_HEALTH] + m.AttackDamage*weights[M_ATTACK];
@@ -259,7 +290,10 @@ namespace SabberStoneCoreAi.src.Agent
 		KeyValuePair<PlayerTask, double> getBestTask(POGame.POGame state) {
 			double bestScore = Double.MinValue;
 			PlayerTask bestTask = null;
+
+			Dictionary<string, double> weights = getWeightsForPhase(state);
 			List<PlayerTask> list  = state.CurrentPlayer.Options();
+
 			foreach (PlayerTask t in list) {
 				debug("---->POSSIBLE "+stringTask(t));
 				
@@ -276,7 +310,7 @@ namespace SabberStoneCoreAi.src.Agent
 					Dictionary<PlayerTask, POGame.POGame> simulated = state.Simulate(toSimulate);
 					//Console.WriteLine("SIMULATION COMPLETE");
 					POGame.POGame nextState = simulated[t];
-					score = scoreTask(state, nextState); //Warning: if using tree, avoid overflow with max values!
+					score = scoreTask(state, nextState, weights); //Warning: if using tree, avoid overflow with max values!
 					
 					
 				}
@@ -299,40 +333,52 @@ namespace SabberStoneCoreAi.src.Agent
 
 		}
 
-		public void setAgentWeights(double[] w) {
-			this.weights = new Dictionary<string, double>();
-			this.weights.Add(HERO_HEALTH_REDUCED, w[0]);
-			this.weights.Add(HERO_ATTACK_REDUCED, w[1]);
-			this.weights.Add(MINION_HEALTH_REDUCED, w[2]);
-			this.weights.Add(MINION_ATTACK_REDUCED, w[3]);
-			this.weights.Add(MINION_APPEARED, w[4]);
-			this.weights.Add(MINION_KILLED, w[5]);
-			this.weights.Add(SECRET_REMOVED, w[6]);
-			this.weights.Add(MANA_REDUCED, w[7]);
-			this.weights.Add(M_HEALTH, w[8]);
-			this.weights.Add(M_ATTACK, w[9]);
-			this.weights.Add(M_HAS_CHARGE, w[10]);
-			this.weights.Add(M_HAS_DEAHTRATTLE, w[11]);
-			this.weights.Add(M_HAS_DIVINE_SHIELD, w[12]);
-			this.weights.Add(M_HAS_INSPIRE, w[13]);
-			this.weights.Add(M_HAS_LIFE_STEAL, w[14]);
-			this.weights.Add(M_HAS_STEALTH, w[15]);
-			this.weights.Add(M_HAS_TAUNT, w[16]);
-			this.weights.Add(M_HAS_WINDFURY, w[17]);
-			this.weights.Add(M_RARITY, w[18]);
-			this.weights.Add(M_MANA_COST, w[19]);
-			this.weights.Add(M_POISONOUS, w[20]);
+		public void setAgentWeights(double[] w)
+		{
+			if (w.Length != NUM_PARAMETERS)
+				throw new Exception("NUM VALUES NOT CORRECT");
 
+			phaseWeights = new Dictionary<string, double>[NUM_PHASES];
+
+			for (int phase = 0; phase < NUM_PHASES; phase++)
+			{
+				int offset = phase * NUM_PARAMETERS_PER_PHASE;
+				Dictionary<string, double> weights = new Dictionary<string, double>();
+
+				weights.Add(HERO_HEALTH_REDUCED, w[offset + 0]);
+				weights.Add(HERO_ATTACK_REDUCED, w[offset + 1]);
+				weights.Add(MINION_HEALTH_REDUCED, w[offset + 2]);
+				weights.Add(MINION_ATTACK_REDUCED, w[offset + 3]);
+				weights.Add(MINION_APPEARED, w[offset + 4]);
+				weights.Add(MINION_KILLED, w[offset + 5]);
+				weights.Add(SECRET_REMOVED, w[offset + 6]);
+				weights.Add(MANA_REDUCED, w[offset + 7]);
+				weights.Add(M_HEALTH, w[offset + 8]);
+				weights.Add(M_ATTACK, w[offset + 9]);
+				weights.Add(M_HAS_CHARGE, w[offset + 10]);
+				weights.Add(M_HAS_DEAHTRATTLE, w[offset + 11]);
+				weights.Add(M_HAS_DIVINE_SHIELD, w[offset + 12]);
+				weights.Add(M_HAS_INSPIRE, w[offset + 13]);
+				weights.Add(M_HAS_LIFE_STEAL, w[offset + 14]);
+				weights.Add(M_HAS_STEALTH, w[offset + 15]);
+				weights.Add(M_HAS_TAUNT, w[offset + 16]);
+				weights.Add(M_HAS_WINDFURY, w[offset + 17]);
+				weights.Add(M_RARITY, w[offset + 18]);
+				weights.Add(M_MANA_COST, w[offset + 19]);
+				weights.Add(M_POISONOUS, w[offset + 20]);
+
+				phaseWeights[phase] = weights;
+			}
 		}
 
-		public void setAgeintWeightsFromString(string weights) {
+		public void setAgeintWeightsFromString(string weights)		{
 			debug("Setting agent weights from string");
 			string[] vs = weights.Split("#");
 
-			if (vs.Length != ParametricGreedyAgent.NUM_PARAMETERS)
+			if (vs.Length != ModifiedParametricGreedyAgent63.NUM_PARAMETERS)
 				throw new Exception("NUM VALUES NOT CORRECT");
 
-			double[] ws = new double[ParametricGreedyAgent.NUM_PARAMETERS];
+			double[] ws = new double[ModifiedParametricGreedyAgent63.NUM_PARAMETERS];
 			for (int i = 0; i < ws.Length; i++)
 			{
 				ws[i] = Double.Parse(vs[i], CultureInfo.InvariantCulture);
@@ -340,6 +386,7 @@ namespace SabberStoneCoreAi.src.Agent
 
 			this.setAgentWeights(ws);
 		}
+
 		public override void InitializeGame()
 		{
 			
