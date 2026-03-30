@@ -106,14 +106,15 @@ namespace SabberStoneCoreAi
 			// RenoKazakusMage MAGE
 			// ParametricGreedyAgent
 			// ModifiedParametricGreedyAgent63
+			// ModifiedParametricGreedyAgent63Smooth
 			// ModifiedParametricGreedyAgent28
 			// ModifiedParametricGreedyAgent21Depth
-			// #0.6247405241351475#0#0.2299751081125314#0.7157675822536926#0.44551237594442145#0.7088354719260018#1
-			// 0.338317197#0.934667132#0.093176193#0#0.751099025#1#0.961847886#0#1#0.552937948#0.596713458#0#1#0#0#1#0#0.002140127#0.371668433#0.169469073#0#0.6247405241351475#0#0.2299751081125314#0.7157675822536926#0.44551237594442145#0.7088354719260018#1
-			AbstractAgent player1agent = new ModifiedParametricGreedyAgent21Depth();
-			((ModifiedParametricGreedyAgent21Depth)player1agent).setAgeintWeightsFromString(args[2]);
-			AbstractAgent player2agent = new ModifiedParametricGreedyAgent21Depth();
-			((ModifiedParametricGreedyAgent21Depth)player2agent).setAgeintWeightsFromString(args[5]);
+			// ModifiedParametricGreedyAgent28Normalaized
+
+			AbstractAgent player1agent = new ModifiedParametricGreedyAgent63Smooth();
+			((ModifiedParametricGreedyAgent63Smooth)player1agent).setAgeintWeightsFromString(args[2]);
+			AbstractAgent player2agent = new ModifiedParametricGreedyAgent63Smooth();
+			((ModifiedParametricGreedyAgent63Smooth)player2agent).setAgeintWeightsFromString(args[5]);
 			POGameHandler gameHandler = new POGameHandler(gameConfig, player1agent, player2agent, debug:false);
 			gameConfig.StartPlayer = -1; //Pick random start player
 
@@ -125,12 +126,20 @@ namespace SabberStoneCoreAi
 			//gameStats.printResults();
 			int p1wins = gameStats.PlayerA_Wins;
 			int p2wins = gameStats.PlayerB_Wins;
-			Console.WriteLine("p1wins " + p1wins + " p2wins " + p2wins+ " numGames " + numGames+ "\nPlayerA_TurnsToWin " +
-				gameStats.PlayerA_TurnsToWin+ "\nPlayerA_TurnsToLose " +
-				gameStats.PlayerA_TurnsToLose+ "\nPlayerA_HealthDifferenceWinning " +
-				gameStats.PlayerA_HealthDifferenceWinning + "\nPlayerA_HealthDifferenceLosing " +
+
+			Console.WriteLine(p1wins + " " + p2wins + " " + numGames + " " +
+				gameStats.PlayerA_TurnsToWin + " " +
+				gameStats.PlayerA_TurnsToLose + " " +
+				gameStats.PlayerA_HealthDifferenceWinning + " " +
 				gameStats.PlayerA_HealthDifferenceLosing
-				);
+			);
+
+			/*			Console.WriteLine("p1wins " + p1wins + " p2wins " + p2wins+ " numGames " + numGames+ "\nPlayerA_TurnsToWin " +
+							gameStats.PlayerA_TurnsToWin+ "\nPlayerA_TurnsToLose " +
+							gameStats.PlayerA_TurnsToLose+ "\nPlayerA_HealthDifferenceWinning " +
+							gameStats.PlayerA_HealthDifferenceWinning + "\nPlayerA_HealthDifferenceLosing " +
+							gameStats.PlayerA_HealthDifferenceLosing
+							);*/
 
 
 
