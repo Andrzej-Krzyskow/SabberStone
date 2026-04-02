@@ -111,10 +111,10 @@ namespace SabberStoneCoreAi
 			// ModifiedParametricGreedyAgent21Depth
 			// ModifiedParametricGreedyAgent28Normalaized
 
-			AbstractAgent player1agent = new ModifiedParametricGreedyAgent63Smooth();
-			((ModifiedParametricGreedyAgent63Smooth)player1agent).setAgeintWeightsFromString(args[2]);
-			AbstractAgent player2agent = new ModifiedParametricGreedyAgent63Smooth();
-			((ModifiedParametricGreedyAgent63Smooth)player2agent).setAgeintWeightsFromString(args[5]);
+			AbstractAgent player1agent = new ModifiedParametricGreedyAgent28Normalaized();
+			((ModifiedParametricGreedyAgent28Normalaized)player1agent).setAgeintWeightsFromString(args[2]);
+			AbstractAgent player2agent = new ModifiedParametricGreedyAgent28Normalaized();
+			((ModifiedParametricGreedyAgent28Normalaized)player2agent).setAgeintWeightsFromString(args[5]);
 			POGameHandler gameHandler = new POGameHandler(gameConfig, player1agent, player2agent, debug:false);
 			gameConfig.StartPlayer = -1; //Pick random start player
 
