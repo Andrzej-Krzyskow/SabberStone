@@ -259,64 +259,75 @@ def evaluate_hearthstone_tracked(individual):
     return result
 
 
-def shade_observer(generation, population, population_fitness):
-    """
-    Writes 3 log files each generation:
-        shade-statistics-file-<ts>.csv   — gen stats
-        shade-individuals-file-<ts>.csv  — per-individual weights + wins
-        shade-matrix-file-<ts>.csv       — wins per opponent for each individual
-    """
-    global _log_files, _init_time, _current_eval_idx
+def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_cr=0.5):
+	"""
+	Writes 4 log files each generation:
+		shade-statistics-file-<ts>.csv   — gen stats
+		shade-individuals-file-<ts>.csv  — per-individual weights + wins
+		shade-matrix-file-<ts>.csv       — wins per opponent for each individual
+		shade-coefficients-file-<ts>.csv — logs the smart mean F and CR per generation
+	"""
+	global _log_files, _init_time, _current_eval_idx
 
-    if generation == 0:
-        _init_time = time.time()
-        ts = time.strftime('%m%d%Y-%H%M%S')
-        _log_files['stats']  = open('shade-statistics-file-{}.csv'.format(ts),  'w')
-        _log_files['indiv']  = open('shade-individuals-file-{}.csv'.format(ts), 'w')
-        _log_files['matrix'] = open('shade-matrix-file-{}.csv'.format(ts),      'w')
-        # Write header for matrix file so it's self-documenting
-        _log_files['matrix'].write("# generation, individual_idx, wins_vs_opp0, wins_vs_opp1, ...\n")
-        _log_files['matrix'].flush()
+	if generation == 0:
+		_init_time = time.time()
+		ts = time.strftime('%m%d%Y-%H%M%S')
+		_log_files['stats'] = open('shade-statistics-file-{}.csv'.format(ts), 'w')
+		_log_files['indiv'] = open('shade-individuals-file-{}.csv'.format(ts), 'w')
+		_log_files['matrix'] = open('shade-matrix-file-{}.csv'.format(ts), 'w')
+		_log_files['coeff'] = open('shade-coefficients-file-{}.csv'.format(ts), 'w')  # NEW FILE
 
-    # Reset tracked counter for next generation
-    _current_eval_idx[0] = 0
+		# Write header for matrix file
+		_log_files['matrix'].write("# generation, individual_idx, wins_vs_opp0, wins_vs_opp1, ...\n")
+		_log_files['matrix'].flush()
 
-    stats_f  = _log_files['stats']
-    indiv_f  = _log_files['indiv']
-    matrix_f = _log_files['matrix']
+		# Write header for coefficients file
+		_log_files['coeff'].write("generation, mean_f, mean_cr\n")
+		_log_files['coeff'].flush()
 
-    elapsed = time.time() - _init_time
-    n = len(population_fitness)
+	# Reset tracked counter for next generation
+	_current_eval_idx[0] = 0
 
-    # --- statistics ---
-    worst = float(np.max(population_fitness))
-    best  = float(np.min(population_fitness))
-    avg   = float(np.mean(population_fitness))
-    med   = float(np.median(population_fitness))
-    std   = float(np.std(population_fitness))
-    stats_f.write('{}, {}, {}, {}, {}, {}, {}, {}\n'.format(
-        generation, n, worst, best, med, avg, std, elapsed))
-    stats_f.flush()
+	stats_f = _log_files['stats']
+	indiv_f = _log_files['indiv']
+	matrix_f = _log_files['matrix']
+	coeff_f = _log_files['coeff']  # NEW FILE REF
 
-    # --- individuals ---
-    for i, (weights, fit) in enumerate(zip(population, population_fitness)):
-        wins_detail = _last_wins_per_opponent.get(i, [])
-        wins_str = ",".join(str(w) for w in wins_detail)
-        total_wins = -int(fit)   # un-negate for readability
-        indiv_f.write('{}, {}, {}, {}, TOTAL_WINS: {}, WINS_PER_OPP: {}\n'.format(
-            generation, i, fit, list(weights), total_wins, wins_str))
-    indiv_f.flush()
+	elapsed = time.time() - _init_time
+	n = len(population_fitness)
 
-    # --- matrix: wins breakdown vs each fixed opponent ---
-    matrix_f.write("generation {}\n".format(generation))
-    for i in range(n):
-        wins_per_opp = _last_wins_per_opponent.get(i, ["?"] * len(FIXED_OPPONENTS))
-        row = "  ind {}: {}".format(i, "  ".join(
-            "opp{}={}".format(j, w) for j, w in enumerate(wins_per_opp)))
-        matrix_f.write(row + "\n")
-    matrix_f.write("\n")
-    matrix_f.flush()
+	# --- statistics ---
+	worst = float(np.max(population_fitness))
+	best = float(np.min(population_fitness))
+	avg = float(np.mean(population_fitness))
+	med = float(np.median(population_fitness))
+	std = float(np.std(population_fitness))
+	stats_f.write('{}, {}, {}, {}, {}, {}, {}, {}\n'.format(
+		generation, n, worst, best, med, avg, std, elapsed))
+	stats_f.flush()
 
+	# --- individuals ---
+	for i, (weights, fit) in enumerate(zip(population, population_fitness)):
+		wins_detail = _last_wins_per_opponent.get(i, [])
+		wins_str = ",".join(str(w) for w in wins_detail)
+		total_wins = -int(fit)  # un-negate for readability
+		indiv_f.write('{}, {}, {}, {}, TOTAL_WINS: {}, WINS_PER_OPP: {}\n'.format(
+			generation, i, fit, list(weights), total_wins, wins_str))
+	indiv_f.flush()
+
+	# --- matrix: wins breakdown vs each fixed opponent ---
+	matrix_f.write("generation {}\n".format(generation))
+	for i in range(n):
+		wins_per_opp = _last_wins_per_opponent.get(i, ["?"] * len(FIXED_OPPONENTS))
+		row = "  ind {}: {}".format(i, "  ".join(
+			"opp{}={}".format(j, w) for j, w in enumerate(wins_per_opp)))
+		matrix_f.write(row + "\n")
+	matrix_f.write("\n")
+	matrix_f.flush()
+
+	# --- Coefficients logging ---
+	coeff_f.write("{}, {:.4f}, {:.4f}\n".format(generation, mean_f, mean_cr))
+	coeff_f.flush()
 
 # ---------------------------------------------------------------------------
 # Main run
