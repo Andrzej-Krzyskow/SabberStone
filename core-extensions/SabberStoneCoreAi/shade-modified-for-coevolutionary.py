@@ -66,9 +66,10 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 		population[0] = initial_solution
 
 	if population_fitness is None:
-		population_fitness = np.array([fun(ind) for ind in population])
+		population_fitness = np.array(fun(population.tolist()))
 		currentEval = popsize
 	else:
+		population_fitness = np.array(population_fitness)
 		currentEval = 0
 
 	# Init memory with population
@@ -126,11 +127,13 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 			F[i] = Fi
 			CR[i] = CRi
 
-		# Update population and SF, SCR
+		# Evaluate the whole trial population u against itself
+		fitness_u_list = np.array(fun(u.tolist()))
+
 		weights = []
 
 		for i, fitness in enumerate(population_fitness):
-			fitness_u = fun(u[i])
+			fitness_u = fitness_u_list[i]
 
 			if math.isnan(fitness_u):
 				print(i)
@@ -141,14 +144,13 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 			assert not math.isnan(fitness_u)
 
 			if fitness_u <= fitness:
-				# Add to memory
 				if fitness_u < fitness:
-					memory.append(population[i])
+					memory.append(population[i].copy())
 					SF.append(F[i])
 					SCR.append(CR[i])
 					weights.append(fitness - fitness_u)
 
-				if (fitness_u < best_fitness):
+				if fitness_u < best_fitness:
 					best_fitness = fitness_u
 					numEvalFound = currentEval
 

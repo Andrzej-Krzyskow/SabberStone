@@ -1,31 +1,34 @@
-import signal
-from random import Random
 from random import randint
 import time
-import inspyred
 import os
-import subprocess, threading
+import subprocess
+import threading
 import sys
 
 import numpy as np
 
-# from inspyred.ec import Individual
+from shade import improve
 
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 1 #20
-POP_SIZE = 2 #10
-MAX_EVALUATIONS = 6 #1000
-NUM_THREADS = 9 #8
-NUM_WEIGHTS = 21  # 21
+NUM_GAMES = 1  # 20
+POP_SIZE = 2  # 10
+MAX_EVALUATIONS = 6  # 1000
+NUM_THREADS = 12  # 8
+NUM_WEIGHTS = 21  # set to 63 when ready
 TEMP_FILE_NAME = "results.tmp"
 TEST_DUMMY = False
 
 lock = threading.Lock()
 
-victories = []  # GLOBAL VARIABLE TO UPDATE RESULTS
+victories = []
 victories_versus = []
+turns_win = []
+turns_lose = []
+health_win = []
+health_lose = []
+
 
 class Command(object):
 	def __init__(self, cmd):
@@ -34,21 +37,16 @@ class Command(object):
 
 	def run(self, timeout):
 		def target():
-			# Windows specific process creation
 			self.process = subprocess.Popen(self.cmd, shell=True)
 			self.process.communicate()
 
 		thread = threading.Thread(target=target)
 		thread.start()
-
 		thread.join(timeout)
 		if thread.is_alive():
 			print('Terminating process')
-
-			# Windows specific process termination using taskkill
 			if self.process:
 				subprocess.call(['taskkill', '/F', '/T', '/PID', str(self.process.pid)])
-
 			thread.join()
 			print("Game lasted a lot :/")
 			return False
@@ -56,16 +54,15 @@ class Command(object):
 
 
 def chunks(l, n):
-	"""Yield successive n-sized chunks from l."""
 	for i in range(0, len(l), n):
 		yield l[i:i + n]
 
 
 def print_squared_array(the_array):
 	l = ""
-	for i in range(0, len(the_array)):
+	for i in range(len(the_array)):
 		total = 0
-		for j in range(0, len(the_array)):  # WARNING, THE ARRAY IS SQUARED!
+		for j in range(len(the_array)):
 			if isinstance(the_array[i][j], float):
 				v = "{0:.2f}".format(the_array[i][j])
 			else:
@@ -76,93 +73,22 @@ def print_squared_array(the_array):
 	return l
 
 
-def my_file_observer(population, num_generations, num_evaluations, args):
-
-	try:
-		statistics_file = args['statistics_file']
-	except KeyError:
-		statistics_file = open('inspyred-statistics-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
-		args['statistics_file'] = statistics_file
-		args['init_time'] = time.time()
-	try:
-		individuals_file = args['individuals_file']
-	except KeyError:
-		individuals_file = open('inspyred-individuals-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
-		args['individuals_file'] = individuals_file
-	try:
-		matrix_file = args['matrix_file']
-	except KeyError:
-		matrix_file = open('inspyred-matrix-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
-		args['matrix_file'] = matrix_file
-
-	stats = inspyred.ec.analysis.fitness_statistics(population)
-	worst_fit = stats['worst']
-	best_fit = stats['best']
-	avg_fit = stats['mean']
-	med_fit = stats['median']
-	std_fit = stats['std']
-	diff_time = time.time() - args['init_time']
-
-	statistics_file.write(
-		'{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}\n'.format(num_generations, len(population), worst_fit, best_fit,
-														  med_fit,
-														  avg_fit, std_fit, diff_time))
-
-	for i, p in enumerate(population):
-		indi = repr(p.candidate[:len(p.candidate) // 2])
-		dict_battles = args["_dictionary_battles"][indi]
-		battles = ""
-		for v in dict_battles.keys():
-			if v != "TOTAL":
-				battles += str(dict_battles[v]) + "-"
-
-		individuals_file.write(
-			'{0}, {1}, {2}, {3}, BATTLES: {4}\n'.format(num_generations, i, p.fitness, str(p.candidate), battles))
-
-	matrix_file.write(str(num_generations))
-	matrix_file.write("\nVICTORIES\n")
-	matrix_file.write(args["_matrix_victories"])
-	matrix_file.write("\nTURNS_WIN\n")
-	matrix_file.write(args["_matrix_turns_win"])
-	matrix_file.write("\nTURNS_LOSE\n")
-	matrix_file.write(args["_matrix_turns_lose"])
-	matrix_file.write("\nHEALTH_WIN\n")
-	matrix_file.write(args["_matrix_health_win"])
-	matrix_file.write("\nHEALTH_LOSE\n")
-	matrix_file.write(args["_matrix_health_lose"])
-
-	statistics_file.flush()
-	individuals_file.flush()
-	matrix_file.flush()
-
-
-def generate_weights(random, args):
-	size = args.get('num_weights')
-	return [random.uniform(0, 1) for i in range(size)]
-
-
 def individual_to_commandline(ind):
-	param = ""
-	for e in ind:
-		param = param + str(e) + "#"
-	param = param[:-1]
-	return param
+	return "#".join(str(e) for e in ind)
 
 
 def parse_file(file_name):
 	print("PARSING FILE " + file_name)
-	with open(file_name, "r") as fp: lines = fp.readlines()
-
+	with open(file_name, "r") as fp:
+		lines = fp.readlines()
 	match_info = list(filter(None, lines[-1].split(" ")))
-	return int(match_info[0]), int(match_info[1]), int(match_info[3]), int(match_info[4]), int(match_info[5]), int(
-		match_info[6])
+	return (int(match_info[0]), int(match_info[1]), int(match_info[3]),
+			int(match_info[4]), int(match_info[5]), int(match_info[6]))
 
 
 def launch_simulator(f1, f2, d1, d2, thread_id):
-	test = TEST_DUMMY
 	file_name = thread_id + TEMP_FILE_NAME
 
-	# Safely delete the file in Windows using Python's built-in os.remove
 	if os.path.exists(file_name):
 		try:
 			os.remove(file_name)
@@ -172,54 +98,56 @@ def launch_simulator(f1, f2, d1, d2, thread_id):
 	cml1 = individual_to_commandline(f1)
 	cml2 = individual_to_commandline(f2)
 
-	if test:
+	if TEST_DUMMY:
 		w = randint(0, NUM_GAMES)
-		w1 = w
-		w2 = NUM_GAMES - w
+		w1, w2 = w, NUM_GAMES - w
 		tw = randint(0, 15 * NUM_GAMES)
 		tl = randint(0, 15 * NUM_GAMES)
 		hw = randint(0, 5 * NUM_GAMES)
 		hl = randint(0, 5 * NUM_GAMES)
-		time.sleep(randint(0, 0))
-		command_line = "echo {0} {1} {2} {3} {4} {5} {6} > {7} ".format(w1, w2, NUM_GAMES, tw, tl, hw, hl, file_name)
+		command_line = "echo {0} {1} {2} {3} {4} {5} {6} > {7}".format(
+			w1, w2, NUM_GAMES, tw, tl, hw, hl, file_name)
 	else:
-		command_line = r"dotnet run --project D:\Pics_Movies\vids\PWr\Sem10\magisterka\PARALLEL_HS\SabberStone" + thread_id + r"\core-extensions\SabberStoneCoreAi\SabberStoneCoreAi.csproj"
-		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2],
-																  cml2, NUM_GAMES, " > " + file_name)
+		command_line = (
+			r"dotnet run --project D:\Pics_Movies\vids\PWr\Sem10\magisterka\PARALLEL_HS\SabberStone"
+			+ thread_id
+			+ r"\core-extensions\SabberStoneCoreAi\SabberStoneCoreAi.csproj"
+		)
+		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(
+			d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2], cml2, NUM_GAMES, " > " + file_name)
 
-	if DEBUG: print("\t\t" + command_line)
+	if DEBUG:
+		print("\t\t" + command_line)
 	com = Command(command_line)
 
 	attempts = 0
 	finished = False
 	while not finished:
 		print("Launching attempt " + str(attempts))
-		finished = com.run(100)  # 1200
-		attempts = attempts + 1
+		finished = com.run(100)
+		attempts += 1
 		if attempts == 3:
 			finished = True
 
-	if DEBUG: print(str(thread_id) + " finished command launch")
+	if DEBUG:
+		print(str(thread_id) + " finished command launch")
 
 	w1, w2, tw, tl, hw, hl = parse_file(file_name)
-	if DEBUG: print("\t\tNUMBERS ARE " + str(w1) + " " + str(w2))
+	if DEBUG:
+		print("\t\tNUMBERS ARE " + str(w1) + " " + str(w2))
 	return w1, w2, tw, tl, hw, hl
 
 
 def execute_simulator_in_thread(battle):
-	# Use current_thread().name for Python 3 compatibility
 	thread_name = threading.current_thread().name
-
 	print(thread_name + " STARTING ")
-	global victories
-	id_1 = battle[0]
-	id_2 = battle[1]
-	weights_1 = battle[2]
-	weights_2 = battle[3]
-	deck_1 = battle[4]
-	deck_2 = battle[5]
+
+	global victories, victories_versus, turns_win, turns_lose, health_win, health_lose
+
+	id_1, id_2, weights_1, weights_2, deck_1, deck_2 = battle
 
 	v1, v2, tw, tl, hw, hl = launch_simulator(weights_1, weights_2, deck_1, deck_2, thread_name)
+
 	print("STARTING LOCK FOR THREAD " + str(thread_name))
 	with lock:
 		victories[id_1]["TOTAL"] += v1
@@ -239,19 +167,20 @@ def execute_simulator_in_thread(battle):
 	print(thread_name + " FINISHING")
 
 
-def evaluate_hearthstone(candidates, args):
-	if args is not None:
-		args["_dictionary_battles"] = {}
+def evaluate_hearthstone(candidates):
+	"""
+	Evaluates all candidates against each other (round-robin within the given batch).
+	Called by SHADE's improve() as:
+		fun(population.tolist())   -- initial evaluation
+		fun(u.tolist())            -- trial population evaluation each generation
+
+	candidates: list of lists, shape (n, NUM_WEIGHTS)
+	returns:    np.array of shape (n,), negated wins (SHADE minimizes)
+	"""
+	global victories, victories_versus, turns_win, turns_lose, health_win, health_lose
 
 	to_fight = [list(ind) for ind in candidates]
-
-
-	global victories
-	global victories_versus
-	global turns_win
-	global turns_lose
-	global health_win
-	global health_lose
+	n = len(to_fight)
 
 	victories = []
 	victories_versus = []
@@ -260,45 +189,31 @@ def evaluate_hearthstone(candidates, args):
 	health_win = []
 	health_lose = []
 
-	fitness = []
-
-	for i in range(0, len(to_fight)):
-		victories.append({})
-		victories_versus.append([])
-		turns_win.append([])
-		turns_lose.append([])
-		health_win.append([])
-		health_lose.append([])
-		victories[i]["TOTAL"] = 0
+	for i in range(n):
+		victories.append({"TOTAL": 0})
 		for d1 in DECKS:
 			for d2 in DECKS:
 				victories[i][d1 + d2] = 0
-		for j in range(0, len(to_fight)):
-			victories_versus[i].append([])
-			turns_win[i].append([])
-			turns_lose[i].append([])
-			health_win[i].append([])
-			health_lose[i].append([])
-			victories_versus[i][j] = 0
-			turns_win[i][j] = 0
-			turns_lose[i][j] = 0
-			health_win[i][j] = 0
-			health_lose[i][j] = 0
+		victories_versus.append([0] * n)
+		turns_win.append([0] * n)
+		turns_lose.append([0] * n)
+		health_win.append([0] * n)
+		health_lose.append([0] * n)
 
 	battles_list = []
 	for i, f1 in enumerate(to_fight):
-		if DEBUG: print("INDIVIDUAL " + str(f1))
+		if DEBUG:
+			print("INDIVIDUAL " + str(i) + ": " + str(f1))
 		for j, f2 in enumerate(to_fight):
 			for d1 in DECKS:
 				for d2 in DECKS:
-					if i < j:  # NOT COMPARING WITH HIMSELF!
+					if i < j:
 						battles_list.append([i, j, f1, f2, d1, d2])
 
-	chunk_battles = chunks(battles_list, NUM_THREADS)
-
-	for parallel_battle in chunk_battles:
+	for parallel_battle in chunks(battles_list, NUM_THREADS):
 		threads = []
-		if DEBUG: print("EXECUTING PARALLEL BATTLES: " + str(len(parallel_battle)))
+		if DEBUG:
+			print("EXECUTING PARALLEL BATTLES: " + str(len(parallel_battle)))
 		for i, battle in enumerate(parallel_battle):
 			t = threading.Thread(target=execute_simulator_in_thread, args=(battle,), name=str(i))
 			threads.append(t)
@@ -307,71 +222,81 @@ def evaluate_hearthstone(candidates, args):
 		for t in threads:
 			t.join()
 
-	for i, v in enumerate(victories):
-		if args is not None:
-			args["_dictionary_battles"].update({repr(to_fight[i]): victories[i]})
-
-		# IMPORTANT: SHADE minimizes, so negate wins here
+	fitness = []
+	for i in range(n):
+		# SHADE minimizes — negate wins so more wins = lower (better) value
 		fitness.append(-float(victories[i]["TOTAL"]))
 
-	if args is not None:
-		print("VICTORIES")
-		args["_matrix_victories"] = print_squared_array(victories_versus)
+	if DEBUG:
+		print("VICTORIES (batch)")
+		print(print_squared_array(victories_versus))
 
-		for i in range(0, len(victories_versus)):
-			for j in range(0, len(victories_versus)):  # WARNING, THE ARRAY IS SQUARED!
+		for i in range(n):
+			for j in range(n):
 				if i != j:
 					ij = float(victories_versus[i][j])
 					ji = float(victories_versus[j][i])
-					if ij > 0:  # To avoid divide by 0
-						turns_win[i][j] = turns_win[i][j] / ij
-						health_win[i][j] = health_win[i][j] / ij
+					if ij > 0:
+						turns_win[i][j] /= ij
+						health_win[i][j] /= ij
 					if ji > 0:
-						turns_lose[i][j] = turns_lose[i][j] / ji
-						health_lose[i][j] = health_lose[i][j] / ji
+						turns_lose[i][j] /= ji
+						health_lose[i][j] /= ji
 
 		print("TURNS TO WIN")
-		args["_matrix_turns_win"] = print_squared_array(turns_win)
+		print(print_squared_array(turns_win))
 		print("TURNS TO LOSE")
-		args["_matrix_turns_lose"] = print_squared_array(turns_lose)
+		print(print_squared_array(turns_lose))
 		print("HEALTH TO WIN")
-		args["_matrix_health_win"] = print_squared_array(health_win)
+		print(print_squared_array(health_win))
 		print("HEALTH TO LOSE")
-		args["_matrix_health_lose"] = print_squared_array(health_lose)
+		print(print_squared_array(health_lose))
 
 	return np.array(fitness)
 
 
-def run_one(prng=None, display=False):
-	if prng is None:
-		prng = Random()
-		prng.seed(time.time())
-
+def run_one():
 	time1 = time.time()
-	ea = inspyred.ec.ES(prng)
-	ea.terminator = [inspyred.ec.terminators.evaluation_termination]
 
-	ea.observer = [inspyred.ec.observers.stats_observer, my_file_observer]
-	final_pop = ea.evolve(generator=generate_weights,
-						  num_weights=NUM_WEIGHTS,
-						  evaluator=evaluate_hearthstone,
-						  pop_size=POP_SIZE,
-						  bounder=inspyred.ec.Bounder(0, 1),
-						  maximize=True,
-						  max_evaluations=MAX_EVALUATIONS)
+	# --- initial population: shape (POP_SIZE, NUM_WEIGHTS), values in [0, 1] ---
+	population = np.random.uniform(0.0, 1.0, size=(POP_SIZE, NUM_WEIGHTS))
 
-	if display:
-		best = max(final_pop)
-		print('Best Solution: \n{0}'.format(str(best)))
+	# --- evaluate initial population fitness ---
+	# passing population_fitness to improve() skips re-evaluation inside SHADE
+	population_fitness = evaluate_hearthstone(population.tolist())
+
+	# --- SHADE run_info ---
+	# 'best' is the theoretical optimum used only for logging the gap.
+	# We don't have a known optimum, so set to -inf (gap will be large but harmless).
+	# 'threshold' is a stopping criterion; set to -inf to disable it.
+	run_info = {
+		'lower': 0.0,
+		'upper': 1.0,
+		'threshold': -np.inf,
+		'best': -np.inf,
+	}
+
+	result, best_idx = improve(
+		fun=evaluate_hearthstone,  # called as fun(candidates_list) -> np.array of fitness
+		run_info=run_info,
+		dimension=NUM_WEIGHTS,
+		check_evals=MAX_EVALUATIONS,
+		popsize=POP_SIZE,
+		population=population,
+		population_fitness=population_fitness,  # skip re-evaluation of gen 0
+	)
+
 	time2 = time.time()
-	print('TIME ELAPSED = ' + str(time2 - time1))
-	return ea
+	print("TIME ELAPSED = " + str(time2 - time1))
+	print("Best fitness (negated wins): {:.4f}".format(result.fitness))
+	print("Best weights: " + str(result.solution))
+	return result
 
 
-def main(prng=None, display=False):
-	for i in range(0, 1):
-		run_one(prng, display)
+def main():
+	for _ in range(1):
+		run_one()
 
 
 if __name__ == '__main__':
-	main(display=True)
+	main()
