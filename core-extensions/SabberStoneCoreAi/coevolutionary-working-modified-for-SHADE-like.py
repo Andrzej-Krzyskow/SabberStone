@@ -4,21 +4,21 @@ import os
 import subprocess
 import threading
 import sys
+improve = __import__("shade-modified-for-coevolutionary").improve
 
 import numpy as np
 
-from shade import improve
 
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 1  # 20
-POP_SIZE = 2  # 10
-MAX_EVALUATIONS = 6  # 1000
+NUM_GAMES = 2  # 20
+POP_SIZE = 4  # 10
+MAX_EVALUATIONS = 8  # 1000
 NUM_THREADS = 12  # 8
 NUM_WEIGHTS = 21  # set to 63 when ready
 TEMP_FILE_NAME = "results.tmp"
-TEST_DUMMY = False
+TEST_DUMMY = True
 
 lock = threading.Lock()
 
@@ -276,7 +276,7 @@ def run_one():
 		'best': -np.inf,
 	}
 
-	result, best_idx = improve(
+	result, best_idx =  improve(
 		fun=evaluate_hearthstone,  # called as fun(candidates_list) -> np.array of fitness
 		run_info=run_info,
 		dimension=NUM_WEIGHTS,

@@ -112,7 +112,7 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 			xr1 = population[r1]
 			xr2 = memory[r2]
 			# Get one of the p best values
-			maxbest = int(p * popsize)
+			maxbest = max(1, int(p * popsize))
 			bests = np.argsort(population_fitness)[:maxbest]
 			pbest = np.random.choice(bests)
 			xbest = population[pbest]
