@@ -255,67 +255,77 @@ _log_files = {}   # holds open file handles across observer calls
 _init_time = None
 
 
-def shade_observer(generation, population, population_fitness):
-    """
-    Called by improve() after every generation (0 = initial population).
-    Writes to 3 files matching the old inspyred format:
-        shade-statistics-file-<timestamp>.csv
-        shade-individuals-file-<timestamp>.csv
-        shade-matrix-file-<timestamp>.csv
-    """
-    global _log_files, _init_time
+def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_cr=0.5):
+	"""
+	Called by improve() after every generation (0 = initial population).
+	Writes to 4 files matching the old inspyred format + coefficients:
+		shade-statistics-file-<timestamp>.csv
+		shade-individuals-file-<timestamp>.csv
+		shade-matrix-file-<timestamp>.csv
+		shade-coefficients-file-<timestamp>.csv
+	"""
+	global _log_files, _init_time
 
-    # --- open files once on generation 0 ---
-    if generation == 0:
-        _init_time = time.time()
-        ts = time.strftime('%m%d%Y-%H%M%S')
-        _log_files['stats']   = open('shade-statistics-file-{}.csv'.format(ts), 'w')
-        _log_files['indiv']   = open('shade-individuals-file-{}.csv'.format(ts), 'w')
-        _log_files['matrix']  = open('shade-matrix-file-{}.csv'.format(ts), 'w')
+	# --- open files once on generation 0 ---
+	if generation == 0:
+		_init_time = time.time()
+		ts = time.strftime('%m%d%Y-%H%M%S')
+		_log_files['stats'] = open('shade-statistics-file-{}.csv'.format(ts), 'w')
+		_log_files['indiv'] = open('shade-individuals-file-{}.csv'.format(ts), 'w')
+		_log_files['matrix'] = open('shade-matrix-file-{}.csv'.format(ts), 'w')
+		_log_files['coeff'] = open('shade-coefficients-file-{}.csv'.format(ts), 'w')  # NEW FILE
 
-    stats_f  = _log_files['stats']
-    indiv_f  = _log_files['indiv']
-    matrix_f = _log_files['matrix']
+		# Write header for coefficients file
+		_log_files['coeff'].write("generation, mean_f, mean_cr\n")
+		_log_files['coeff'].flush()
 
-    elapsed = time.time() - _init_time
-    n = len(population_fitness)
+	stats_f = _log_files['stats']
+	indiv_f = _log_files['indiv']
+	matrix_f = _log_files['matrix']
+	coeff_f = _log_files['coeff']  # NEW FILE REF
 
-    # --- statistics file ---
-    worst_fit  = float(np.max(population_fitness))   # max because negated (less negative = worse)
-    best_fit   = float(np.min(population_fitness))   # min = most wins
-    avg_fit    = float(np.mean(population_fitness))
-    med_fit    = float(np.median(population_fitness))
-    std_fit    = float(np.std(population_fitness))
+	elapsed = time.time() - _init_time
+	n = len(population_fitness)
 
-    stats_f.write('{}, {}, {}, {}, {}, {}, {}, {}\n'.format(
-        generation, n, worst_fit, best_fit, med_fit, avg_fit, std_fit, elapsed))
-    stats_f.flush()
+	# --- statistics file ---
+	worst_fit = float(np.max(population_fitness))  # max because negated (less negative = worse)
+	best_fit = float(np.min(population_fitness))  # min = most wins
+	avg_fit = float(np.mean(population_fitness))
+	med_fit = float(np.median(population_fitness))
+	std_fit = float(np.std(population_fitness))
 
-    # --- individuals file ---
-    for i, (weights, fit) in enumerate(zip(population, population_fitness)):
-        battles = ""
-        if i in _dictionary_battles:
-            for k, v in _dictionary_battles[i].items():
-                if k != "TOTAL":
-                    battles += str(v) + "-"
-        indiv_f.write('{}, {}, {}, {}, BATTLES: {}\n'.format(
-            generation, i, fit, list(weights), battles))
-    indiv_f.flush()
+	stats_f.write('{}, {}, {}, {}, {}, {}, {}, {}\n'.format(
+		generation, n, worst_fit, best_fit, med_fit, avg_fit, std_fit, elapsed))
+	stats_f.flush()
 
-    # --- matrix file ---
-    matrix_f.write(str(generation))
-    matrix_f.write("\nVICTORIES\n")
-    matrix_f.write(print_squared_array(victories_versus))
-    matrix_f.write("\nTURNS_WIN\n")
-    matrix_f.write(print_squared_array(turns_win))
-    matrix_f.write("\nTURNS_LOSE\n")
-    matrix_f.write(print_squared_array(turns_lose))
-    matrix_f.write("\nHEALTH_WIN\n")
-    matrix_f.write(print_squared_array(health_win))
-    matrix_f.write("\nHEALTH_LOSE\n")
-    matrix_f.write(print_squared_array(health_lose))
-    matrix_f.flush()
+	# --- individuals file ---
+	for i, (weights, fit) in enumerate(zip(population, population_fitness)):
+		battles = ""
+		if i in _dictionary_battles:
+			for k, v in _dictionary_battles[i].items():
+				if k != "TOTAL":
+					battles += str(v) + "-"
+		indiv_f.write('{}, {}, {}, {}, BATTLES: {}\n'.format(
+			generation, i, fit, list(weights), battles))
+	indiv_f.flush()
 
+	# --- matrix file ---
+	matrix_f.write(str(generation))
+	matrix_f.write("\nVICTORIES\n")
+	matrix_f.write(print_squared_array(victories_versus))
+	matrix_f.write("\nTURNS_WIN\n")
+	matrix_f.write(print_squared_array(turns_win))
+	matrix_f.write("\nTURNS_LOSE\n")
+	matrix_f.write(print_squared_array(turns_lose))
+	matrix_f.write("\nHEALTH_WIN\n")
+	matrix_f.write(print_squared_array(health_win))
+	matrix_f.write("\nHEALTH_LOSE\n")
+	matrix_f.write(print_squared_array(health_lose))
+	matrix_f.flush()
+
+	# --- Coefficients logging ---
+	coeff_f.write("{}, {:.4f}, {:.4f}\n".format(generation, mean_f, mean_cr))
+	coeff_f.flush()
 
 def run_one():
     time1 = time.time()
