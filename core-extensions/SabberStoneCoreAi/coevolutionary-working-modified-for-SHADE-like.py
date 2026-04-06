@@ -11,13 +11,13 @@ import numpy as np
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 2   # 20
-POP_SIZE = 4    # 10
-MAX_EVALUATIONS = 8   # 1000
+NUM_GAMES = 8   # 20
+POP_SIZE = 8    # 10
+MAX_EVALUATIONS = 200   # 1000
 NUM_THREADS = 12  # 8
-NUM_WEIGHTS = 21  # set to 63 when ready
+NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
-TEST_DUMMY = True
+TEST_DUMMY = False
 
 lock = threading.Lock()
 

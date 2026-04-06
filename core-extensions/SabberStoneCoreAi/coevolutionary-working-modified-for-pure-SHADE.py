@@ -27,9 +27,9 @@ NUM_GAMES   = 8    # 20
 POP_SIZE    = 8    # 10
 MAX_EVALUATIONS = 200    # 1000
 NUM_THREADS = 12   # 8
-NUM_WEIGHTS = 21   # set to 63 when ready
+NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
-TEST_DUMMY  = True
+TEST_DUMMY  = False
 
 OPPONENTS_CSV = "opponents.csv"   # path to fixed opponents file
 
