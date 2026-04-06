@@ -508,54 +508,54 @@ namespace SabberStoneCoreAi.src.Agent
 			double score = 0;
 
 			LogFeatureValue(M_HEALTH, m.Health);
-			score += NormalizeFeature(M_HEALTH, m.Health) * weights[M_HEALTH];
+			score += m.Health * weights[M_HEALTH];
 
 			LogFeatureValue(M_ATTACK, m.AttackDamage);
-			score += NormalizeFeature(M_ATTACK, m.AttackDamage) * weights[M_ATTACK];
+			score += m.AttackDamage * weights[M_ATTACK];
 
 			LogFeatureValue(M_HAS_CHARGE, m.HasCharge ? 1 : 0);
 			if (m.HasCharge)
-				score += NormalizeFeature(M_HAS_CHARGE, 1) * weights[M_HAS_CHARGE];
+				score += 1.0 * weights[M_HAS_CHARGE];
 
 			LogFeatureValue(M_HAS_DEAHTRATTLE, m.HasDeathrattle ? 1 : 0);
 			if (m.HasDeathrattle)
-				score += NormalizeFeature(M_HAS_DEAHTRATTLE, 1) * weights[M_HAS_DEAHTRATTLE];
+				score += 1.0 * weights[M_HAS_DEAHTRATTLE];
 
 			LogFeatureValue(M_HAS_DIVINE_SHIELD, m.HasDivineShield ? 1 : 0);
 			if (m.HasDivineShield)
-				score += NormalizeFeature(M_HAS_DIVINE_SHIELD, 1) * weights[M_HAS_DIVINE_SHIELD];
+				score += 1.0 * weights[M_HAS_DIVINE_SHIELD];
 
 			LogFeatureValue(M_HAS_INSPIRE, m.HasInspire ? 1 : 0);
 			if (m.HasInspire)
-				score += NormalizeFeature(M_HAS_INSPIRE, 1) * weights[M_HAS_INSPIRE];
+				score += 1.0 * weights[M_HAS_INSPIRE];
 
 			LogFeatureValue(M_HAS_LIFE_STEAL, m.HasLifeSteal ? 1 : 0);
 			if (m.HasLifeSteal)
-				score += NormalizeFeature(M_HAS_LIFE_STEAL, 1) * weights[M_HAS_LIFE_STEAL];
+				score += 1.0 * weights[M_HAS_LIFE_STEAL];
 
 			LogFeatureValue(M_HAS_STEALTH, m.HasStealth ? 1 : 0);
 			if (m.HasStealth)
-				score += NormalizeFeature(M_HAS_STEALTH, 1) * weights[M_HAS_STEALTH];
+				score += 1.0 * weights[M_HAS_STEALTH];
 
 			LogFeatureValue(M_HAS_TAUNT, m.HasTaunt ? 1 : 0);
 			if (m.HasTaunt)
-				score += NormalizeFeature(M_HAS_TAUNT, 1) * weights[M_HAS_TAUNT];
+				score += 1.0 * weights[M_HAS_TAUNT];
 
 			LogFeatureValue(M_HAS_WINDFURY, m.HasWindfury ? 1 : 0);
 			if (m.HasWindfury)
-				score += NormalizeFeature(M_HAS_WINDFURY, 1) * weights[M_HAS_WINDFURY];
+				score += 1.0 * weights[M_HAS_WINDFURY];
 
 			LogFeatureValue(M_MANA_COST, m.Card.Cost);
-			score += NormalizeFeature(M_MANA_COST, m.Card.Cost) * weights[M_MANA_COST];
+			score += m.Card.Cost * weights[M_MANA_COST];
 
 			int rarity = rarityToInt(m.Card);
 			LogFeatureValue(M_RARITY, rarity);
-			score += NormalizeFeature(M_RARITY, rarity) * weights[M_RARITY];
+			score += rarity * weights[M_RARITY];
 
 			LogFeatureValue(M_POISONOUS, m.Poisonous ? 1 : 0);
 			if (m.Poisonous)
 			{
-				score += NormalizeFeature(M_POISONOUS, 1) * weights[M_POISONOUS];
+				score += 1.0 * weights[M_POISONOUS];
 			}
 
 			return score;
