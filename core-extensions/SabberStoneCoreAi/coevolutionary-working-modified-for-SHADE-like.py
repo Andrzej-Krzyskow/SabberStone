@@ -11,9 +11,9 @@ import numpy as np
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 8   # 20
+NUM_GAMES = 8    # 20
 POP_SIZE = 8    # 10
-MAX_EVALUATIONS = 200   # 1000
+MAX_EVALUATIONS = 200  # 1000
 NUM_THREADS = 12  # 8
 NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
@@ -28,7 +28,6 @@ turns_lose = []
 health_win = []
 health_lose = []
 
-# Populated by evaluate_hearthstone so the observer can read it
 _dictionary_battles = {}
 
 
@@ -169,28 +168,44 @@ def execute_simulator_in_thread(battle):
     print(thread_name + " FINISHING")
 
 
-def evaluate_hearthstone(candidates):
+def evaluate_hearthstone(candidates, parent_population=None):
     """
-    Evaluates all candidates against each other (round-robin within the given batch).
-    Called by SHADE's improve() as:
-        fun(population.tolist())   -- initial evaluation
-        fun(u.tolist())            -- trial population evaluation each generation
+    Two calling modes:
 
-    candidates: list of lists, shape (n, NUM_WEIGHTS)
-    returns:    np.array of shape (n,), negated wins (SHADE minimizes)
+    1) Initial evaluation — called from run_one() and from SHADE's internal
+       population_fitness = np.array(fun(population.tolist())) on first run:
+           evaluate_hearthstone(candidates)
+           returns: np.array of shape (n,)  — plain array, no tuple
+
+    2) Per-generation evaluation — called by SHADE each generation:
+           evaluate_hearthstone(mutants, parent_population)
+           returns: (np.array of shape (n_parents + n_mutants,), n_parents)
+           Layout:  all_fitness[:n_parents]  = parent fitness (fresh)
+                    all_fitness[n_parents:]  = mutant fitness
+
+    In both cases, individuals fight round-robin within the combined pool.
+    Fitness = -total_wins  (negated so SHADE minimizes = maximize wins).
     """
     global victories, victories_versus, turns_win, turns_lose, health_win, health_lose
     global _dictionary_battles
 
-    to_fight = [list(ind) for ind in candidates]
+    # Build combined fighting pool: parents first, then mutants/candidates
+    n_parents = 0
+    if parent_population is not None:
+        to_fight  = [list(ind) for ind in parent_population]
+        n_parents = len(to_fight)
+        to_fight += [list(ind) for ind in candidates]
+    else:
+        to_fight = [list(ind) for ind in candidates]
+
     n = len(to_fight)
 
-    victories = []
+    victories        = []
     victories_versus = []
-    turns_win = []
-    turns_lose = []
-    health_win = []
-    health_lose = []
+    turns_win        = []
+    turns_lose       = []
+    health_win       = []
+    health_lose      = []
 
     for i in range(n):
         victories.append({"TOTAL": 0})
@@ -198,9 +213,9 @@ def evaluate_hearthstone(candidates):
             for d2 in DECKS:
                 victories[i][d1 + d2] = 0
         victories_versus.append([0] * n)
-        turns_win.append([0] * n)
-        turns_lose.append([0] * n)
-        health_win.append([0] * n)
+        turns_win.append([0]   * n)
+        turns_lose.append([0]  * n)
+        health_win.append([0]  * n)
         health_lose.append([0] * n)
 
     battles_list = []
@@ -231,113 +246,111 @@ def evaluate_hearthstone(candidates):
         _dictionary_battles[i] = victories[i]
         fitness.append(-float(victories[i]["TOTAL"]))
 
-    # Normalise matrix values for logging
+    # Normalize matrix values for logging
     for i in range(n):
         for j in range(n):
             if i != j:
                 ij = float(victories_versus[i][j])
                 ji = float(victories_versus[j][i])
                 if ij > 0:
-                    turns_win[i][j] /= ij
+                    turns_win[i][j]  /= ij
                     health_win[i][j] /= ij
                 if ji > 0:
-                    turns_lose[i][j] /= ji
+                    turns_lose[i][j]  /= ji
                     health_lose[i][j] /= ji
 
-    return np.array(fitness)
+    all_fitness = np.array(fitness)
+
+    # Return plain array for initial call, tuple for per-generation call
+    if parent_population is None:
+        return all_fitness
+    else:
+        return all_fitness, n_parents
 
 
 # ---------------------------------------------------------------------------
-# File observer — mirrors the 3 inspyred log files
+# File observer
 # ---------------------------------------------------------------------------
 
-_log_files = {}   # holds open file handles across observer calls
+_log_files = {}
 _init_time = None
 
 
 def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_cr=0.5):
-	"""
-	Called by improve() after every generation (0 = initial population).
-	Writes to 4 files matching the old inspyred format + coefficients:
-		shade-statistics-file-<timestamp>.csv
-		shade-individuals-file-<timestamp>.csv
-		shade-matrix-file-<timestamp>.csv
-		shade-coefficients-file-<timestamp>.csv
-	"""
-	global _log_files, _init_time
+    global _log_files, _init_time
 
-	# --- open files once on generation 0 ---
-	if generation == 0:
-		_init_time = time.time()
-		ts = time.strftime('%m%d%Y-%H%M%S')
-		_log_files['stats'] = open('shade-statistics-file-{}.csv'.format(ts), 'w')
-		_log_files['indiv'] = open('shade-individuals-file-{}.csv'.format(ts), 'w')
-		_log_files['matrix'] = open('shade-matrix-file-{}.csv'.format(ts), 'w')
-		_log_files['coeff'] = open('shade-coefficients-file-{}.csv'.format(ts), 'w')  # NEW FILE
+    if generation == 0:
+        _init_time = time.time()
+        ts = time.strftime('%m%d%Y-%H%M%S')
+        _log_files['stats']  = open('shade-statistics-file-{}.csv'.format(ts),   'w')
+        _log_files['indiv']  = open('shade-individuals-file-{}.csv'.format(ts),  'w')
+        _log_files['matrix'] = open('shade-matrix-file-{}.csv'.format(ts),       'w')
+        _log_files['coeff']  = open('shade-coefficients-file-{}.csv'.format(ts), 'w')
+        _log_files['coeff'].write("generation, mean_f, mean_cr\n")
+        _log_files['coeff'].flush()
 
-		# Write header for coefficients file
-		_log_files['coeff'].write("generation, mean_f, mean_cr\n")
-		_log_files['coeff'].flush()
+    stats_f  = _log_files['stats']
+    indiv_f  = _log_files['indiv']
+    matrix_f = _log_files['matrix']
+    coeff_f  = _log_files['coeff']
 
-	stats_f = _log_files['stats']
-	indiv_f = _log_files['indiv']
-	matrix_f = _log_files['matrix']
-	coeff_f = _log_files['coeff']  # NEW FILE REF
+    elapsed = time.time() - _init_time
+    n = len(population_fitness)
 
-	elapsed = time.time() - _init_time
-	n = len(population_fitness)
+    # --- statistics ---
+    worst_fit = float(np.max(population_fitness))
+    best_fit  = float(np.min(population_fitness))
+    avg_fit   = float(np.mean(population_fitness))
+    med_fit   = float(np.median(population_fitness))
+    std_fit   = float(np.std(population_fitness))
 
-	# --- statistics file ---
-	worst_fit = float(np.max(population_fitness))  # max because negated (less negative = worse)
-	best_fit = float(np.min(population_fitness))  # min = most wins
-	avg_fit = float(np.mean(population_fitness))
-	med_fit = float(np.median(population_fitness))
-	std_fit = float(np.std(population_fitness))
+    stats_f.write('{}, {}, {}, {}, {}, {}, {}, {}\n'.format(
+        generation, n, worst_fit, best_fit, med_fit, avg_fit, std_fit, elapsed))
+    stats_f.flush()
 
-	stats_f.write('{}, {}, {}, {}, {}, {}, {}, {}\n'.format(
-		generation, n, worst_fit, best_fit, med_fit, avg_fit, std_fit, elapsed))
-	stats_f.flush()
+    # --- individuals ---
+    for i, (weights, fit) in enumerate(zip(population, population_fitness)):
+        battles = ""
+        if i in _dictionary_battles:
+            for k, v in _dictionary_battles[i].items():
+                if k != "TOTAL":
+                    battles += str(v) + "-"
+        indiv_f.write('{}, {}, {}, {}, BATTLES: {}\n'.format(
+            generation, i, fit, list(weights), battles))
+    indiv_f.flush()
 
-	# --- individuals file ---
-	for i, (weights, fit) in enumerate(zip(population, population_fitness)):
-		battles = ""
-		if i in _dictionary_battles:
-			for k, v in _dictionary_battles[i].items():
-				if k != "TOTAL":
-					battles += str(v) + "-"
-		indiv_f.write('{}, {}, {}, {}, BATTLES: {}\n'.format(
-			generation, i, fit, list(weights), battles))
-	indiv_f.flush()
+    # --- matrix ---
+    matrix_f.write(str(generation))
+    matrix_f.write("\nVICTORIES\n")
+    matrix_f.write(print_squared_array(victories_versus))
+    matrix_f.write("\nTURNS_WIN\n")
+    matrix_f.write(print_squared_array(turns_win))
+    matrix_f.write("\nTURNS_LOSE\n")
+    matrix_f.write(print_squared_array(turns_lose))
+    matrix_f.write("\nHEALTH_WIN\n")
+    matrix_f.write(print_squared_array(health_win))
+    matrix_f.write("\nHEALTH_LOSE\n")
+    matrix_f.write(print_squared_array(health_lose))
+    matrix_f.flush()
 
-	# --- matrix file ---
-	matrix_f.write(str(generation))
-	matrix_f.write("\nVICTORIES\n")
-	matrix_f.write(print_squared_array(victories_versus))
-	matrix_f.write("\nTURNS_WIN\n")
-	matrix_f.write(print_squared_array(turns_win))
-	matrix_f.write("\nTURNS_LOSE\n")
-	matrix_f.write(print_squared_array(turns_lose))
-	matrix_f.write("\nHEALTH_WIN\n")
-	matrix_f.write(print_squared_array(health_win))
-	matrix_f.write("\nHEALTH_LOSE\n")
-	matrix_f.write(print_squared_array(health_lose))
-	matrix_f.flush()
+    # --- coefficients ---
+    coeff_f.write("{}, {:.4f}, {:.4f}\n".format(generation, mean_f, mean_cr))
+    coeff_f.flush()
 
-	# --- Coefficients logging ---
-	coeff_f.write("{}, {:.4f}, {:.4f}\n".format(generation, mean_f, mean_cr))
-	coeff_f.flush()
 
 def run_one():
     time1 = time.time()
 
     population = np.random.uniform(0.0, 1.0, size=(POP_SIZE, NUM_WEIGHTS))
+
+    # Initial evaluation: single-argument call → plain np.array
     population_fitness = evaluate_hearthstone(population.tolist())
 
     run_info = {
-        'lower': 0.0,
-        'upper': 1.0,
+        'lower':     0.0,
+        'upper':     1.0,
         'threshold': -np.inf,
-        'best': -np.inf,
+        'best':      -np.inf,
     }
 
     result, best_idx = improve(
@@ -348,10 +361,9 @@ def run_one():
         popsize=POP_SIZE,
         population=population,
         population_fitness=population_fitness,
-        observer=shade_observer,   # <-- logging hook
+        observer=shade_observer,
     )
 
-    # Close log files
     for f in _log_files.values():
         f.close()
 
@@ -369,4 +381,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

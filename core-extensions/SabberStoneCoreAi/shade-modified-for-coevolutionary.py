@@ -1,33 +1,39 @@
 ﻿"""
-This program contains the SHADE algorithm, proposed in [1].
+SHADE algorithm - Path B (SHADE-like coevolutionary, mixed population).
+Mutants are evaluated against BOTH parents AND other mutants so the fitness
+scale is identical for both sides of the comparison each generation.
 
 Tanabe, R.; Fukunaga, A., "Success-history based parameter adaptation
-for Differential Evolution," Evolutionary Computation (CEC), 2013 IEEE
-Congress on , vol., no., pp.71,78, 20-23 June 2013
+for Differential Evolution," Evolutionary Computation (CEC), 2013
 """
 import numpy as np
 from DE import EAresult, random_population, get_experiments_file, random_indexes
 import math
 
 
-def improve(fun, run_info, dimension, check_evals, name_output=None, replace=True, popsize=100, H=100, population=None,
-			population_fitness=None, initial_solution=None, MemF=None, MemCR=None, observer=None):
+def improve(fun, run_info, dimension, check_evals, name_output=None, replace=True, popsize=100, H=100,
+			population=None, population_fitness=None, initial_solution=None, MemF=None, MemCR=None,
+			observer=None):
 	"""
-	observer: optional callable, called after each generation as:
-				  observer(generation, population, population_fitness, mean_f, mean_cr)
-			  where generation is 1-based int, population is np.ndarray (popsize, dimension),
-			  population_fitness is np.ndarray (popsize,).
+	fun signature:
+		# initial evaluation (called once at startup, no parents yet):
+		fitness_array = fun(candidates)                           -> np.array shape (n,)
+
+		# per-generation evaluation (called every generation):
+		all_fitness, n_parents = fun(mutants, parent_population)
+			all_fitness[:n_parents]  = parent fitness (re-evaluated fresh, same pool)
+			all_fitness[n_parents:]  = mutant fitness
+
+	observer: optional callable(generation, population, population_fitness, mean_f, mean_cr)
 	"""
-	assert isinstance(dimension, int), 'dimension should be integer'
-	assert (dimension > 0), 'dimension must be positive'
+	assert isinstance(dimension, int) and dimension > 0
 
 	final, fid = get_experiments_file(name_output, replace)
-
 	if final is not None:
 		return final
 
 	for attr in ['lower', 'upper', 'threshold', 'best']:
-		assert attr in run_info.keys(), "'{}' info not provided for benchmark".format(attr)
+		assert attr in run_info, "'{}' not in run_info".format(attr)
 
 	if not isinstance(check_evals, list):
 		check_evals = [check_evals]
@@ -46,6 +52,7 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 		population[0] = initial_solution
 
 	if population_fitness is None:
+		# Initial evaluation: single-argument call, no parents yet
 		population_fitness = np.array(fun(population.tolist()))
 		currentEval = popsize
 	else:
@@ -63,9 +70,8 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 	k = 0
 	pmin = 2.0 / popsize
 	generation = 0
-	total_updates = 0  # <--- NEW: Track successful memory updates
+	total_updates = 0
 
-	# Observer call for generation 0 (initial population)
 	if observer is not None:
 		observer(generation, population.copy(), population_fitness.copy(), 0.5, 0.5)
 
@@ -79,12 +85,11 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 		best_fitness = np.min(population_fitness)
 		numEvalFound = currentEval
 
-		for (i, xi) in enumerate(population):
+		# --- mutation + crossover ---
+		for i, xi in enumerate(population):
 			index_H = np.random.randint(0, H)
-			meanF = MemF[index_H]
-			meanCR = MemCR[index_H]
-			Fi = np.random.normal(meanF, 0.1)
-			CRi = np.random.normal(meanCR, 0.1)
+			Fi = np.random.normal(MemF[index_H], 0.1)
+			CRi = np.random.normal(MemCR[index_H], 0.1)
 			p = np.random.rand() * (0.2 - pmin) + pmin
 
 			r1 = random_indexes(1, popsize, ignore=[i])
@@ -94,8 +99,7 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 
 			maxbest = max(1, int(p * popsize))
 			bests = np.argsort(population_fitness)[:maxbest]
-			pbest = np.random.choice(bests)
-			xbest = population[pbest]
+			xbest = population[np.random.choice(bests)]
 
 			v = xi + Fi * (xbest - xi) + Fi * (xr1 - xr2)
 			v = shade_clip(domain, v, xi)
@@ -106,28 +110,28 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 			F[i] = Fi
 			CR[i] = CRi
 
-		# Evaluate the whole trial population u against itself
-		fitness_u_list = np.array(fun(u.tolist()))
+		# --- evaluate mutants AND parents together in the same pool ---
+		# evaluate_hearthstone receives (mutants, parents) and returns
+		# (all_fitness, n_parents) where layout is [parents... | mutants...]
+		all_fitness, n_parents = fun(u.tolist(), population.tolist())
+		parent_fitness_fresh = all_fitness[:n_parents]  # parents re-evaluated this gen
+		fitness_u_list = all_fitness[n_parents:]  # mutants evaluated same gen
 
+		# --- per-individual SHADE comparison (both sides same scale) ---
 		weights = []
-
-		for i, fitness in enumerate(population_fitness):
+		for i in range(popsize):
 			fitness_u = fitness_u_list[i]
+			fitness_parent = parent_fitness_fresh[i]
 
-			if math.isnan(fitness_u):
-				print(i)
-				print(domain)
-				print(u[i])
-				print(fitness_u)
+			assert not math.isnan(fitness_u), \
+				"NaN fitness for mutant {}: {}".format(i, u[i])
 
-			assert not math.isnan(fitness_u)
-
-			if fitness_u <= fitness:
-				if fitness_u < fitness:
+			if fitness_u <= fitness_parent:
+				if fitness_u < fitness_parent:
 					memory.append(population[i].copy())
 					SF.append(F[i])
 					SCR.append(CR[i])
-					weights.append(fitness - fitness_u)
+					weights.append(fitness_parent - fitness_u)
 
 				if fitness_u < best_fitness:
 					best_fitness = fitness_u
@@ -135,6 +139,10 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 
 				population[i] = u[i]
 				population_fitness[i] = fitness_u
+			else:
+				# Parent survives — store fresh fitness so next generation's
+				# stored values are always on the current generation's scale
+				population_fitness[i] = fitness_parent
 
 		currentEval += popsize
 		memory = limit_memory(memory, memorySize)
@@ -144,14 +152,11 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 			MemF[k] = Fnew
 			MemCR[k] = CRnew
 			k = (k + 1) % H
-			total_updates += 1  # <--- NEW: Increment our successful update counter
+			total_updates += 1
 
-		# Observer call after each generation's population update
 		if observer is not None:
-			# --- NEW: CALCULATE SMART MEANS ---
 			if total_updates == 0:
-				current_mean_f = 0.5
-				current_mean_cr = 0.5
+				current_mean_f, current_mean_cr = 0.5, 0.5
 			elif total_updates < H:
 				current_mean_f = MemF[:total_updates].mean()
 				current_mean_cr = MemCR[:total_updates].mean()
@@ -159,14 +164,14 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 				current_mean_f = MemF.mean()
 				current_mean_cr = MemCR.mean()
 
-			observer(generation, population.copy(), population_fitness.copy(), current_mean_f, current_mean_cr)
+			observer(generation, population.copy(), population_fitness.copy(),
+					 current_mean_f, current_mean_cr)
 
 	if fid is not None and currentEval >= check_eval:
 		bestFitness = np.min(population_fitness)
 		print("bestFitness: {}".format(bestFitness))
 		fid.write("[%.0e]: %e,%d\n" % (check_eval, abs(bestFitness - fun_best), numEvalFound))
 		fid.flush()
-
 		if check_evals:
 			check_eval = check_evals.pop(0)
 
@@ -174,8 +179,6 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 		fid.close()
 
 	bestIndex = np.argmin(population_fitness)
-
-	# NEW: Print the smart mean at the very end
 	final_f = MemF.mean() if total_updates >= H else (MemF[:total_updates].mean() if total_updates > 0 else 0.5)
 	final_cr = MemCR.mean() if total_updates >= H else (MemCR[:total_updates].mean() if total_updates > 0 else 0.5)
 	print("SHADE Mean[F,CR]: ({0:.4f}, {1:.4f})".format(final_f, final_cr))
@@ -183,33 +186,34 @@ def improve(fun, run_info, dimension, check_evals, name_output=None, replace=Tru
 	return EAresult(fitness=population_fitness[bestIndex], solution=population[bestIndex],
 					evaluations=numEvalFound), bestIndex
 
+
 def limit_memory(memory, memorySize):
-    memory = np.array(memory)
-    if len(memory) > memorySize:
-        indexes = np.random.permutation(len(memory))[:memorySize]
-        memory = memory[indexes]
-    return memory.tolist()
+	memory = np.array(memory)
+	if len(memory) > memorySize:
+		indexes = np.random.permutation(len(memory))[:memorySize]
+		memory = memory[indexes]
+	return memory.tolist()
 
 
 def update_FCR(SF, SCR, improvements):
-    total = np.sum(improvements)
-    assert total > 0
-    weights = improvements / total
-    Fnew = np.sum(weights * SF * SF) / np.sum(weights * SF)
-    Fnew = np.clip(Fnew, 0, 1)
-    CRnew = np.sum(weights * SCR)
-    CRnew = np.clip(CRnew, 0, 1)
-    return Fnew, CRnew
+	total = np.sum(improvements)
+	assert total > 0
+	weights = improvements / total
+	Fnew = np.sum(weights * SF * SF) / np.sum(weights * SF)
+	Fnew = np.clip(Fnew, 0, 1)
+	CRnew = np.sum(weights * SCR)
+	CRnew = np.clip(CRnew, 0, 1)
+	return Fnew, CRnew
 
 
 def shade_clip(domain, solution, original):
-    lower = domain[0]
-    upper = domain[1]
-    clip_sol = np.clip(solution, lower, upper)
-    if np.all(solution == clip_sol):
-        return solution
-    idx_lowest = (solution < lower)
-    solution[idx_lowest] = (original[idx_lowest] + lower) / 2.0
-    idx_upper = (solution > upper)
-    solution[idx_upper] = (original[idx_upper] + upper) / 2.0
-    return solution
+	lower = domain[0]
+	upper = domain[1]
+	clip_sol = np.clip(solution, lower, upper)
+	if np.all(solution == clip_sol):
+		return solution
+	idx_lowest = (solution < lower)
+	solution[idx_lowest] = (original[idx_lowest] + lower) / 2.0
+	idx_upper = (solution > upper)
+	solution[idx_upper] = (original[idx_upper] + upper) / 2.0
+	return solution
