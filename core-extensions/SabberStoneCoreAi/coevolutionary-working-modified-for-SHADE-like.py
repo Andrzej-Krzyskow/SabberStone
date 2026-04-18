@@ -388,10 +388,8 @@ def run_one():
     return result
 
 
-def main():
-    for _ in range(1):
-        run_one()
-
+def main(prng=None, display=False):
+    run_one()
 
 if __name__ == '__main__':
     main()

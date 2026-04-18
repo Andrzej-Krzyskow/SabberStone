@@ -28,17 +28,17 @@ import traceback
 
 EXECUTION_PLAN = [
     # ("script_filename.py",  number_of_runs)
-    # ("modified21depth-coevolutionary.py",    1),
-    # ("modified28-coevolutionary.py",         1),
-    # ("modified28normalized-coevolutionary.py", 1),
-    # ("modified63-coevolutionary.py",         1),
-    # ("modified63smooth-coevolutionary.py",   1),
-	("coevolutionary-working-modified-for-pure-SHADE-5.py",   2),
-	("coevolutionary-working-modified-for-pure-SHADE-10.py", 2),
-	("coevolutionary-working-modified-for-pure-SHADE-15.py",   2),
-	("coevolutionary-working-modified-for-SHADE-like-5.py",   2),
-	("coevolutionary-working-modified-for-SHADE-like-10.py", 2),
-	("coevolutionary-working-modified-for-SHADE-like-15.py",   2),
+    # ("modified21depth-coevolutionary.py",    2),
+    # ("modified28-coevolutionary.py",         2),
+    # ("modified28normalized-coevolutionary.py", 2),
+    # ("modified63-coevolutionary.py",         2),
+    # ("modified63smooth-coevolutionary.py",   2),
+    ("coevolutionary-working-modified-for-pure-SHADE-5.py",   2),
+    ("coevolutionary-working-modified-for-pure-SHADE-10.py", 2),
+    ("coevolutionary-working-modified-for-pure-SHADE-15.py",   2),
+    ("coevolutionary-working-modified-for-SHADE-like-5.py",   2),
+    ("coevolutionary-working-modified-for-SHADE-like-10.py", 2),
+    ("coevolutionary-working-modified-for-SHADE-like-15.py",   2),
 ]
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -87,6 +87,10 @@ def load_script_module(script_path: str):
     so every script's  `if __name__ == '__main__':` guard is respected
     and auto-execution is suppressed.
     """
+    script_dir = os.path.dirname(os.path.abspath(script_path))
+    if script_dir not in sys.path:
+        sys.path.insert(0, script_dir)
+
     module_name = (
         os.path.basename(script_path)
         .replace(".py", "")
