@@ -16,6 +16,7 @@ Opponent CSV format (one opponent per line, NUM_WEIGHTS comma-separated floats):
 Bootstrap: run the coevolutionary version first, take 15 best individuals from
 shade-individuals-file-*.csv and paste them into opponents.csv.
 """
+import sys
 from random import randint
 import time
 import os
@@ -147,13 +148,24 @@ def launch_simulator(f1, f2, d1, d2, thread_id):
 		command_line = "echo {0} {1} {2} {3} {4} {5} {6} > {7}".format(
 			w1, w2, NUM_GAMES, tw, tl, hw, hl, file_name)
 	else:
-		command_line = (
-			r"dotnet run --project D:\Pics_Movies\vids\PWr\Sem10\magisterka\PARALLEL_HS\SabberStone"
-			+ thread_id
-			+ r"\core-extensions\SabberStoneCoreAi\SabberStoneCoreAi.csproj"
+		# 1. Get the base directory (works for both .py scripts and the final .exe)
+		if getattr(sys, 'frozen', False):
+			base_dir = os.path.dirname(sys.executable)
+		else:
+			base_dir = os.path.dirname(os.path.abspath(__file__))
+		project_path = os.path.join(
+			base_dir,
+			"PARALLEL_HS",
+			f"SabberStone{thread_id}",
+			"core-extensions",
+			"SabberStoneCoreAi",
+			"SabberStoneCoreAi.csproj"
 		)
-		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(
-			d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2], cml2, NUM_GAMES, " > " + file_name)
+
+		# 3. Construct the command line with quotes around the path
+		command_line = f'dotnet run --project "{project_path}"'
+		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2],
+												  cml2, NUM_GAMES, " > " + file_name)
 
 	if DEBUG:
 		print("\t\t" + command_line)
@@ -299,10 +311,10 @@ def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_
 	if generation == 0:
 		_init_time = time.time()
 		ts = time.strftime('%m%d%Y-%H%M%S')
-		_log_files['stats'] = open('shade-statistics-file-{}.csv'.format(ts), 'w')
-		_log_files['indiv'] = open('shade-individuals-file-{}.csv'.format(ts), 'w')
-		_log_files['matrix'] = open('shade-matrix-file-{}.csv'.format(ts), 'w')
-		_log_files['coeff'] = open('shade-coefficients-file-{}.csv'.format(ts), 'w')
+		_log_files['stats'] = open('shade-pure-statistics-file-{}.csv'.format(ts), 'w')
+		_log_files['indiv'] = open('shade-pure-individuals-file-{}.csv'.format(ts), 'w')
+		_log_files['matrix'] = open('shade-pure-matrix-file-{}.csv'.format(ts), 'w')
+		_log_files['coeff'] = open('shade-pure-coefficients-file-{}.csv'.format(ts), 'w')
 		_log_files['matrix'].write("# generation | ind | opp0 opp1 ... oppN\n")
 		_log_files['coeff'].write("generation, mean_f, mean_cr\n")
 		for f in _log_files.values():
