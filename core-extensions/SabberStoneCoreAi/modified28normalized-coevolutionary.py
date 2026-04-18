@@ -12,8 +12,8 @@ import sys
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 20 #20
-POP_SIZE = 10 #10
+NUM_GAMES = 8 #20
+POP_SIZE = 8 #10
 MAX_EVALUATIONS = 200 #1000
 NUM_THREADS = 12 #8
 NUM_WEIGHTS_PER_PHASE = 28

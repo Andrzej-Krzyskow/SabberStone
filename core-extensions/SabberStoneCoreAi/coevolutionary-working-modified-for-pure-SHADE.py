@@ -16,6 +16,7 @@ Opponent CSV format (one opponent per line, NUM_WEIGHTS comma-separated floats):
 Bootstrap: run the coevolutionary version first, take 15 best individuals from
 shade-individuals-file-*.csv and paste them into opponents.csv.
 """
+import shutil
 import sys
 from random import randint
 import time
@@ -30,15 +31,15 @@ import numpy as np
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 8  # 20
-POP_SIZE = 8  # 10
-MAX_EVALUATIONS = 192  # 1000
-NUM_THREADS = 64  # 8
+NUM_GAMES = 8 #20
+POP_SIZE = 8 #10
+MAX_EVALUATIONS = 192 #1000
+NUM_THREADS = 8  # 8
 NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
 TEST_DUMMY = False
 
-OPPONENTS_CSV = "opponents.csv"
+OPPONENTS_CSV_ORIGINAL = "opponents.csv"
 HOF_UPDATE_INTERVAL = 5  # replace one opponent every N generations
 
 lock = threading.Lock()
@@ -260,41 +261,33 @@ def evaluate_hearthstone_tracked(individual):
 # Hall of Fame update function
 # ---------------------------------------------------------------------------
 
-def hof_update(population, population_fitness):
-	global FIXED_OPPONENTS
+def hof_update(population, population_fitness, run_opponents_csv):
+    global FIXED_OPPONENTS
 
-	# --- Step 1: best individual in population ---
-	best_idx = int(np.argmin(population_fitness))
-	best_weights = population[best_idx].tolist()
-	print("[HOF] Best individual idx={}, fitness={:.4f}".format(best_idx, population_fitness[best_idx]))
+    best_idx = int(np.argmin(population_fitness))
+    best_weights = population[best_idx].tolist()
+    print("[HOF] Best individual idx={}, fitness={:.4f}".format(best_idx, population_fitness[best_idx]))
 
-	# --- Step 2: find worst opponent using already-computed _last_wins_per_opponent ---
-	# _last_wins_per_opponent[i][j] = wins of individual i vs opponent j
-	# Sum column j across all individuals = total wins opponent j scored (as the victim)
-	# The opponent beaten the most = weakest = best to replace
-	n_opp = len(FIXED_OPPONENTS)
-	opp_total_wins_against = [0] * n_opp  # how many times each opponent LOST (was beaten)
+    n_opp = len(FIXED_OPPONENTS)
+    opp_total_wins_against = [0] * n_opp
 
-	for i, wins_list in _last_wins_per_opponent.items():
-		for j, w in enumerate(wins_list):
-			opp_total_wins_against[j] += w  # individual i's wins vs opponent j
+    for i, wins_list in _last_wins_per_opponent.items():
+        for j, w in enumerate(wins_list):
+            opp_total_wins_against[j] += w
 
-	# Opponent beaten most by the population = weakest = replace it
-	worst_opp_idx = int(np.argmax(opp_total_wins_against))
-	print("[HOF] Replacing opponent {} (beaten {} times) with current best individual".format(
-		worst_opp_idx, opp_total_wins_against[worst_opp_idx]))
+    worst_opp_idx = int(np.argmax(opp_total_wins_against))
+    print("[HOF] Replacing opponent {} (beaten {} times) with current best individual".format(
+        worst_opp_idx, opp_total_wins_against[worst_opp_idx]))
 
-	# --- Step 3: swap in memory (CSV update is optional, kept for restartability) ---
-	FIXED_OPPONENTS[worst_opp_idx] = best_weights
-	save_opponents(FIXED_OPPONENTS, OPPONENTS_CSV)
+    FIXED_OPPONENTS[worst_opp_idx] = best_weights
+    save_opponents(FIXED_OPPONENTS, run_opponents_csv)   # ← use the run-local path
 
-	# --- Step 4: re-evaluate ALL parents against the updated opponent set ---
-	print("[HOF] Re-evaluating all {} parents against updated opponents...".format(len(population)))
-	new_fitness = np.array([
-		evaluate_hearthstone_tracked(ind) for ind in population.tolist()
-	])
+    print("[HOF] Re-evaluating all {} parents against updated opponents...".format(len(population)))
+    new_fitness = np.array([
+        evaluate_hearthstone_tracked(ind) for ind in population.tolist()
+    ])
 
-	return new_fitness
+    return new_fitness
 
 
 # ---------------------------------------------------------------------------
@@ -370,52 +363,57 @@ def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_
 # ---------------------------------------------------------------------------
 
 def run_one():
-	global FIXED_OPPONENTS
+    global FIXED_OPPONENTS
 
-	FIXED_OPPONENTS = load_opponents(OPPONENTS_CSV)
+    # ── Snapshot opponents.csv so every run starts from the same baseline ──
+    ts = time.strftime('%m%d%Y-%H%M%S')
+    run_opponents_csv = "opponents-{}.csv".format(ts)
+    shutil.copy2(OPPONENTS_CSV_ORIGINAL, run_opponents_csv)
+    print("[INIT] Copied {} → {}".format(OPPONENTS_CSV_ORIGINAL, run_opponents_csv))
 
-	time1 = time.time()
+    FIXED_OPPONENTS = load_opponents(run_opponents_csv)
 
-	population = np.random.uniform(0.0, 1.0, size=(POP_SIZE, NUM_WEIGHTS))
+    time1 = time.time()
 
-	# Initial evaluation
-	population_fitness = np.array([
-		evaluate_hearthstone_tracked(ind) for ind in population.tolist()
-	])
+    population = np.random.uniform(0.0, 1.0, size=(POP_SIZE, NUM_WEIGHTS))
 
-	run_info = {
-		'lower': 0.0,
-		'upper': 1.0,
-		'threshold': -np.inf,
-		'best': -np.inf,
-	}
+    population_fitness = np.array([
+        evaluate_hearthstone_tracked(ind) for ind in population.tolist()
+    ])
 
-	result, best_idx = improve(
-		fun=evaluate_hearthstone_tracked,
-		run_info=run_info,
-		dimension=NUM_WEIGHTS,
-		check_evals=MAX_EVALUATIONS,
-		popsize=POP_SIZE,
-		population=population,
-		population_fitness=population_fitness,
-		observer=shade_observer,
-		H=POP_SIZE,
-		hof_update_fn=hof_update,  # <-- Hall of Fame hook
-		hof_interval=HOF_UPDATE_INTERVAL,  # <-- every N generations
-	)
+    run_info = {
+        'lower': 0.0,
+        'upper': 1.0,
+        'threshold': -np.inf,
+        'best': -np.inf,
+    }
 
-	for f in _log_files.values():
-		f.close()
+    result, best_idx = improve(
+        fun=evaluate_hearthstone_tracked,
+        run_info=run_info,
+        dimension=NUM_WEIGHTS,
+        check_evals=MAX_EVALUATIONS,
+        popsize=POP_SIZE,
+        population=population,
+        population_fitness=population_fitness,
+        observer=shade_observer,
+        H=POP_SIZE,
+        hof_update_fn=hof_update,
+        hof_interval=HOF_UPDATE_INTERVAL,
+        run_opponents_csv=run_opponents_csv,   # ← pass the path through
+    )
 
-	time2 = time.time()
-	print("TIME ELAPSED = {:.1f}s".format(time2 - time1))
-	print("Best fitness (negated wins): {:.4f}".format(result.fitness))
-	print("Best weights: " + str(result.solution.tolist()))
+    for f in _log_files.values():
+        f.close()
 
-	# Save final best as a standalone file
-	save_opponents([result.solution.tolist()], "best_solution.csv")
+    time2 = time.time()
+    print("TIME ELAPSED = {:.1f}s".format(time2 - time1))
+    print("Best fitness (negated wins): {:.4f}".format(result.fitness))
+    print("Best weights: " + str(result.solution.tolist()))
 
-	return result
+    save_opponents([result.solution.tolist()], "best_solution-{}.csv".format(ts))
+
+    return result
 
 
 def main():
