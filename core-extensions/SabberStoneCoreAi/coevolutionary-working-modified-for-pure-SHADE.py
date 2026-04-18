@@ -24,7 +24,8 @@ import os
 import subprocess
 import threading
 
-improve = __import__("shade-modified").improve
+import shade_modified
+
 
 import numpy as np
 
@@ -260,8 +261,9 @@ def evaluate_hearthstone_tracked(individual):
 # ---------------------------------------------------------------------------
 # Hall of Fame update function
 # ---------------------------------------------------------------------------
+_run_opponents_csv = None  # ← add this near top, next to FIXED_OPPONENTS
 
-def hof_update(population, population_fitness, run_opponents_csv):
+def hof_update(population, population_fitness):
     global FIXED_OPPONENTS
 
     best_idx = int(np.argmin(population_fitness))
@@ -280,7 +282,7 @@ def hof_update(population, population_fitness, run_opponents_csv):
         worst_opp_idx, opp_total_wins_against[worst_opp_idx]))
 
     FIXED_OPPONENTS[worst_opp_idx] = best_weights
-    save_opponents(FIXED_OPPONENTS, run_opponents_csv)   # ← use the run-local path
+    save_opponents(FIXED_OPPONENTS, _run_opponents_csv)
 
     print("[HOF] Re-evaluating all {} parents against updated opponents...".format(len(population)))
     new_fitness = np.array([
@@ -363,15 +365,14 @@ def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_
 # ---------------------------------------------------------------------------
 
 def run_one():
-    global FIXED_OPPONENTS
+    global FIXED_OPPONENTS, _run_opponents_csv
 
-    # ── Snapshot opponents.csv so every run starts from the same baseline ──
     ts = time.strftime('%m%d%Y-%H%M%S')
-    run_opponents_csv = "opponents-{}.csv".format(ts)
-    shutil.copy2(OPPONENTS_CSV_ORIGINAL, run_opponents_csv)
-    print("[INIT] Copied {} → {}".format(OPPONENTS_CSV_ORIGINAL, run_opponents_csv))
+    _run_opponents_csv = "opponents-{}.csv".format(ts)
+    shutil.copy2(OPPONENTS_CSV_ORIGINAL, _run_opponents_csv)
+    print("[INIT] Copied {} → {}".format(OPPONENTS_CSV_ORIGINAL, _run_opponents_csv))
 
-    FIXED_OPPONENTS = load_opponents(run_opponents_csv)
+    FIXED_OPPONENTS = load_opponents(_run_opponents_csv)
 
     time1 = time.time()
 
@@ -388,7 +389,7 @@ def run_one():
         'best': -np.inf,
     }
 
-    result, best_idx = improve(
+    result, best_idx = shade_modified.improve(
         fun=evaluate_hearthstone_tracked,
         run_info=run_info,
         dimension=NUM_WEIGHTS,
@@ -399,8 +400,7 @@ def run_one():
         observer=shade_observer,
         H=POP_SIZE,
         hof_update_fn=hof_update,
-        hof_interval=HOF_UPDATE_INTERVAL,
-        run_opponents_csv=run_opponents_csv,   # ← pass the path through
+        hof_interval=HOF_UPDATE_INTERVAL
     )
 
     for f in _log_files.values():

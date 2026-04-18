@@ -5,9 +5,10 @@ import os
 import subprocess
 import threading
 
-improve = __import__("shade-modified-for-coevolutionary").improve
 
 import numpy as np
+
+import shade_modified_for_coevolutionary
 
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
@@ -110,24 +111,24 @@ def launch_simulator(f1, f2, d1, d2, thread_id):
         command_line = "echo {0} {1} {2} {3} {4} {5} {6} > {7}".format(
             w1, w2, NUM_GAMES, tw, tl, hw, hl, file_name)
     else:
-		# 1. Get the base directory (works for both .py scripts and the final .exe)
-		if getattr(sys, 'frozen', False):
-			base_dir = os.path.dirname(sys.executable)
-		else:
-			base_dir = os.path.dirname(os.path.abspath(__file__))
-		project_path = os.path.join(
-			base_dir,
-			"PARALLEL_HS",
-			f"SabberStone{thread_id}",
-			"core-extensions",
-			"SabberStoneCoreAi",
-			"SabberStoneCoreAi.csproj"
-		)
+        # 1. Get the base directory (works for both .py scripts and the final .exe)
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.executable)
+        else:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+        project_path = os.path.join(
+            base_dir,
+            "PARALLEL_HS",
+            f"SabberStone{thread_id}",
+            "core-extensions",
+            "SabberStoneCoreAi",
+            "SabberStoneCoreAi.csproj"
+        )
 
-		# 3. Construct the command line with quotes around the path
-		command_line = f'dotnet run --project "{project_path}"'
-		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2],
-																  cml2, NUM_GAMES, " > " + file_name)
+        # 3. Construct the command line with quotes around the path
+        command_line = f'dotnet run --project "{project_path}"'
+        command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2],
+                                                                  cml2, NUM_GAMES, " > " + file_name)
 
     if DEBUG:
         print("\t\t" + command_line)
@@ -365,7 +366,7 @@ def run_one():
         'best':      -np.inf,
     }
 
-    result, best_idx = improve(
+    result, best_idx = shade_modified_for_coevolutionary.improve(
         fun=evaluate_hearthstone,
         run_info=run_info,
         dimension=NUM_WEIGHTS,
@@ -374,7 +375,7 @@ def run_one():
         population=population,
         population_fitness=population_fitness,
         observer=shade_observer,
-		H=POP_SIZE
+        H=POP_SIZE
     )
 
     for f in _log_files.values():
