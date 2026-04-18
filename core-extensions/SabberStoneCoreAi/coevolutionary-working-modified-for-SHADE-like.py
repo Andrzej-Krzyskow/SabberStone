@@ -13,7 +13,7 @@ DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
 NUM_GAMES = 8    # 20
 POP_SIZE = 8    # 10
-MAX_EVALUATIONS = 200  # 1000
+MAX_EVALUATIONS = 192  # 1000
 NUM_THREADS = 12  # 8
 NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
@@ -362,6 +362,7 @@ def run_one():
         population=population,
         population_fitness=population_fitness,
         observer=shade_observer,
+		H=POP_SIZE
     )
 
     for f in _log_files.values():

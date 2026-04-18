@@ -1,0 +1,261 @@
+# generation | ind | opp0 opp1 ... oppN
+generation 0
+  ind 0: opp0=0  opp1=0  opp2=0  opp3=1  opp4=0  opp5=0  opp6=0  opp7=0  opp8=0  opp9=0  opp10=0  opp11=0  opp12=0  opp13=0  opp14=0
+  ind 1: opp0=54  opp1=20  opp2=32  opp3=27  opp4=42  opp5=27  opp6=30  opp7=26  opp8=31  opp9=45  opp10=31  opp11=31  opp12=28  opp13=26  opp14=28
+  ind 2: opp0=31  opp1=9  opp2=10  opp3=8  opp4=20  opp5=14  opp6=7  opp7=13  opp8=11  opp9=14  opp10=15  opp11=8  opp12=9  opp13=11  opp14=7
+  ind 3: opp0=16  opp1=4  opp2=4  opp3=3  opp4=6  opp5=5  opp6=3  opp7=5  opp8=8  opp9=5  opp10=4  opp11=1  opp12=4  opp13=5  opp14=2
+  ind 4: opp0=23  opp1=5  opp2=7  opp3=8  opp4=10  opp5=6  opp6=6  opp7=9  opp8=10  opp9=13  opp10=3  opp11=7  opp12=9  opp13=9  opp14=5
+  ind 5: opp0=24  opp1=10  opp2=14  opp3=12  opp4=20  opp5=11  opp6=12  opp7=11  opp8=13  opp9=18  opp10=13  opp11=14  opp12=12  opp13=9  opp14=15
+  ind 6: opp0=40  opp1=13  opp2=23  opp3=20  opp4=28  opp5=23  opp6=18  opp7=15  opp8=15  opp9=26  opp10=16  opp11=20  opp12=20  opp13=17  opp14=12
+  ind 7: opp0=58  opp1=24  opp2=29  opp3=33  opp4=42  opp5=37  opp6=26  opp7=30  opp8=18  opp9=31  opp10=26  opp11=25  opp12=32  opp13=30  opp14=33
+
+generation 1
+  ind 0: opp0=0  opp1=1  opp2=0  opp3=0  opp4=0  opp5=0  opp6=0  opp7=0  opp8=0  opp9=0  opp10=0  opp11=0  opp12=0  opp13=0  opp14=0
+  ind 1: opp0=50  opp1=21  opp2=32  opp3=25  opp4=39  opp5=31  opp6=27  opp7=28  opp8=22  opp9=50  opp10=25  opp11=25  opp12=25  opp13=22  opp14=25
+  ind 2: opp0=45  opp1=22  opp2=22  opp3=21  opp4=26  opp5=32  opp6=19  opp7=17  opp8=38  opp9=24  opp10=18  opp11=22  opp12=19  opp13=30  opp14=29
+  ind 3: opp0=13  opp1=3  opp2=7  opp3=3  opp4=7  opp5=5  opp6=9  opp7=3  opp8=4  opp9=7  opp10=2  opp11=2  opp12=5  opp13=3  opp14=3
+  ind 4: opp0=28  opp1=4  opp2=12  opp3=8  opp4=15  opp5=8  opp6=8  opp7=11  opp8=11  opp9=19  opp10=10  opp11=7  opp12=8  opp13=14  opp14=10
+  ind 5: opp0=25  opp1=9  opp2=15  opp3=15  opp4=17  opp5=22  opp6=10  opp7=11  opp8=11  opp9=19  opp10=7  opp11=18  opp12=10  opp13=17  opp14=10
+  ind 6: opp0=36  opp1=20  opp2=17  opp3=25  opp4=31  opp5=20  opp6=18  opp7=17  opp8=17  opp9=29  opp10=24  opp11=14  opp12=24  opp13=19  opp14=21
+  ind 7: opp0=58  opp1=33  opp2=21  opp3=29  opp4=38  opp5=31  opp6=23  opp7=25  opp8=28  opp9=39  opp10=29  opp11=23  opp12=25  opp13=26  opp14=28
+
+generation 2
+  ind 0: opp0=0  opp1=0  opp2=0  opp3=0  opp4=0  opp5=0  opp6=0  opp7=0  opp8=0  opp9=0  opp10=0  opp11=0  opp12=0  opp13=0  opp14=0
+  ind 1: opp0=39  opp1=19  opp2=23  opp3=30  opp4=38  opp5=20  opp6=18  opp7=27  opp8=25  opp9=37  opp10=25  opp11=24  opp12=28  opp13=24  opp14=30
+  ind 2: opp0=52  opp1=21  opp2=26  opp3=27  opp4=35  opp5=27  opp6=20  opp7=19  opp8=19  opp9=29  opp10=21  opp11=22  opp12=17  opp13=25  opp14=25
+  ind 3: opp0=45  opp1=24  opp2=32  opp3=37  opp4=35  opp5=32  opp6=27  opp7=37  opp8=33  opp9=41  opp10=38  opp11=30  opp12=34  opp13=43  opp14=34
+  ind 4: opp0=2  opp1=1  opp2=1  opp3=0  opp4=2  opp5=2  opp6=0  opp7=2  opp8=1  opp9=2  opp10=1  opp11=1  opp12=0  opp13=2  opp14=0
+  ind 5: opp0=48  opp1=28  opp2=34  opp3=31  opp4=35  opp5=30  opp6=27  opp7=29  opp8=30  opp9=41  opp10=36  opp11=28  opp12=26  opp13=27  opp14=40
+  ind 6: opp0=45  opp1=23  opp2=17  opp3=21  opp4=37  opp5=30  opp6=19  opp7=34  opp8=25  opp9=37  opp10=28  opp11=18  opp12=27  opp13=26  opp14=23
+  ind 7: opp0=48  opp1=32  opp2=32  opp3=38  opp4=40  opp5=39  opp6=35  opp7=31  opp8=29  opp9=43  opp10=38  opp11=31  opp12=28  opp13=31  opp14=34
+
+generation 3
+  ind 0: opp0=11  opp1=1  opp2=3  opp3=3  opp4=5  opp5=2  opp6=5  opp7=0  opp8=0  opp9=2  opp10=2  opp11=1  opp12=3  opp13=7  opp14=4
+  ind 1: opp0=34  opp1=19  opp2=26  opp3=19  opp4=26  opp5=27  opp6=17  opp7=21  opp8=23  opp9=31  opp10=23  opp11=12  opp12=22  opp13=21  opp14=24
+  ind 2: opp0=54  opp1=18  opp2=22  opp3=21  opp4=32  opp5=28  opp6=17  opp7=22  opp8=20  opp9=31  opp10=27  opp11=20  opp12=23  opp13=28  opp14=23
+  ind 3: opp0=50  opp1=44  opp2=40  opp3=33  opp4=39  opp5=30  opp6=32  opp7=34  opp8=36  opp9=52  opp10=28  opp11=31  opp12=34  opp13=33  opp14=31
+  ind 4: opp0=37  opp1=30  opp2=19  opp3=23  opp4=27  opp5=21  opp6=19  opp7=20  opp8=19  opp9=33  opp10=19  opp11=24  opp12=17  opp13=22  opp14=19
+  ind 5: opp0=55  opp1=24  opp2=38  opp3=45  opp4=42  opp5=33  opp6=38  opp7=30  opp8=36  opp9=51  opp10=39  opp11=36  opp12=37  opp13=36  opp14=26
+  ind 6: opp0=43  opp1=13  opp2=20  opp3=21  opp4=28  opp5=17  opp6=17  opp7=14  opp8=18  opp9=27  opp10=24  opp11=18  opp12=10  opp13=13  opp14=20
+  ind 7: opp0=56  opp1=33  opp2=35  opp3=32  opp4=49  opp5=30  opp6=35  opp7=31  opp8=28  opp9=39  opp10=32  opp11=32  opp12=26  opp13=31  opp14=41
+
+generation 4
+  ind 0: opp0=36  opp1=8  opp2=11  opp3=13  opp4=14  opp5=15  opp6=8  opp7=4  opp8=13  opp9=25  opp10=16  opp11=14  opp12=6  opp13=13  opp14=11
+  ind 1: opp0=58  opp1=35  opp2=33  opp3=34  opp4=43  opp5=36  opp6=25  opp7=30  opp8=30  opp9=43  opp10=35  opp11=32  opp12=34  opp13=36  opp14=32
+  ind 2: opp0=52  opp1=28  opp2=33  opp3=30  opp4=34  opp5=26  opp6=19  opp7=25  opp8=20  opp9=40  opp10=26  opp11=20  opp12=25  opp13=27  opp14=29
+  ind 3: opp0=52  opp1=25  opp2=34  opp3=34  opp4=38  opp5=32  opp6=30  opp7=31  opp8=23  opp9=49  opp10=25  opp11=29  opp12=32  opp13=27  opp14=32
+  ind 4: opp0=35  opp1=17  opp2=15  opp3=19  opp4=20  opp5=15  opp6=13  opp7=14  opp8=10  opp9=25  opp10=23  opp11=11  opp12=7  opp13=18  opp14=26
+  ind 5: opp0=61  opp1=25  opp2=33  opp3=39  opp4=37  opp5=40  opp6=27  opp7=28  opp8=26  opp9=47  opp10=33  opp11=30  opp12=38  opp13=35  opp14=33
+  ind 6: opp0=49  opp1=25  opp2=24  opp3=31  opp4=40  opp5=33  opp6=19  opp7=30  opp8=33  opp9=47  opp10=29  opp11=26  opp12=28  opp13=29  opp14=30
+  ind 7: opp0=57  opp1=33  opp2=36  opp3=39  opp4=41  opp5=33  opp6=38  opp7=28  opp8=31  opp9=48  opp10=31  opp11=35  opp12=40  opp13=36  opp14=39
+
+generation 5
+  ind 0: opp0=18  opp1=11  opp2=8  opp3=13  opp4=17  opp5=13  opp6=13  opp7=10  opp8=14  opp9=21  opp10=10  opp11=8  opp12=15  opp13=12  opp14=12
+  ind 1: opp0=40  opp1=31  opp2=45  opp3=33  opp4=42  opp5=42  opp6=35  opp7=40  opp8=40  opp9=51  opp10=32  opp11=32  opp12=34  opp13=34  opp14=28
+  ind 2: opp0=33  opp1=21  opp2=28  opp3=30  opp4=42  opp5=36  opp6=24  opp7=34  opp8=29  opp9=37  opp10=26  opp11=22  opp12=26  opp13=27  opp14=27
+  ind 3: opp0=36  opp1=38  opp2=33  opp3=33  opp4=43  opp5=38  opp6=36  opp7=27  opp8=35  opp9=50  opp10=34  opp11=31  opp12=40  opp13=35  opp14=31
+  ind 4: opp0=25  opp1=19  opp2=24  opp3=27  opp4=24  opp5=19  opp6=16  opp7=22  opp8=25  opp9=28  opp10=23  opp11=17  opp12=14  opp13=18  opp14=20
+  ind 5: opp0=32  opp1=33  opp2=36  opp3=34  opp4=45  opp5=35  opp6=26  opp7=35  opp8=36  opp9=45  opp10=38  opp11=35  opp12=28  opp13=37  opp14=33
+  ind 6: opp0=33  opp1=30  opp2=29  opp3=33  opp4=45  opp5=31  opp6=30  opp7=27  opp8=23  opp9=47  opp10=32  opp11=32  opp12=28  opp13=25  opp14=32
+  ind 7: opp0=37  opp1=28  opp2=39  opp3=35  opp4=51  opp5=35  opp6=31  opp7=41  opp8=39  opp9=53  opp10=35  opp11=30  opp12=37  opp13=39  opp14=33
+
+generation 6
+  ind 0: opp0=35  opp1=27  opp2=32  opp3=35  opp4=38  opp5=30  opp6=25  opp7=30  opp8=32  opp9=39  opp10=29  opp11=30  opp12=26  opp13=35  opp14=35
+  ind 1: opp0=34  opp1=36  opp2=40  opp3=30  opp4=46  opp5=39  opp6=32  opp7=28  opp8=27  opp9=54  opp10=32  opp11=34  opp12=29  opp13=31  opp14=32
+  ind 2: opp0=40  opp1=36  opp2=41  opp3=33  opp4=44  opp5=31  opp6=34  opp7=32  opp8=30  opp9=48  opp10=38  opp11=35  opp12=29  opp13=36  opp14=38
+  ind 3: opp0=40  opp1=39  opp2=31  opp3=37  opp4=39  opp5=27  opp6=22  opp7=29  opp8=36  opp9=50  opp10=37  opp11=36  opp12=36  opp13=21  opp14=35
+  ind 4: opp0=31  opp1=22  opp2=32  opp3=32  opp4=45  opp5=26  opp6=30  opp7=32  opp8=32  opp9=45  opp10=27  opp11=29  opp12=27  opp13=37  opp14=31
+  ind 5: opp0=43  opp1=28  opp2=37  opp3=33  opp4=49  opp5=36  opp6=29  opp7=34  opp8=37  opp9=51  opp10=38  opp11=33  opp12=36  opp13=28  opp14=43
+  ind 6: opp0=38  opp1=35  opp2=39  opp3=33  opp4=43  opp5=33  opp6=30  opp7=31  opp8=31  opp9=47  opp10=40  opp11=28  opp12=33  opp13=37  opp14=34
+  ind 7: opp0=41  opp1=35  opp2=44  opp3=40  opp4=40  opp5=43  opp6=31  opp7=33  opp8=37  opp9=45  opp10=35  opp11=30  opp12=35  opp13=31  opp14=30
+
+generation 7
+  ind 0: opp0=46  opp1=30  opp2=39  opp3=35  opp4=45  opp5=37  opp6=35  opp7=26  opp8=36  opp9=42  opp10=37  opp11=34  opp12=27  opp13=31  opp14=35
+  ind 1: opp0=41  opp1=38  opp2=40  opp3=34  opp4=48  opp5=42  opp6=32  opp7=35  opp8=28  opp9=52  opp10=39  opp11=36  opp12=33  opp13=38  opp14=33
+  ind 2: opp0=39  opp1=32  opp2=35  opp3=48  opp4=54  opp5=36  opp6=34  opp7=31  opp8=30  opp9=48  opp10=35  opp11=34  opp12=33  opp13=35  opp14=31
+  ind 3: opp0=36  opp1=38  opp2=30  opp3=38  opp4=46  opp5=41  opp6=28  opp7=45  opp8=32  opp9=44  opp10=34  opp11=33  opp12=31  opp13=33  opp14=37
+  ind 4: opp0=36  opp1=28  opp2=36  opp3=35  opp4=38  opp5=34  opp6=33  opp7=33  opp8=30  opp9=44  opp10=37  opp11=29  opp12=33  opp13=36  opp14=33
+  ind 5: opp0=43  opp1=34  opp2=41  opp3=36  opp4=46  opp5=42  opp6=30  opp7=35  opp8=34  opp9=40  opp10=37  opp11=38  opp12=39  opp13=41  opp14=39
+  ind 6: opp0=40  opp1=33  opp2=36  opp3=31  opp4=42  opp5=35  opp6=34  opp7=29  opp8=39  opp9=49  opp10=42  opp11=31  opp12=35  opp13=32  opp14=34
+  ind 7: opp0=43  opp1=39  opp2=39  opp3=39  opp4=38  opp5=39  opp6=37  opp7=40  opp8=37  opp9=47  opp10=29  opp11=41  opp12=40  opp13=31  opp14=41
+
+generation 8
+  ind 0: opp0=43  opp1=35  opp2=31  opp3=43  opp4=47  opp5=34  opp6=30  opp7=33  opp8=31  opp9=47  opp10=38  opp11=38  opp12=28  opp13=33  opp14=36
+  ind 1: opp0=42  opp1=27  opp2=40  opp3=41  opp4=41  opp5=29  opp6=49  opp7=32  opp8=38  opp9=47  opp10=37  opp11=34  opp12=33  opp13=38  opp14=37
+  ind 2: opp0=37  opp1=41  opp2=35  opp3=38  opp4=44  opp5=41  opp6=38  opp7=40  opp8=38  opp9=46  opp10=37  opp11=34  opp12=34  opp13=29  opp14=37
+  ind 3: opp0=38  opp1=32  opp2=32  opp3=39  opp4=49  opp5=36  opp6=32  opp7=38  opp8=32  opp9=50  opp10=34  opp11=41  opp12=30  opp13=33  opp14=32
+  ind 4: opp0=30  opp1=36  opp2=29  opp3=27  opp4=45  opp5=31  opp6=35  opp7=33  opp8=36  opp9=46  opp10=33  opp11=28  opp12=46  opp13=33  opp14=37
+  ind 5: opp0=37  opp1=36  opp2=33  opp3=34  opp4=45  opp5=39  opp6=35  opp7=32  opp8=37  opp9=52  opp10=37  opp11=44  opp12=31  opp13=35  opp14=36
+  ind 6: opp0=41  opp1=34  opp2=38  opp3=36  opp4=42  opp5=43  opp6=32  opp7=34  opp8=38  opp9=47  opp10=35  opp11=32  opp12=34  opp13=29  opp14=40
+  ind 7: opp0=37  opp1=29  opp2=33  opp3=37  opp4=46  opp5=35  opp6=40  opp7=34  opp8=26  opp9=46  opp10=42  opp11=32  opp12=28  opp13=36  opp14=37
+
+generation 9
+  ind 0: opp0=42  opp1=26  opp2=47  opp3=38  opp4=39  opp5=36  opp6=31  opp7=26  opp8=34  opp9=49  opp10=34  opp11=39  opp12=40  opp13=38  opp14=42
+  ind 1: opp0=42  opp1=43  opp2=38  opp3=42  opp4=39  opp5=36  opp6=35  opp7=34  opp8=36  opp9=48  opp10=40  opp11=27  opp12=41  opp13=43  opp14=42
+  ind 2: opp0=35  opp1=35  opp2=41  opp3=39  opp4=39  opp5=38  opp6=34  opp7=41  opp8=32  opp9=51  opp10=41  opp11=31  opp12=34  opp13=33  opp14=36
+  ind 3: opp0=37  opp1=34  opp2=29  opp3=38  opp4=46  opp5=32  opp6=34  opp7=31  opp8=31  opp9=55  opp10=37  opp11=33  opp12=33  opp13=40  opp14=36
+  ind 4: opp0=29  opp1=37  opp2=31  opp3=39  opp4=51  opp5=33  opp6=30  opp7=38  opp8=25  opp9=43  opp10=34  opp11=31  opp12=33  opp13=40  opp14=35
+  ind 5: opp0=38  opp1=38  opp2=42  opp3=35  opp4=50  opp5=39  opp6=40  opp7=39  opp8=40  opp9=52  opp10=46  opp11=29  opp12=29  opp13=32  opp14=39
+  ind 6: opp0=39  opp1=34  opp2=35  opp3=40  opp4=36  opp5=39  opp6=33  opp7=34  opp8=31  opp9=48  opp10=32  opp11=31  opp12=41  opp13=43  opp14=39
+  ind 7: opp0=37  opp1=32  opp2=38  opp3=43  opp4=52  opp5=43  opp6=31  opp7=31  opp8=37  opp9=47  opp10=33  opp11=31  opp12=31  opp13=39  opp14=41
+
+generation 10
+  ind 0: opp0=36  opp1=30  opp2=38  opp3=38  opp4=46  opp5=32  opp6=38  opp7=33  opp8=29  opp9=35  opp10=34  opp11=41  opp12=35  opp13=38  opp14=36
+  ind 1: opp0=50  opp1=39  opp2=41  opp3=36  opp4=45  opp5=36  opp6=29  opp7=42  opp8=40  opp9=37  opp10=37  opp11=35  opp12=42  opp13=40  opp14=37
+  ind 2: opp0=44  opp1=33  opp2=42  opp3=44  opp4=44  opp5=31  opp6=32  opp7=29  opp8=37  opp9=40  opp10=38  opp11=34  opp12=34  opp13=36  opp14=30
+  ind 3: opp0=39  opp1=38  opp2=34  opp3=37  opp4=52  opp5=44  opp6=32  opp7=35  opp8=41  opp9=32  opp10=42  opp11=24  opp12=29  opp13=29  opp14=38
+  ind 4: opp0=37  opp1=31  opp2=32  opp3=41  opp4=41  opp5=38  opp6=33  opp7=30  opp8=37  opp9=34  opp10=37  opp11=31  opp12=32  opp13=28  opp14=34
+  ind 5: opp0=39  opp1=31  opp2=42  opp3=36  opp4=54  opp5=40  opp6=35  opp7=32  opp8=37  opp9=27  opp10=32  opp11=36  opp12=33  opp13=35  opp14=39
+  ind 6: opp0=35  opp1=35  opp2=39  opp3=31  opp4=37  opp5=37  opp6=33  opp7=30  opp8=38  opp9=37  opp10=30  opp11=28  opp12=34  opp13=35  opp14=36
+  ind 7: opp0=43  opp1=32  opp2=37  opp3=36  opp4=41  opp5=40  opp6=42  opp7=31  opp8=38  opp9=43  opp10=34  opp11=30  opp12=38  opp13=35  opp14=40
+
+generation 11
+  ind 0: opp0=38  opp1=36  opp2=35  opp3=38  opp4=39  opp5=31  opp6=37  opp7=30  opp8=40  opp9=46  opp10=39  opp11=34  opp12=38  opp13=37  opp14=35
+  ind 1: opp0=48  opp1=38  opp2=40  opp3=38  opp4=48  opp5=34  opp6=40  opp7=41  opp8=36  opp9=33  opp10=35  opp11=33  opp12=37  opp13=37  opp14=43
+  ind 2: opp0=27  opp1=27  opp2=33  opp3=37  opp4=41  opp5=41  opp6=40  opp7=36  opp8=33  opp9=33  opp10=41  opp11=41  opp12=48  opp13=38  opp14=37
+  ind 3: opp0=35  opp1=36  opp2=31  opp3=38  opp4=48  opp5=35  opp6=38  opp7=43  opp8=31  opp9=35  opp10=35  opp11=34  opp12=33  opp13=40  opp14=38
+  ind 4: opp0=35  opp1=44  opp2=34  opp3=37  opp4=43  opp5=42  opp6=30  opp7=32  opp8=36  opp9=35  opp10=41  opp11=40  opp12=26  opp13=34  opp14=34
+  ind 5: opp0=45  opp1=37  opp2=38  opp3=31  opp4=45  opp5=33  opp6=30  opp7=31  opp8=36  opp9=41  opp10=31  opp11=30  opp12=36  opp13=35  opp14=38
+  ind 6: opp0=29  opp1=32  opp2=41  opp3=43  opp4=47  opp5=39  opp6=35  opp7=33  opp8=34  opp9=40  opp10=33  opp11=31  opp12=35  opp13=44  opp14=32
+  ind 7: opp0=47  opp1=32  opp2=38  opp3=45  opp4=44  opp5=35  opp6=36  opp7=32  opp8=40  opp9=41  opp10=43  opp11=37  opp12=44  opp13=28  opp14=43
+
+generation 12
+  ind 0: opp0=46  opp1=33  opp2=35  opp3=35  opp4=41  opp5=36  opp6=39  opp7=35  opp8=35  opp9=32  opp10=33  opp11=36  opp12=37  opp13=37  opp14=41
+  ind 1: opp0=36  opp1=38  opp2=32  opp3=43  opp4=43  opp5=39  opp6=33  opp7=40  opp8=38  opp9=41  opp10=41  opp11=41  opp12=30  opp13=36  opp14=37
+  ind 2: opp0=33  opp1=35  opp2=37  opp3=37  opp4=49  opp5=34  opp6=34  opp7=34  opp8=30  opp9=34  opp10=39  opp11=38  opp12=42  opp13=38  opp14=41
+  ind 3: opp0=31  opp1=37  opp2=31  opp3=36  opp4=47  opp5=35  opp6=35  opp7=24  opp8=29  opp9=34  opp10=43  opp11=43  opp12=33  opp13=35  opp14=35
+  ind 4: opp0=36  opp1=37  opp2=32  opp3=38  opp4=41  opp5=30  opp6=42  opp7=38  opp8=32  opp9=37  opp10=41  opp11=33  opp12=31  opp13=42  opp14=38
+  ind 5: opp0=34  opp1=34  opp2=29  opp3=35  opp4=45  opp5=33  opp6=36  opp7=34  opp8=39  opp9=33  opp10=40  opp11=22  opp12=42  opp13=34  opp14=39
+  ind 6: opp0=33  opp1=31  opp2=40  opp3=34  opp4=35  opp5=34  opp6=39  opp7=34  opp8=32  opp9=35  opp10=32  opp11=39  opp12=25  opp13=45  opp14=34
+  ind 7: opp0=41  opp1=47  opp2=36  opp3=33  opp4=47  opp5=42  opp6=37  opp7=25  opp8=37  opp9=39  opp10=32  opp11=26  opp12=37  opp13=36  opp14=31
+
+generation 13
+  ind 0: opp0=40  opp1=33  opp2=33  opp3=36  opp4=46  opp5=35  opp6=30  opp7=38  opp8=40  opp9=41  opp10=40  opp11=35  opp12=39  opp13=37  opp14=39
+  ind 1: opp0=46  opp1=36  opp2=42  opp3=39  opp4=44  opp5=35  opp6=40  opp7=33  opp8=38  opp9=42  opp10=32  opp11=32  opp12=40  opp13=41  opp14=37
+  ind 2: opp0=42  opp1=38  opp2=39  opp3=34  opp4=39  opp5=38  opp6=32  opp7=24  opp8=30  opp9=35  opp10=46  opp11=37  opp12=32  opp13=41  opp14=38
+  ind 3: opp0=38  opp1=35  opp2=36  opp3=39  opp4=41  opp5=40  opp6=30  opp7=31  opp8=30  opp9=43  opp10=32  opp11=41  opp12=37  opp13=36  opp14=33
+  ind 4: opp0=37  opp1=32  opp2=41  opp3=42  opp4=50  opp5=40  opp6=35  opp7=35  opp8=27  opp9=36  opp10=40  opp11=33  opp12=39  opp13=33  opp14=31
+  ind 5: opp0=44  opp1=28  opp2=31  opp3=41  opp4=43  opp5=39  opp6=28  opp7=34  opp8=29  opp9=38  opp10=38  opp11=30  opp12=29  opp13=37  opp14=38
+  ind 6: opp0=39  opp1=33  opp2=42  opp3=42  opp4=44  opp5=35  opp6=29  opp7=31  opp8=41  opp9=32  opp10=41  opp11=38  opp12=30  opp13=32  opp14=36
+  ind 7: opp0=38  opp1=42  opp2=36  opp3=37  opp4=46  opp5=36  opp6=26  opp7=33  opp8=35  opp9=38  opp10=32  opp11=35  opp12=34  opp13=41  opp14=33
+
+generation 14
+  ind 0: opp0=41  opp1=35  opp2=44  opp3=41  opp4=47  opp5=31  opp6=39  opp7=36  opp8=34  opp9=38  opp10=35  opp11=38  opp12=48  opp13=40  opp14=37
+  ind 1: opp0=41  opp1=35  opp2=40  opp3=36  opp4=44  opp5=32  opp6=32  opp7=32  opp8=36  opp9=39  opp10=38  opp11=38  opp12=38  opp13=31  opp14=42
+  ind 2: opp0=49  opp1=36  opp2=38  opp3=37  opp4=46  opp5=32  opp6=29  opp7=41  opp8=36  opp9=39  opp10=34  opp11=40  opp12=40  opp13=32  opp14=36
+  ind 3: opp0=47  opp1=36  opp2=41  opp3=38  opp4=46  opp5=38  opp6=38  opp7=34  opp8=35  opp9=30  opp10=45  opp11=31  opp12=35  opp13=35  opp14=44
+  ind 4: opp0=49  opp1=39  opp2=36  opp3=33  opp4=43  opp5=35  opp6=42  opp7=33  opp8=40  opp9=36  opp10=32  opp11=31  opp12=36  opp13=41  opp14=39
+  ind 5: opp0=44  opp1=41  opp2=38  opp3=39  opp4=46  opp5=42  opp6=43  opp7=39  opp8=35  opp9=33  opp10=38  opp11=26  opp12=35  opp13=38  opp14=37
+  ind 6: opp0=34  opp1=36  opp2=33  opp3=38  opp4=42  opp5=39  opp6=36  opp7=32  opp8=34  opp9=34  opp10=33  opp11=34  opp12=30  opp13=32  opp14=33
+  ind 7: opp0=36  opp1=36  opp2=38  opp3=43  opp4=44  opp5=34  opp6=36  opp7=38  opp8=36  opp9=40  opp10=41  opp11=41  opp12=33  opp13=44  opp14=41
+
+generation 15
+  ind 0: opp0=40  opp1=34  opp2=39  opp3=39  opp4=36  opp5=34  opp6=38  opp7=41  opp8=36  opp9=32  opp10=38  opp11=29  opp12=37  opp13=32  opp14=36
+  ind 1: opp0=41  opp1=44  opp2=40  opp3=34  opp4=31  opp5=38  opp6=34  opp7=33  opp8=33  opp9=36  opp10=35  opp11=33  opp12=36  opp13=40  opp14=41
+  ind 2: opp0=33  opp1=34  opp2=41  opp3=38  opp4=34  opp5=45  opp6=37  opp7=33  opp8=34  opp9=35  opp10=30  opp11=38  opp12=41  opp13=40  opp14=42
+  ind 3: opp0=34  opp1=32  opp2=34  opp3=39  opp4=41  opp5=39  opp6=33  opp7=42  opp8=33  opp9=37  opp10=38  opp11=29  opp12=35  opp13=27  opp14=37
+  ind 4: opp0=38  opp1=36  opp2=30  opp3=37  opp4=39  opp5=36  opp6=30  opp7=34  opp8=35  opp9=32  opp10=39  opp11=31  opp12=39  opp13=36  opp14=36
+  ind 5: opp0=37  opp1=36  opp2=34  opp3=39  opp4=43  opp5=33  opp6=38  opp7=37  opp8=39  opp9=39  opp10=48  opp11=35  opp12=35  opp13=35  opp14=35
+  ind 6: opp0=31  opp1=40  opp2=38  opp3=42  opp4=25  opp5=38  opp6=39  opp7=37  opp8=34  opp9=36  opp10=48  opp11=32  opp12=32  opp13=37  opp14=41
+  ind 7: opp0=43  opp1=34  opp2=43  opp3=40  opp4=41  opp5=41  opp6=38  opp7=44  opp8=30  opp9=33  opp10=32  opp11=36  opp12=41  opp13=43  opp14=43
+
+generation 16
+  ind 0: opp0=44  opp1=33  opp2=39  opp3=39  opp4=31  opp5=39  opp6=36  opp7=33  opp8=37  opp9=35  opp10=35  opp11=31  opp12=36  opp13=38  opp14=39
+  ind 1: opp0=34  opp1=35  opp2=40  opp3=49  opp4=31  opp5=40  opp6=34  opp7=38  opp8=32  opp9=38  opp10=31  opp11=29  opp12=39  opp13=27  opp14=40
+  ind 2: opp0=38  opp1=34  opp2=43  opp3=41  opp4=34  opp5=39  opp6=38  opp7=36  opp8=33  opp9=41  opp10=36  opp11=26  opp12=36  opp13=35  opp14=32
+  ind 3: opp0=36  opp1=25  opp2=36  opp3=38  opp4=35  opp5=47  opp6=35  opp7=40  opp8=36  opp9=32  opp10=34  opp11=31  opp12=34  opp13=36  opp14=39
+  ind 4: opp0=31  opp1=41  opp2=44  opp3=48  opp4=41  opp5=39  opp6=32  opp7=35  opp8=35  opp9=43  opp10=35  opp11=37  opp12=37  opp13=38  opp14=40
+  ind 5: opp0=38  opp1=32  opp2=39  opp3=39  opp4=33  opp5=37  opp6=27  opp7=35  opp8=34  opp9=30  opp10=37  opp11=35  opp12=42  opp13=29  opp14=37
+  ind 6: opp0=36  opp1=38  opp2=41  opp3=41  opp4=41  opp5=42  opp6=35  opp7=37  opp8=35  opp9=37  opp10=41  opp11=31  opp12=33  opp13=33  opp14=43
+  ind 7: opp0=39  opp1=33  opp2=35  opp3=43  opp4=41  opp5=36  opp6=36  opp7=37  opp8=34  opp9=42  opp10=37  opp11=30  opp12=38  opp13=33  opp14=42
+
+generation 17
+  ind 0: opp0=39  opp1=41  opp2=36  opp3=33  opp4=35  opp5=41  opp6=36  opp7=34  opp8=37  opp9=34  opp10=41  opp11=36  opp12=41  opp13=44  opp14=41
+  ind 1: opp0=41  opp1=43  opp2=45  opp3=39  opp4=34  opp5=37  opp6=33  opp7=36  opp8=33  opp9=40  opp10=34  opp11=33  opp12=37  opp13=41  opp14=38
+  ind 2: opp0=31  opp1=39  opp2=44  opp3=39  opp4=46  opp5=36  opp6=27  opp7=37  opp8=29  opp9=41  opp10=40  opp11=32  opp12=35  opp13=34  opp14=40
+  ind 3: opp0=44  opp1=34  opp2=34  opp3=46  opp4=37  opp5=36  opp6=38  opp7=42  opp8=42  opp9=35  opp10=44  opp11=39  opp12=41  opp13=33  opp14=37
+  ind 4: opp0=41  opp1=36  opp2=39  opp3=40  opp4=38  opp5=37  opp6=39  opp7=37  opp8=28  opp9=40  opp10=37  opp11=35  opp12=36  opp13=41  opp14=37
+  ind 5: opp0=41  opp1=24  opp2=41  opp3=41  opp4=43  opp5=38  opp6=31  opp7=36  opp8=32  opp9=35  opp10=43  opp11=35  opp12=35  opp13=38  opp14=36
+  ind 6: opp0=33  opp1=32  opp2=38  opp3=34  opp4=32  opp5=40  opp6=30  opp7=38  opp8=28  opp9=32  opp10=39  opp11=37  opp12=43  opp13=36  opp14=37
+  ind 7: opp0=41  opp1=33  opp2=37  opp3=48  opp4=39  opp5=43  opp6=37  opp7=42  opp8=35  opp9=40  opp10=36  opp11=38  opp12=35  opp13=35  opp14=32
+
+generation 18
+  ind 0: opp0=41  opp1=34  opp2=37  opp3=39  opp4=39  opp5=36  opp6=40  opp7=42  opp8=38  opp9=36  opp10=28  opp11=41  opp12=32  opp13=43  opp14=37
+  ind 1: opp0=41  opp1=39  opp2=39  opp3=41  opp4=40  opp5=39  opp6=35  opp7=38  opp8=36  opp9=33  opp10=45  opp11=35  opp12=35  opp13=35  opp14=35
+  ind 2: opp0=37  opp1=39  opp2=38  opp3=37  opp4=33  opp5=44  opp6=36  opp7=37  opp8=34  opp9=33  opp10=32  opp11=36  opp12=33  opp13=38  opp14=36
+  ind 3: opp0=34  opp1=28  opp2=32  opp3=37  opp4=45  opp5=42  opp6=31  opp7=33  opp8=32  opp9=31  opp10=40  opp11=27  opp12=36  opp13=40  opp14=40
+  ind 4: opp0=39  opp1=30  opp2=39  opp3=37  opp4=41  opp5=35  opp6=35  opp7=37  opp8=43  opp9=36  opp10=34  opp11=34  opp12=28  opp13=33  opp14=35
+  ind 5: opp0=40  opp1=40  opp2=31  opp3=33  opp4=34  opp5=42  opp6=36  opp7=35  opp8=35  opp9=41  opp10=40  opp11=30  opp12=39  opp13=40  opp14=50
+  ind 6: opp0=38  opp1=34  opp2=36  opp3=39  opp4=30  opp5=34  opp6=30  opp7=29  opp8=33  opp9=46  opp10=31  opp11=32  opp12=30  opp13=29  opp14=36
+  ind 7: opp0=33  opp1=31  opp2=34  opp3=45  opp4=34  opp5=41  opp6=36  opp7=33  opp8=32  opp9=31  opp10=32  opp11=32  opp12=37  opp13=34  opp14=39
+
+generation 19
+  ind 0: opp0=31  opp1=26  opp2=38  opp3=34  opp4=34  opp5=33  opp6=31  opp7=43  opp8=35  opp9=31  opp10=42  opp11=38  opp12=29  opp13=37  opp14=39
+  ind 1: opp0=39  opp1=45  opp2=31  opp3=39  opp4=31  opp5=40  opp6=34  opp7=33  opp8=30  opp9=30  opp10=38  opp11=34  opp12=30  opp13=36  opp14=42
+  ind 2: opp0=38  opp1=41  opp2=33  opp3=32  opp4=41  opp5=33  opp6=30  opp7=36  opp8=34  opp9=42  opp10=38  opp11=28  opp12=26  opp13=37  opp14=38
+  ind 3: opp0=38  opp1=36  opp2=44  opp3=35  opp4=45  opp5=41  opp6=36  opp7=33  opp8=37  opp9=37  opp10=41  opp11=39  opp12=43  opp13=33  opp14=44
+  ind 4: opp0=43  opp1=41  opp2=40  opp3=46  opp4=37  opp5=37  opp6=35  opp7=39  opp8=37  opp9=43  opp10=42  opp11=35  opp12=42  opp13=41  opp14=42
+  ind 5: opp0=45  opp1=32  opp2=36  opp3=42  opp4=38  opp5=40  opp6=32  opp7=37  opp8=31  opp9=41  opp10=31  opp11=31  opp12=38  opp13=40  opp14=32
+  ind 6: opp0=45  opp1=39  opp2=35  opp3=39  opp4=30  opp5=41  opp6=32  opp7=40  opp8=39  opp9=32  opp10=36  opp11=28  opp12=38  opp13=36  opp14=35
+  ind 7: opp0=36  opp1=32  opp2=42  opp3=36  opp4=39  opp5=39  opp6=30  opp7=33  opp8=39  opp9=34  opp10=37  opp11=29  opp12=40  opp13=34  opp14=38
+
+generation 20
+  ind 0: opp0=34  opp1=41  opp2=39  opp3=29  opp4=34  opp5=37  opp6=35  opp7=37  opp8=41  opp9=35  opp10=36  opp11=34  opp12=36  opp13=33  opp14=38
+  ind 1: opp0=36  opp1=38  opp2=47  opp3=33  opp4=31  opp5=38  opp6=40  opp7=32  opp8=32  opp9=40  opp10=40  opp11=33  opp12=39  opp13=38  opp14=47
+  ind 2: opp0=30  opp1=32  opp2=44  opp3=41  opp4=41  opp5=35  opp6=31  opp7=32  opp8=32  opp9=35  opp10=41  opp11=33  opp12=37  opp13=43  opp14=41
+  ind 3: opp0=39  opp1=36  opp2=39  opp3=42  opp4=37  opp5=38  opp6=38  opp7=39  opp8=37  opp9=38  opp10=35  opp11=37  opp12=34  opp13=37  opp14=39
+  ind 4: opp0=39  opp1=34  opp2=35  opp3=44  opp4=32  opp5=40  opp6=31  opp7=33  opp8=27  opp9=40  opp10=42  opp11=36  opp12=36  opp13=37  opp14=34
+  ind 5: opp0=35  opp1=33  opp2=35  opp3=36  opp4=38  opp5=45  opp6=39  opp7=32  opp8=37  opp9=33  opp10=44  opp11=34  opp12=39  opp13=38  opp14=38
+  ind 6: opp0=39  opp1=42  opp2=39  opp3=44  opp4=46  opp5=32  opp6=31  opp7=35  opp8=36  opp9=38  opp10=34  opp11=40  opp12=27  opp13=34  opp14=41
+  ind 7: opp0=38  opp1=36  opp2=40  opp3=42  opp4=27  opp5=37  opp6=32  opp7=34  opp8=41  opp9=27  opp10=35  opp11=33  opp12=36  opp13=39  opp14=34
+
+generation 21
+  ind 0: opp0=39  opp1=35  opp2=39  opp3=45  opp4=38  opp5=39  opp6=41  opp7=36  opp8=32  opp9=32  opp10=43  opp11=44  opp12=27  opp13=36  opp14=34
+  ind 1: opp0=29  opp1=33  opp2=34  opp3=41  opp4=32  opp5=38  opp6=39  opp7=35  opp8=41  opp9=36  opp10=39  opp11=38  opp12=31  opp13=34  opp14=40
+  ind 2: opp0=32  opp1=41  opp2=36  opp3=47  opp4=39  opp5=41  opp6=32  opp7=36  opp8=36  opp9=39  opp10=39  opp11=43  opp12=43  opp13=26  opp14=43
+  ind 3: opp0=37  opp1=31  opp2=35  opp3=32  opp4=37  opp5=41  opp6=38  opp7=44  opp8=31  opp9=32  opp10=32  opp11=31  opp12=33  opp13=28  opp14=37
+  ind 4: opp0=39  opp1=38  opp2=37  opp3=29  opp4=45  opp5=34  opp6=31  opp7=39  opp8=36  opp9=37  opp10=37  opp11=33  opp12=35  opp13=37  opp14=41
+  ind 5: opp0=33  opp1=30  opp2=39  opp3=51  opp4=34  opp5=38  opp6=38  opp7=40  opp8=32  opp9=35  opp10=44  opp11=44  opp12=44  opp13=42  opp14=42
+  ind 6: opp0=37  opp1=33  opp2=42  opp3=37  opp4=39  opp5=35  opp6=31  opp7=38  opp8=31  opp9=32  opp10=40  opp11=37  opp12=41  opp13=36  opp14=41
+  ind 7: opp0=41  opp1=37  opp2=36  opp3=42  opp4=28  opp5=36  opp6=37  opp7=33  opp8=31  opp9=42  opp10=36  opp11=28  opp12=37  opp13=38  opp14=43
+
+generation 22
+  ind 0: opp0=41  opp1=38  opp2=35  opp3=43  opp4=40  opp5=42  opp6=32  opp7=31  opp8=38  opp9=30  opp10=31  opp11=42  opp12=33  opp13=33  opp14=46
+  ind 1: opp0=31  opp1=36  opp2=41  opp3=40  opp4=40  opp5=35  opp6=34  opp7=34  opp8=35  opp9=36  opp10=42  opp11=35  opp12=36  opp13=38  opp14=32
+  ind 2: opp0=41  opp1=43  opp2=33  opp3=34  opp4=41  opp5=38  opp6=40  opp7=34  opp8=29  opp9=34  opp10=38  opp11=35  opp12=43  opp13=32  opp14=36
+  ind 3: opp0=33  opp1=34  opp2=41  opp3=41  opp4=34  opp5=31  opp6=27  opp7=37  opp8=34  opp9=38  opp10=36  opp11=36  opp12=34  opp13=32  opp14=39
+  ind 4: opp0=31  opp1=28  opp2=30  opp3=37  opp4=40  opp5=31  opp6=34  opp7=32  opp8=33  opp9=32  opp10=37  opp11=30  opp12=32  opp13=31  opp14=35
+  ind 5: opp0=36  opp1=35  opp2=29  opp3=37  opp4=38  opp5=43  opp6=30  opp7=35  opp8=34  opp9=47  opp10=37  opp11=37  opp12=41  opp13=50  opp14=40
+  ind 6: opp0=38  opp1=42  opp2=32  opp3=35  opp4=39  opp5=36  opp6=31  opp7=28  opp8=41  opp9=45  opp10=39  opp11=37  opp12=37  opp13=38  opp14=29
+  ind 7: opp0=36  opp1=36  opp2=38  opp3=46  opp4=39  opp5=41  opp6=42  opp7=41  opp8=33  opp9=37  opp10=40  opp11=33  opp12=40  opp13=29  opp14=39
+
+generation 23
+  ind 0: opp0=34  opp1=40  opp2=42  opp3=32  opp4=38  opp5=37  opp6=38  opp7=30  opp8=38  opp9=38  opp10=33  opp11=35  opp12=36  opp13=44  opp14=43
+  ind 1: opp0=34  opp1=37  opp2=34  opp3=34  opp4=29  opp5=35  opp6=38  opp7=40  opp8=41  opp9=41  opp10=33  opp11=36  opp12=33  opp13=32  opp14=40
+  ind 2: opp0=36  opp1=38  opp2=40  opp3=39  opp4=35  opp5=40  opp6=27  opp7=37  opp8=45  opp9=41  opp10=32  opp11=32  opp12=33  opp13=37  opp14=42
+  ind 3: opp0=39  opp1=33  opp2=36  opp3=35  opp4=41  opp5=39  opp6=36  opp7=35  opp8=35  opp9=39  opp10=40  opp11=43  opp12=31  opp13=43  opp14=40
+  ind 4: opp0=37  opp1=31  opp2=34  opp3=41  opp4=30  opp5=45  opp6=32  opp7=34  opp8=38  opp9=36  opp10=41  opp11=36  opp12=38  opp13=38  opp14=37
+  ind 5: opp0=35  opp1=36  opp2=40  opp3=42  opp4=37  opp5=46  opp6=27  opp7=45  opp8=35  opp9=34  opp10=43  opp11=43  opp12=44  opp13=30  opp14=42
+  ind 6: opp0=42  opp1=34  opp2=39  opp3=37  opp4=36  opp5=41  opp6=36  opp7=40  opp8=32  opp9=38  opp10=39  opp11=40  opp12=38  opp13=37  opp14=37
+  ind 7: opp0=31  opp1=36  opp2=41  opp3=38  opp4=36  opp5=37  opp6=38  opp7=40  opp8=32  opp9=43  opp10=35  opp11=30  opp12=40  opp13=29  opp14=39
+
+generation 24
+  ind 0: opp0=46  opp1=33  opp2=40  opp3=45  opp4=46  opp5=34  opp6=41  opp7=42  opp8=44  opp9=37  opp10=38  opp11=45  opp12=34  opp13=45  opp14=33
+  ind 1: opp0=39  opp1=32  opp2=39  opp3=40  opp4=40  opp5=30  opp6=31  opp7=37  opp8=30  opp9=39  opp10=40  opp11=36  opp12=39  opp13=35  opp14=33
+  ind 2: opp0=37  opp1=32  opp2=45  opp3=44  opp4=31  opp5=46  opp6=41  opp7=35  opp8=30  opp9=37  opp10=47  opp11=35  opp12=32  opp13=38  opp14=39
+  ind 3: opp0=38  opp1=41  opp2=41  opp3=45  opp4=34  opp5=32  opp6=29  opp7=38  opp8=35  opp9=38  opp10=40  opp11=37  opp12=43  opp13=38  opp14=45
+  ind 4: opp0=32  opp1=30  opp2=36  opp3=37  opp4=36  opp5=43  opp6=39  opp7=32  opp8=29  opp9=44  opp10=40  opp11=35  opp12=32  opp13=31  opp14=38
+  ind 5: opp0=39  opp1=33  opp2=38  opp3=38  opp4=35  opp5=41  opp6=29  opp7=39  opp8=34  opp9=38  opp10=35  opp11=30  opp12=43  opp13=38  opp14=45
+  ind 6: opp0=36  opp1=40  opp2=28  opp3=41  opp4=33  opp5=39  opp6=29  opp7=30  opp8=27  opp9=30  opp10=33  opp11=33  opp12=45  opp13=39  opp14=37
+  ind 7: opp0=36  opp1=31  opp2=34  opp3=42  opp4=34  opp5=35  opp6=27  opp7=34  opp8=45  opp9=35  opp10=40  opp11=39  opp12=31  opp13=33  opp14=36
+
+generation 25
+  ind 0: opp0=43  opp1=35  opp2=38  opp3=32  opp4=34  opp5=32  opp6=31  opp7=48  opp8=37  opp9=37  opp10=34  opp11=32  opp12=36  opp13=38  opp14=44
+  ind 1: opp0=39  opp1=38  opp2=36  opp3=36  opp4=35  opp5=37  opp6=36  opp7=37  opp8=37  opp9=40  opp10=41  opp11=36  opp12=37  opp13=42  opp14=35
+  ind 2: opp0=35  opp1=29  opp2=43  opp3=30  opp4=36  opp5=31  opp6=31  opp7=35  opp8=47  opp9=39  opp10=30  opp11=37  opp12=39  opp13=43  opp14=48
+  ind 3: opp0=35  opp1=36  opp2=41  opp3=38  opp4=36  opp5=32  opp6=40  opp7=39  opp8=27  opp9=37  opp10=45  opp11=27  opp12=33  opp13=41  opp14=37
+  ind 4: opp0=41  opp1=38  opp2=38  opp3=36  opp4=34  opp5=41  opp6=32  opp7=38  opp8=32  opp9=32  opp10=41  opp11=35  opp12=37  opp13=29  opp14=35
+  ind 5: opp0=38  opp1=42  opp2=38  opp3=37  opp4=31  opp5=36  opp6=39  opp7=29  opp8=36  opp9=42  opp10=39  opp11=30  opp12=42  opp13=32  opp14=37
+  ind 6: opp0=33  opp1=34  opp2=42  opp3=34  opp4=35  opp5=38  opp6=32  opp7=34  opp8=36  opp9=37  opp10=33  opp11=28  opp12=29  opp13=37  opp14=41
+  ind 7: opp0=44  opp1=41  opp2=44  opp3=38  opp4=38  opp5=37  opp6=33  opp7=43  opp8=30  opp9=41  opp10=31  opp11=26  opp12=31  opp13=44  opp14=40
+
