@@ -12,10 +12,10 @@ import numpy as np
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 8    # 20
-POP_SIZE = 8    # 10
-MAX_EVALUATIONS = 192  # 1000
-NUM_THREADS = 12  # 8
+NUM_GAMES = 20 #8
+POP_SIZE = 10 #10
+MAX_EVALUATIONS = 990 #1000
+NUM_THREADS = 128  # 8
 NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
 TEST_DUMMY = False
