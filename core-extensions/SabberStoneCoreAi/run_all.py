@@ -28,11 +28,17 @@ import traceback
 
 EXECUTION_PLAN = [
     # ("script_filename.py",  number_of_runs)
-    ("modified21depth-coevolutionary.py",    1),
-    ("modified28-coevolutionary.py",         1),
-    ("modified28normalized-coevolutionary.py", 1),
-    ("modified63-coevolutionary.py",         1),
-    ("modified63smooth-coevolutionary.py",   1),
+    # ("modified21depth-coevolutionary.py",    1),
+    # ("modified28-coevolutionary.py",         1),
+    # ("modified28normalized-coevolutionary.py", 1),
+    # ("modified63-coevolutionary.py",         1),
+    # ("modified63smooth-coevolutionary.py",   1),
+	("coevolutionary-working-modified-for-pure-SHADE-5.py",   2),
+	("coevolutionary-working-modified-for-pure-SHADE-10.py", 2),
+	("coevolutionary-working-modified-for-pure-SHADE-15.py",   2),
+	("coevolutionary-working-modified-for-SHADE-like-5.py",   2),
+	("coevolutionary-working-modified-for-SHADE-like-10.py", 2),
+	("coevolutionary-working-modified-for-SHADE-like-15.py",   2),
 ]
 
 # ──────────────────────────────────────────────────────────────────────────────

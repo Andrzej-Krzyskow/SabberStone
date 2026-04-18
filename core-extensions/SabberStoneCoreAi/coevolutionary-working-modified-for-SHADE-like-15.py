@@ -13,8 +13,8 @@ DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
 NUM_GAMES = 20 #8
-POP_SIZE = 10 #10
-MAX_EVALUATIONS = 990 #1000
+POP_SIZE = 15 #10
+MAX_EVALUATIONS = 645 #1000
 NUM_THREADS = 128  # 8
 NUM_WEIGHTS = 21
 TEMP_FILE_NAME = "results.tmp"
@@ -294,10 +294,10 @@ def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_
     if generation == 0:
         _init_time = time.time()
         ts = time.strftime('%m%d%Y-%H%M%S')
-        _log_files['stats']  = open('shade-like-statistics-file-{}.csv'.format(ts),   'w')
-        _log_files['indiv']  = open('shade-like-individuals-file-{}.csv'.format(ts),  'w')
-        _log_files['matrix'] = open('shade-like-matrix-file-{}.csv'.format(ts),       'w')
-        _log_files['coeff']  = open('shade-like-coefficients-file-{}.csv'.format(ts), 'w')
+        _log_files['stats']  = open('shade-like-15-statistics-file-{}.csv'.format(ts),   'w')
+        _log_files['indiv']  = open('shade-like-15-individuals-file-{}.csv'.format(ts),  'w')
+        _log_files['matrix'] = open('shade-like-15-matrix-file-{}.csv'.format(ts),       'w')
+        _log_files['coeff']  = open('shade-like-15-coefficients-file-{}.csv'.format(ts), 'w')
         _log_files['coeff'].write("generation, mean_f, mean_cr\n")
         _log_files['coeff'].flush()
 

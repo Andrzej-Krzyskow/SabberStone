@@ -294,10 +294,10 @@ def shade_observer(generation, population, population_fitness, mean_f=0.5, mean_
     if generation == 0:
         _init_time = time.time()
         ts = time.strftime('%m%d%Y-%H%M%S')
-        _log_files['stats']  = open('shade-like-statistics-file-{}.csv'.format(ts),   'w')
-        _log_files['indiv']  = open('shade-like-individuals-file-{}.csv'.format(ts),  'w')
-        _log_files['matrix'] = open('shade-like-matrix-file-{}.csv'.format(ts),       'w')
-        _log_files['coeff']  = open('shade-like-coefficients-file-{}.csv'.format(ts), 'w')
+        _log_files['stats']  = open('shade-like-10-statistics-file-{}.csv'.format(ts),   'w')
+        _log_files['indiv']  = open('shade-like-10-individuals-file-{}.csv'.format(ts),  'w')
+        _log_files['matrix'] = open('shade-like-10-matrix-file-{}.csv'.format(ts),       'w')
+        _log_files['coeff']  = open('shade-like-10-coefficients-file-{}.csv'.format(ts), 'w')
         _log_files['coeff'].write("generation, mean_f, mean_cr\n")
         _log_files['coeff'].flush()
 
