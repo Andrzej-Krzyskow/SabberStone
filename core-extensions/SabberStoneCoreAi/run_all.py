@@ -28,11 +28,29 @@ import traceback
 
 EXECUTION_PLAN = [
 	# ("script_filename.py",  number_of_runs)
-	# ("modified21depth-coevolutionary.py", 10),
-	("modified28-coevolutionary.py", 3),
-	("modified28normalized-coevolutionary.py", 3),
-	("modified63-coevolutionary.py", 3),
-	("modified63smooth-coevolutionary.py", 3),
+
+	("modified28-pure-SHADE-15.py", 3),
+	("modified28-normalized-pure-SHADE-15.py", 3),
+	("modified63-pure-SHADE-15.py", 3),
+	("modified63smooth-pure-SHADE-15.py", 3),
+
+	("modified28-SHADE-like-15.py", 3),
+	("modified28-normalized-SHADE-like-15.py", 3),
+	("modified63-SHADE-like-15.py", 3),
+	("modified63-smooth-SHADE-like-15.py", 3),
+
+	("coevolutionary-working-modified-for-pure-SHADE-15.py", 1),
+	("coevolutionary-working-modified-for-SHADE-like-15.py", 1),
+
+	# ("modified21depth-coevolutionary.py", 1),
+	# ("modified21-depth-SHADE-like-15.py", 1),
+	# ("modified21-depth-pure-SHADE-15.py", 1),
+
+	# ("modified21depth-coevolutionary.py", 1),
+	# ("modified28-coevolutionary.py", 3),
+	# ("modified28normalized-coevolutionary.py", 3),
+	# ("modified63-coevolutionary.py", 3),
+	# ("modified63smooth-coevolutionary.py", 3),
 	# ("coevolutionary-working-modified-for-pure-SHADE-5.py",   2),
 	# ("coevolutionary-working-modified-for-pure-SHADE-10.py", 2),
 	# ("coevolutionary-working-modified-for-pure-SHADE-15.py",   2),
