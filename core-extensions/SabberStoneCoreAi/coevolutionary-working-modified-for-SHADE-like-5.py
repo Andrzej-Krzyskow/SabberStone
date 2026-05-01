@@ -138,7 +138,7 @@ def launch_simulator(f1, f2, d1, d2, thread_id):
     finished = False
     while not finished:
         print("Launching attempt " + str(attempts))
-        finished = com.run(100)
+        finished = com.run(500)
         attempts += 1
         if attempts == 3:
             finished = True
