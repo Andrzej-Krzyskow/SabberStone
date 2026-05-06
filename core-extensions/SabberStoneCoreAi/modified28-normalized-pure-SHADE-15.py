@@ -40,7 +40,7 @@ NUM_WEIGHTS = 28
 TEMP_FILE_NAME = "results.tmp"
 TEST_DUMMY = False
 
-OPPONENTS_CSV_ORIGINAL = "opponents-15.csv"
+OPPONENTS_CSV_ORIGINAL = "opponents-15-modified28-normalized.csv"
 HOF_UPDATE_INTERVAL = 5  # replace one opponent every N generations
 
 lock = threading.Lock()
@@ -368,7 +368,7 @@ def run_one():
     global FIXED_OPPONENTS, _run_opponents_csv
 
     ts = time.strftime('%m%d%Y-%H%M%S')
-    _run_opponents_csv = "opponents-{}.csv".format(ts)
+    _run_opponents_csv = "opponents-15-modified28-normalized-{}.csv".format(ts)
     shutil.copy2(OPPONENTS_CSV_ORIGINAL, _run_opponents_csv)
     print("[INIT] Copied {} → {}".format(OPPONENTS_CSV_ORIGINAL, _run_opponents_csv))
 

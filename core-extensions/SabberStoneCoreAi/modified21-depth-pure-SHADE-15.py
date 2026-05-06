@@ -368,7 +368,7 @@ def run_one():
     global FIXED_OPPONENTS, _run_opponents_csv
 
     ts = time.strftime('%m%d%Y-%H%M%S')
-    _run_opponents_csv = "opponents-{}.csv".format(ts)
+    _run_opponents_csv = "opponents-modified21-depth-{}.csv".format(ts)
     shutil.copy2(OPPONENTS_CSV_ORIGINAL, _run_opponents_csv)
     print("[INIT] Copied {} → {}".format(OPPONENTS_CSV_ORIGINAL, _run_opponents_csv))
 

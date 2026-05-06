@@ -12,9 +12,9 @@ import sys
 DEBUG = True
 DECKS = ["RenoKazakusMage", "MidrangeJadeShaman", "AggroPirateWarrior"]
 HERO_BY_DECK = {"RenoKazakusMage": "MAGE", "MidrangeJadeShaman": "SHAMAN", "AggroPirateWarrior": "WARRIOR"}
-NUM_GAMES = 8 #20
-POP_SIZE = 8 #10
-MAX_EVALUATIONS = 200 #1000
+NUM_GAMES = 1 #20
+POP_SIZE = 4 #10
+MAX_EVALUATIONS = 8 #1000
 NUM_THREADS = 12 #8
 NUM_WEIGHTS = 21  # 21
 TEMP_FILE_NAME = "results.tmp"
@@ -79,18 +79,18 @@ def my_file_observer(population, num_generations, num_evaluations, args):
 	try:
 		statistics_file = args['statistics_file']
 	except KeyError:
-		statistics_file = open('inspyred-statistics-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
+		statistics_file = open('coevolutionary-statistics-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
 		args['statistics_file'] = statistics_file
 		args['init_time'] = time.time()
 	try:
 		individuals_file = args['individuals_file']
 	except KeyError:
-		individuals_file = open('inspyred-individuals-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
+		individuals_file = open('coevolutionary-individuals-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
 		args['individuals_file'] = individuals_file
 	try:
 		matrix_file = args['matrix_file']
 	except KeyError:
-		matrix_file = open('inspyred-matrix-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
+		matrix_file = open('coevolutionary-matrix-file-{0}.csv'.format(time.strftime('%m%d%Y-%H%M%S')), 'w')
 		args['matrix_file'] = matrix_file
 
 	stats = inspyred.ec.analysis.fitness_statistics(population)
@@ -181,9 +181,24 @@ def launch_simulator(f1, f2, d1, d2, thread_id):
 		time.sleep(randint(0, 0))
 		command_line = "echo {0} {1} {2} {3} {4} {5} {6} > {7} ".format(w1, w2, NUM_GAMES, tw, tl, hw, hl, file_name)
 	else:
-		command_line = r"dotnet run --project D:\Pics_Movies\vids\PWr\Sem10\magisterka\PARALLEL_HS\SabberStone" + thread_id + r"\core-extensions\SabberStoneCoreAi\SabberStoneCoreAi.csproj"
+		# 1. Get the base directory (works for both .py scripts and the final .exe)
+		if getattr(sys, 'frozen', False):
+			base_dir = os.path.dirname(sys.executable)
+		else:
+			base_dir = os.path.dirname(os.path.abspath(__file__))
+		project_path = os.path.join(
+			base_dir,
+			"PARALLEL_HS",
+			f"SabberStone{thread_id}",
+			"core-extensions",
+			"SabberStoneCoreAi",
+			"SabberStoneCoreAi.csproj"
+		)
+
+		# 3. Construct the command line with quotes around the path
+		command_line = f'dotnet run --project "{project_path}"'
 		command_line += " {0} {1} {2} {3} {4} {5} {6} {7}".format(d1, HERO_BY_DECK[d1], cml1, d2, HERO_BY_DECK[d2],
-																  cml2, NUM_GAMES, " > " + file_name)
+												  cml2, NUM_GAMES, " > " + file_name)
 
 	if DEBUG: print("\t\t" + command_line)
 	com = Command(command_line)
