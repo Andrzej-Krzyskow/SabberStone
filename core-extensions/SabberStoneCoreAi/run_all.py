@@ -32,11 +32,11 @@ EXECUTION_PLAN = [
 	# last run
 	# SHADE like
 	###############################################################################################################
-	("modified28-pure-SHADE-15.py", 1),
-	#("modified28-normalized-pure-SHADE-15.py", 1),
-	("modified63-pure-SHADE-15.py", 1),
-	#("modified63smooth-pure-SHADE-15.py", 1),
-	('coevolutionary-working.py', 1),
+	("modified28-pure-SHADE-15.py", 3),
+	("modified28-normalized-pure-SHADE-15.py", 3),
+	("modified63-pure-SHADE-15.py", 3),
+	("modified63smooth-pure-SHADE-15.py", 3),
+	('coevolutionary-working.py', 3),
 	("modified21depth-coevolutionary.py", 1),  # tylko raz, bo zajmuje 3x więcej czasu
 	("modified21-depth-SHADE-like-15.py", 1),  # tylko raz, bo zajmuje 3x więcej czasu
 	("modified21-depth-pure-SHADE-15.py", 1),  # tylko raz, bo zajmuje 3x więcej czasu
