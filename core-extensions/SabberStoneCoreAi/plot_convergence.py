@@ -4,17 +4,26 @@ import os
 import glob
 
 # --- KONFIGURACJA ---
-RESULTS_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\RESULTS-FROM-PWR\coevolutionary_results"
-OUTPUT_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\RESULTS-FROM-PWR\plots"
+RESULTS_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\analysis\results"
+OUTPUT_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\analysis\plots"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Prefixy wariantów do analizy
+# VARIANTS = {
+#     "modified21depth-":      {"label": "21-głębokościowy",  "num_weights": 21},
+#     "modified28normalized-": {"label": "28-znormalizowany", "num_weights": 28},
+#     "modified28-":           {"label": "28-bazowy",      "num_weights": 28},
+#     "modified63smooth-":     {"label": "63-płynny",     "num_weights": 63},
+#     "modified63-":           {"label": "63-fazowy",      "num_weights": 63},
+# }
+
+
 VARIANTS = {
-    "modified21depth":      {"label": "21-głębokościowy", "num_weights": 21},
-    "modified28normalized": {"label": "28-znormalizowany", "num_weights": 28},
-    "modified28-":          {"label": "28-bazowy",         "num_weights": 28},
-    "modified63smooth":     {"label": "63-płynny",         "num_weights": 63},
-    "modified63-":          {"label": "63-fazowy",         "num_weights": 63},
+    "shade-like-15-":      						{"label": "21-głębokościowy",  "num_weights": 21},
+    "shade-like-15-modified28-": 				{"label": "28-znormalizowany", "num_weights": 28},
+    "shade-like-15-modified28-normalized-":     {"label": "28-bazowy",      "num_weights": 28},
+    "shade-like-15-modified63-smooth-":     	{"label": "63-płynny",     "num_weights": 63},
+    "shade-like-15-modified63-":           		{"label": "63-bazowy",      "num_weights": 63},
 }
 
 # Kolumny statistics-file:

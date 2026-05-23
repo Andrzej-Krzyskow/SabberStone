@@ -5,8 +5,8 @@ import os
 import glob
 import re
 
-RESULTS_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\RESULTS-FROM-PWR\coevolutionary_results"
-OUTPUT_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\RESULTS-FROM-PWR\plots"
+RESULTS_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\analysis\results"
+OUTPUT_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\analysis\plots"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # 9 kombinacji talii (kolejność z kodu: d1 x d2)
@@ -33,10 +33,10 @@ def extract_battles(fpath):
 
 VARIANTS = {
     "modified28-":          "28-bazowy",
-    "modified28normalized": "28-znormalizowany",
-    "modified21depth":      "21-głębokościowy",
+    "modified28normalized-": "28-znormalizowany",
+    "modified21depth-":      "21-głębokościowy",
     "modified63-":          "63-fazowy",
-    "modified63smooth":     "63-płynny",
+    "modified63smooth-":     "63-płynny",
 }
 
 summary = {}

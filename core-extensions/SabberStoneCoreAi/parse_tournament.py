@@ -3,8 +3,8 @@ import os
 import glob
 import pandas as pd
 
-RESULTS_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\RESULTS-FROM-PWR"
-OUTPUT_DIR  = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\RESULTS-FROM-PWR\plots"
+RESULTS_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\analysis\results"
+OUTPUT_DIR = r"D:\Pics_Movies\vids\PWr\Sem10\magisterka\SabberStone\core-extensions\SabberStoneCoreAi\analysis\plots"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def parse_tournament_file(fpath):
