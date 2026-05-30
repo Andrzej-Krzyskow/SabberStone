@@ -1,6 +1,6 @@
 \section{Formalizacja agenta bazowego} \label{sec:formalization}
 
-Niniejsza sekcja zawiera formalny opis agenta parametrycznego, będącego podstawą wszystkich modyfikacji. Notację ujednolicono z opisem rozszerzeń przedstawionych w dalszej części pracy. Notacja ta może ona różnić się od notacji stosowanej przez García-Sánchez i in.~\cite{sanchez2020}.
+Sekcja zawiera formalny opis agenta parametrycznego, będącego podstawą wszystkich modyfikacji. Notację ujednolicono z opisem rozszerzeń przedstawionych w dalszej części pracy. Notacja różni się od notacji stosowanej przez García-Sánchez i in.~\cite{sanchez2020}.
 
 \subsection{Reprezentacja i strategia decyzyjna}
 
@@ -21,7 +21,7 @@ Następnie agent wybiera akcję o najwyższej wartości:
     \label{eq:greedy}
 \end{equation}
 gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich legalnych akcji dostępnych
-w stanie $s$. Jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
+w stanie $s$ -- jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
 
 \subsection{Składniki funkcji oceny}
 

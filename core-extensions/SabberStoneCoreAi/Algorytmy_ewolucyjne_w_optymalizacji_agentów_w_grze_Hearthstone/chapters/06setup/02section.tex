@@ -1,12 +1,11 @@
 \section{Proponowane modyfikacje agentów} \label{sec:modifications}
 
-Funkcja oceny agenta bazowego uwzględnia jedynie cechy bezpośrednio związane ze stronnikami i punktami zdrowia bohatera, pomijając szereg istotnych aspektów stanu gry. Pierwszy wariant
-rozszerza tę funkcję o siedem nowych cech kontekstowych. Wybór cech oparto na analizie mechanik rozgrywki oraz wiedzy eksperckiej autora niniejszej pracy, posiadającego wieloletnie doświadczenie w rozgrywce na poziomie zaawansowanym. Uzasadnienie każdej cechy podano przy jej definicji.
+W sekcji przedstawiono pięć modyfikacji agenta bazowego, zaprojektowanych w celu poprawy jakości decyzji turniejowych. Zmiany obejmują zarówno rozszerzenie reprezentacji stanu, jak i modyfikacje strategii podejmowania decyzji. Każdy wariant opisano oddzielnie wraz z uzasadnieniem projektowym i formalizacją.
 
 \subsection{Wariant 28 parametrów --- rozszerzony zestaw cech}
 \label{sec:agent28}
 
-Funkcja oceny agenta bazowego uwzględnia jedynie cechy bezpośrednio związane ze stronnikami i statystykami bohatera, nie analizując innych istotnych aspektów stanu gry. Pierwszy wariant rozszerza tę funkcję o siedem nowych cech kontekstowych --- ich wybór uzasadniono przy każdej definicji.
+Funkcja oceny agenta bazowego uwzględnia tylko cechy bezpośrednio związane ze stronnikami i statystykami bohatera, pomijając inne aspekty stanu gry. Pierwszy wariant rozszerza tę funkcję o siedem nowych cech kontekstowych --- ich wybór uzasadniono przy każdej definicji.
 
 Rozszerzona funkcja oceny przyjmuje postać:
 \begin{equation}
@@ -45,7 +44,7 @@ gdzie $|H_p|$ to liczba kart w ręce gracza $p$.
 
 \paragraph{Bonus do obrażeń zaklęć $\Delta \text{Zak}$.}
 
-Bonus do obrażeń zaklęć (ang.~\textit{spell damage}) wzmacnia wszystkie zaklęcia zadające obrażenia. Obecność stronników lub artefaktów przyznających ten bonus istotnie zwiększa potencjał ofensywny talii Maga i Szamana, umożliwiając np.\ jednorazowe usunięcie przeciwnych stronników. Śledzenie tej cechy pozwala agentowi premiować pozycje z aktywnym bonusem.
+Bonus do obrażeń zaklęć (ang.~\textit{spell damage}) wzmacnia wszystkie zaklęcia zadające obrażenia. Obecność stronników lub artefaktów przyznających ten bonus zwiększa potencjał ofensywny talii Maga i Szamana, umożliwiając np.\ jednorazowe usunięcie przeciwnych stronników. Śledzenie tej cechy pozwala agentowi premiować pozycje z aktywnym bonusem.
 \begin{equation}
     \Delta \text{Zak}(p, p', \mathbf{w}) =
         w_{\text{zak}} \cdot \bigl(\text{zk}(p) - \text{zk}(p')\bigr)
@@ -118,9 +117,9 @@ Indeks & Oznaczenie & Opis \\
 \subsection{Wariant 28 parametrów z normalizacją cech}
 \label{sec:agent28norm}
 
-Drugi wariant jest identyczny z wariantem 28 parametrów pod względem struktury i zestawu parametrów, lecz wprowadza \textbf{normalizację} każdej cechy do przedziału $[-1, 1]$ przed pomnożeniem przez wagę.
+Drugi wariant jest identyczny z wariantem 28 parametrów pod względem struktury i zestawu parametrów, ale wprowadza \textbf{normalizację} każdej cechy do przedziału $[-1, 1]$ przed pomnożeniem przez wagę.
 
-Bez normalizacji poszczególne cechy mają bardzo różne zakresy wartości --- przykładowo zagregowana wartość stronnika $\nu(m)$ może wynosić nawet kilkaset punktów, podczas gdy zmiana licznika Jade Golem wynosi zazwyczaj co najwyżej~2. Powoduje to, że wagi cech o dużych wartościach bezwzględnych dominują w procesie optymalizacji, utrudniając algorytmowi ewolucyjnemu poprawne oszacowanie względnej ważności poszczególnych cech. Normalizacja wyrównuje skale tak, że każda waga $w_k$ wyraża bezpośrednio \emph{ważność} cechy, niezależnie od jej naturalnej skali liczbowej.
+Bez normalizacji poszczególne cechy mają bardzo różne zakresy wartości --- przykładowo zagregowana wartość stronnika $\nu(m)$ może wynosić nawet kilkaset punktów, podczas gdy zmiana licznika Jade Golem zwykle wynosi co najwyżej~2. To powoduje, że wagi cech o dużych wartościach bezwzględnych dominują w procesie optymalizacji i utrudniają poprawne oszacowanie względnej ważności cech. Normalizacja wyrównuje skale tak, że każda waga $w_k$ wyraża bezpośrednio \emph{ważność} cechy, niezależnie od jej naturalnej skali liczbowej.
 
 Normalizacja obejmuje 28 cech obliczanych ze zmian stanu gry (różnic między stanami \textit{before}/\textit{after}), natomiast funkcja wartości stronnika $\nu(m, \mathbf{w})$~\eqref{eq:minion_value} pozostaje niezmieniona --- jej składniki (zdrowie, atak, zdolności) nie są normalizowane wewnętrznie, ponieważ $\nu(m, \mathbf{w})$ pełni rolę wagi agregującej, a nie bezpośredniej cechy stanu.
 
@@ -177,9 +176,9 @@ Indeks & Cecha & $C_k$ \\
 \subsection{Wariant 63 parametrów --- trójfazowy agent}
 \label{sec:agent63}
 
-Rozgrywka w Hearthstone przebiega przez trzy jakościowo różne etapy. We wczesnej fazie (tury 1--3) obaj gracze dysponują ograniczoną maną i zagrywają tanie karty, walcząc o kontrolę planszy. Faza środkowa (tury 4--6) charakteryzuje się eskalacją siły stronników i aktywacją kluczowych synergii. W późnej fazie (od tury 7) gracze grają najdroższe, decydujące karty. Agent bazowy stosuje ten sam wektor wag przez całą grę, nie uwzględniając tych jakościowo różnych kontekstów decyzyjnych.
+Rozgrywka w Hearthstone przebiega przez trzy strategicznie różne etapy. We wczesnej fazie (tury 1--3) obaj gracze dysponują ograniczoną maną i zagrywają tanie karty, walcząc o kontrolę planszy. Faza środkowa (tury 4--6) charakteryzuje się eskalacją siły stronników i aktywacją kluczowych synergii. W późnej fazie (od tury 7) gracze grają najdroższe, decydujące karty. Agent bazowy stosuje ten sam wektor wag przez całą grę, nie uwzględniając tych strategicznie różnych kontekstów decyzyjnych.
 
-Niniejszy wariant wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiowanej na podstawie numeru tury:
+Wariant ten wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiowanej na podstawie numeru tury:
 \begin{equation}
     \text{faza}(t) =
     \begin{cases}
@@ -200,7 +199,7 @@ Niniejszy wariant wprowadza \textbf{niezależny wektor wag dla każdej fazy}, de
 
 Niezależna reprezentacja wag faz w wariancie~\ref{sec:agent63} może prowadzić do niespójności na granicach tur --- skoki wartości wag skutkowałyby niestabilną strategią agenta. Przykładowo, jeśli waga prowokacji w fazie~1 wynosi 0,9, a w fazie~2 wynosi 0,1, to po przekroczeniu tury~3 agent nagle przestaje cenić stronniki z prowokacją, co jest nienaturalne z punktu widzenia spójnej strategii.
 
-Niniejszy wariant koduje wagi faz~2 i~3 jako \textbf{deltę względem fazy poprzedniej}, ograniczając wielkość możliwej zmiany do $\pm 0{,}1$ na każdy parametr między kolejnymi fazami. Zamiast optymalizować bezpośrednio wartości wag faz~2 i~3, algorytm ewolucyjny optymalizuje \emph{wielkość zmiany} względem fazy poprzedniej.
+Ten wariant koduje wagi faz~2 i~3 jako \textbf{deltę względem fazy poprzedniej}, ograniczając wielkość możliwej zmiany do $\pm 0{,}1$ na każdy parametr między kolejnymi fazami. Zamiast optymalizować bezpośrednio wartości wag faz~2 i~3, algorytm ewolucyjny optymalizuje \emph{wielkość zmiany} względem fazy poprzedniej.
 
 Niech $g^{(i)}_k \in [0,1]$ oznacza $k$-ty gen w $i$-tej fazie, a $\mathbf{g} \in [0,1]^{63}$. Dekodowanie wag przyjmuje postać:
 \begin{align}
@@ -240,4 +239,4 @@ gdzie $s' = T(s, a)$, a warunek \emph{końca tury} zachodzi, gdy akcja $a$ jest 
 
 Głębokość $d = 2$ oznacza, że agent ocenia bezpośredni efekt akcji oraz najlepszą możliwą kontynuację w tej samej turze. Złożoność obliczeniowa wynosi $O(|\mathcal{A}(s)|^2)$ na każdą turę, co przy typowej liczbie dostępnych akcji $|\mathcal{A}(s)| \approx 10$--$20$ daje od 100 do 400 wywołań symulatora --- akceptowalny koszt w porównaniu z wariantem głębokości~3, gdzie liczba wywołań wzrasta do~$10^3$--$8\,000$.
 
-Wariant ten nie wprowadza nowych parametrów --- wagi $\mathbf{w}$ pozostają identyczne z agentem bazowym. Zmiana dotyczy wyłącznie sposobu ich wykorzystania: zamiast oceniać każdą akcję w izolacji, agent przeszukuje sekwencje dwóch kolejnych akcji i wybiera tę pierwszą, która prowadzi do najwyższej sumy ocen. Dzięki temu możliwe jest wykrycie kombinacji niewidocznych dla strategii zachłannej, bez zwiększania liczby optymalizowanych parametrów.
+Wariant ten nie wprowadza nowych parametrów --- wagi $\mathbf{w}$ pozostają identyczne jak w agencie bazowym. Zmiana dotyczy wyłącznie sposobu ich wykorzystania --- zamiast oceniać każdą akcję w izolacji, agent przeszukuje sekwencje dwóch kolejnych akcji i wybiera tę pierwszą, która prowadzi do najwyższej sumy ocen. Dzięki temu możliwe jest wykrycie kombinacji niewidocznych dla strategii zachłannej, bez zwiększania liczby optymalizowanych parametrów.

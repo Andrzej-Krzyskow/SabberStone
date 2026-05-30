@@ -1,6 +1,6 @@
 \section{Interfejs agenta i organizacja eksperymentów}
 
-Platforma SabberStone dostarcza abstrakcyjny interfejs agenta, który każdy badacz musi zaimplementować. Interfejs składa się z pięciu metod odpowiadających kolejnym etapom cyklu życia agenta: 
+Platforma SabberStone dostarcza abstrakcyjny interfejs agenta, który każdy badacz musi zaimplementować, a składa się on z pięciu metod odpowiadających kolejnym etapom z cyklu życia agenta:
 
 \begin{enumerate}
     \item inicjalizacja przed sesją eksperymentalną
@@ -10,12 +10,12 @@ Platforma SabberStone dostarcza abstrakcyjny interfejs agenta, który każdy bad
     \item finalizacja po zakończeniu całej sesji
 \end{enumerate}
 
-Taki podział pozwala na wyraźne oddzielenie kosztownych operacji, takich jak wczytywanie modeli uczenia maszynowego, od tych, które muszą być powtarzane wielokrotnie przed każdą rozgrywką.
+Podział ten wyraźnie oddziela kosztowne operacje, jak np. wczytywanie modeli uczenia maszynowego, od tych, które muszą być powtarzane przed każdą rozgrywką.
 
-W każdej turze agent otrzymuje aktualny stan gry i musi zwrócić jedną wybraną akcję. Silnik w każdej chwili udostępnia listę wszystkich legalnych ruchów, uwzględniając wszystkie ograniczenia wynikające z reguł gry. Z tego powodu agent nie musi samodzielnie weryfikować poprawności swoich decyzji. Lista ta zawsze zawiera co najmniej jedną akcję --- akcję zakończenia tury. Razem z platformą dostarczane są gotowe agenty referencyjne: 
+W każdej turze agent otrzymuje aktualny stan gry i musi zwrócić jedną wybraną akcję. Silnik w każdej chwili udostępnia listę wszystkich legalnych ruchów, uwzględniając wszystkie ograniczenia wynikające z reguł gry i z tego powodu agent nie musi samodzielnie weryfikować poprawności swoich decyzji. Lista ta zawsze zawiera co najmniej jedną akcję --- akcję zakończenia tury. Razem z platformą dostarczane są gotowe agenty referencyjne:
 \begin{itemize}
     \item agent losowy (ang. \textit{random agent}) --- wybiera kolejne akcje losowo spośród wszystkich dostępnych w danej turze, stanowiąc dolną granicę skuteczności.
     \item agent zachłanny (ang. \textit{greedy agent}) --- w każdej turze symuluje wszystkie legalne akcje i wybiera tę, która prowadzi do stanu planszy o najwyższej wartości według funkcji celu. Funkcja ta uwzględnia między innymi zdrowie obu bohaterów, liczbę i statystyki jednostek na planszy oraz dostępne zasoby.
 \end{itemize}
 
-Silnik umożliwia również organizowanie turniejów w formacie \textit{round-robin}, w którym każdy zarejestrowany agent mierzy się z każdym innym. Dla każdej pary agentów symuluje się określoną liczbę gier, co pozwala statystycznie uśrednić wpływ losowości na wyniki. Miarą oceny jakości agenta jest wskaźnik wygranych (ang. \textit{win-rate}). Format ten został przyjęty jako oficjalny protokół ewaluacji w Hearthstone AI Competition \cite{hearthstone_competition}.
+Silnik umożliwia również organizowanie turniejów w formacie \textit{round-robin}, w którym każdy zarejestrowany agent mierzy się z każdym innym, a dla każdej pary agentów symuluje się określoną liczbę gier, co pozwala statystycznie uśrednić wpływ losowości na wyniki. Miarą oceny jakości agenta jest wskaźnik wygranych (ang. \textit{win-rate}). Podejście to zostało przyjęte jako oficjalny sposób ewaluacji w Hearthstone AI Competition \cite{hearthstone_competition}.

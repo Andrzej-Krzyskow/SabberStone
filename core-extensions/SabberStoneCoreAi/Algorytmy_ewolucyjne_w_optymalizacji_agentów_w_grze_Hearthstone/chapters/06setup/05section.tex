@@ -1,6 +1,6 @@
 \section{Środowisko eksperymentalne} \label{sec:setup}
 
-Niniejsza sekcja opisuje sprzęt, konfigurację parametrów oraz talie użyte we wszystkich eksperymentach. Opisana konfiguracja stanowi punkt odniesienia dla porównań między wariantami opisanymi w kolejnych sekcjach.
+W tym rozdziale opisano sprzęt, konfigurację parametrów oraz talie użyte we wszystkich eksperymentach. Konfigurację tę przyjęto jako punkt odniesienia do porównań między wariantami.
 
 \subsection{Sprzęt i oprogramowanie}
 
@@ -13,7 +13,7 @@ Rozgrywki nadają się do trywialnej równoległości (ang. \textit{embarrassing
 \begin{table}[p]
 \centering
 \small
-\caption{Zestawienie uruchomień eksperymentów.} 
+\caption{Zestawienie uruchomień eksperymentów.}
 \label{tab:runs}
 \begin{tabular}{llcc}
 \toprule
@@ -121,13 +121,13 @@ $D$                          & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 
 \subsection{Talie eksperymentalne}
 
-Eksperymenty prowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu~\cite{sanchez2020}. Każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \times 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
+Eksperymenty przeprowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu~\cite{sanchez2020}, a każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \times 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
 
 \paragraph{RenoKazakusMage --- klasa Mag.}
-Talia kontrolna oparta na unikalnej mechanice Kazakusa: każda karta w talii jest unikalna, nie ma swoich duplikatów, co aktywuje zdolność Reno Jacksona, czyli pełne leczenie bohatera. Strategia polega na przeżyciu wczesnej gry, uniemożliwieniu przeciwnikowi rozbudowy planszy i wygraniu poprzez silne zaklęcia w późnej fazie. Talia faworyzuje agentów zarządzających zasobami kosztem agresywnych strategii.
+Jest to talia skupiająca uwagę na kontroli planszy i opiera się na unikalnej mechanice Kazakusa --- każda karta w talii jest unikalna, nie ma swoich duplikatów, co aktywuje zdolność Reno Jacksona, czyli pełne leczenie bohatera. Strategia polega na przeżyciu wczesnej gry, uniemożliwieniu przeciwnikowi rozbudowy planszy i wygraniu poprzez silne zaklęcia w późnej fazie. Talia faworyzuje agentów zarządzających zasobami kosztem agresywnych strategii.
 
 \paragraph{MidrangeJadeShaman --- klasa Szaman.}
-Talia midrange oparta na mechanice Jade Golem --- każdy kolejny przywołany golem ma o 1/1 więcej statystyk niż poprzedni. Strategia łączy wczesną kontrolę planszy z narastającą przewagą w fazie środkowej i końcowej. Mechanika ta wymaga od agenta uwzględnienia wartości stronników w horyzoncie wielu tur, a nie tylko aktualnego stanu planszy.
+Jest to talia, która stara się balansować rozgrywkę i opiera się na mechanice Jade Golem --- każdy kolejny przywołany golem ma o 1/1 więcej statystyk niż poprzedni. Strategia łączy wczesną kontrolę planszy z narastającą przewagą w fazie środkowej i końcowej. Mechanika ta wymaga od agenta uwzględnienia wartości stronników w horyzoncie wielu tur, a nie tylko aktualnego stanu planszy.
 
 \paragraph{AggroPirateWarrior --- klasa Wojownik.}
 Talia agresywna oparta na mechanice piratów i synergii z bronią bohatera. Celem jest zadanie jak największych obrażeń bezpośrednio bohaterowi przeciwnika, zanim agresja opadnie i przewaga zasobów przejdzie na stronę przeciwnika. Talia premiuje agentów rozumiejących wartość broni i synergii z piratami.

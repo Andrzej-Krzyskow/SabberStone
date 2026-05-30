@@ -1,23 +1,23 @@
-\section{Inne wybrane podejścia}
+\section{Porównanie podejść w konkursie}
 
-Poza ewolucją i metodami przeszukiwania drzewa gry, uczestnicy konkursu stosowali szereg innych technik dla swoich agentów.
+Na podstawie wyników wszystkich trzech edycji widać wyraźne trendy \cite{hearthstone_competition, dockhorn2019}.
 
-\subsection{Alpha-Beta i Minimax}
+\begin{table}[h!]
+\centering
+\caption{Czołowe miejsca w \textit{Premade Deck Playing Track}, \textit{Hearthstone AI Competition} 2018--2020}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Podejście} & \textbf{2018} & \textbf{2019} & \textbf{2020} & \textbf{Max WR} \\
+\midrule
+MCTS / UCT            & 1., 3.~m. & 2., 4.~m. & 3.~m.         & $\approx$0{,}69 \\
+Lookahead ($N$-step)  & 4.~m.*    & 1., 3.~m. & 1., 2., 4.~m. & 0{,}723         \\
+Ewolucja (koewolucja) & 2.~m.     & ---        & ---           & b/d             \\
+Alpha-Beta            & 5.~m.     & ---        & 12.~m.        & $\approx$0{,}45 \\
+Rolling Horizon EA    & 15.~m.    & ---        & ---           & b/d             \\
+\bottomrule
+\end{tabular}
+\\[4pt]
+\small{*Kai Bornemann – Tyche, One-Step Lookahead, 4.~miejsce \textit{Premade Deck Playing Track} 2018.}
+\end{table}
 
-Klasyczne podejście z teorii gier --- przeszukiwanie Minimax z przycinaniem Alfa-Beta --- zostało zaadaptowane do Hearthstone przez Wulfmeyera, który zajął 5. miejsce w edycji 2018 \cite{hearthstone_competition}. Wyzwaniem jest tu losowość mechanik gry: Minimax zakłada deterministyczność, więc losowe efekty kart wymagają uśredniania (ang.~\textit{expectimax}) lub przybliżenia deterministycznego. W edycji 2019 Sparks i Djartov posłużyli się agentem opartym na Min-Max, a w 2020 bot Lamprechta Mini-Max Search zajął 12. miejsce~\cite{hearthstone_competition}.
-
-\subsection{Beam Search i BFS}
-
-Beam Search --- uproszczenie przeszukiwania wszerz zachowujące tylko $k$ najobiecujących ścieżek --- pojawił się w edycji 2019 w bocie Bokelmanna i Unkringa oraz w edycji 2020 w bocie Ortlama. Pokrewnym podejściem jest BFS stosowane przez Heberta i Hecka w edycji 2019. Podejścia te redukują złożoność pamięciową przeszukiwania kosztem utraty gwarancji optymalności~\cite{hearthstone_competition}.
-
-\subsection{Sieci neuronowe i uczenie maszynowe}
-
-Kilku uczestników stosowało podejścia oparte na uczeniu maszynowym. Grad~\cite{Grad2017} zaproponował użycie sieci neuronowej jako zamiennika ręcznie zaprojektowanej heurystyki --- sieć była trenowana na danych z rozgrywek i służyła do oceny wartości stanu gry. Świechowski i in.~\cite{swiechowski2018} zastosowali modele nadzorowane jako sieć przewodnika w MCTS, kierując ekspansją drzewa ku akcjom obserwowanym u ludzkich graczy. W edycji 2019 Geis, Kleespies i Saflik zastosowali NN-based Tree Search w ścieżce \textit{User Created Deck Playing Track}~\cite{hearthstone_competition}.
-
-\subsection{Symboliczne wnioskowanie}
-
-Stiegler i in.~\cite{Stiegler2018} zaproponowali agenta opartego na wnioskowaniu symbolicznym, który koduje reguły strategiczne Hearthstone w postaci jawnych zasad logicznych. Podejście to kontrastuje z metodami czarnoskrzynkowymi: agent jest w pełni interpretowalny, lecz wymaga ręcznego specyfikowania wiedzy o grze i słabo skaluje się wraz ze wzrostem jej złożoności.
-
-\subsection{Rolling Horizon Evolutionary Algorithm}
-
-W edycji 2018 Weimer (15. miejsce, kat. \textit{Premade Deck Playing Track}) zastosował podejście Rolling Horizon Evolutionary Algorithm (RHEA). W tej metodzie, opisanej przez Gainę i in.~\cite{gaina2020}, algorytm ewolucyjny optymalizuje sekwencję akcji na bieżącą turę w czasie podejmowania decyzji --- bez wstępnego trenowania. W każdej chwili decyzji uruchamiana jest krótka sesja ewolucyjna, która wyznacza najlepszą sekwencję ruchów w ramach dostępnego czasu. Podejście to stanowi interesującą hybrydę między algorytmami \textit{online}, jak MCTS, a ewolucyjnymi, jednak w edycji 2018 nie dało wyników porównywalnych z czołowymi botami~\cite{hearthstone_competition}.
+MCTS dominowało w edycji 2018, lecz straciło przewagę w 2020 roku na rzecz lookahead z głębszym przeszukiwaniem. Możliwym wyjaśnieniem jest to, że w Hearthstone losowość efektów kart utrudnia efektywne \textit{rollouty} w MCTS, podczas gdy lookahead z dobrą heurystyką i głębokością 2--3 skuteczniej przewiduje konsekwencje wieloruchowych sekwencji~\cite{dockhorn2019}. Podejście ewolucyjne zajmuje osobną niszę: w odróżnieniu od MCTS i lookahead nie wymaga przeszukiwania drzewa gry w trakcie rozgrywki, więc każda decyzja jest szybka obliczeniowo, ale odbywa się to kosztem wielogodzinnego wstępnego treningu~\cite{sanchez2020}.

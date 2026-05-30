@@ -1,32 +1,23 @@
-\section{Algorytmy lookahead} \label{sec:lookahead}
+\section{Inne wybrane podejścia}
 
-Algorytmy \textit{lookahead} stanowią prostszą alternatywę dla MCTS. Zamiast budować drzewo przez losowe symulacje, agent systematycznie sprawdza wszystkie możliwe sekwencje akcji do zadanej głębokości i ocenia końcowy stan za pomocą heurystycznej funkcji oceny~\cite{dockhorn2019}. Podejście to nie wymaga kosztownych \textit{rolloutów}, jednak liczba stanów do sprawdzenia rośnie wykładniczo z głębokością --- co w Hearthstone, z jego dużą przestrzenią akcji na turę, szybko staje się problemem.
+Poza ewolucją i metodami przeszukiwania drzewa gry uczestnicy konkursu stosowali także inne techniki.
 
-\subsection{Greedy: 1-Step Lookahead}
+\subsection{Alpha-Beta i Minimax}
 
-Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa jedynie bezpośrednie konsekwencje każdej legalnej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W terminologii SabberStone odpowiada to domyślnemu \textit{greedy agent} opisanemu w sekcji~\ref{sec:baseline}. Boty tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyższy klasyfikowany bot zachłanny zajął 7. miejsce (win-rate 0{,}570 w UCDT)~\cite{hearthstone_competition}.
+Klasyczne podejście z teorii gier --- przeszukiwanie Minimax z przycinaniem Alfa-Beta --- zostało zaadaptowane do Hearthstone przez Wulfmeyera, który zajął 5. miejsce w edycji 2018 \cite{hearthstone_competition}. Wyzwaniem jest tu losowość mechanik gry: Minimax zakłada deterministyczność, więc losowe efekty kart wymagają uśredniania (ang.~\textit{expectimax}) lub przybliżenia deterministycznego. W edycji 2019 Sparks i Djartov posłużyli się agentem opartym na Min-Max, a w 2020 bot Lamprechta Mini-Max Search zajął 12. miejsce~\cite{hearthstone_competition}.
 
-\subsection{N-Step Lookahead}
+\subsection{Beam Search i BFS}
 
-Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów. Agent symuluje wszystkie dostępne sekwencje akcji do głębokości $N$ i ocenia liście drzewa funkcją heurystyczną. W edycji 2019 pierwsze miejsce w ścieżce \textit{Premade Deck Playing Track} zajął bot \textbf{Heimbrodta} oparty na Dynamic Lookahead, a trzecie --- bot Öfelego i Mendeza Ruiza z Greedy Lookahead~\cite{hearthstone_competition}. W edycji 2020 algorytmy lookahead wyraźnie zdominowały konkurencję, zajmując 7 z 10 pierwszych miejsc:
-\begin{itemize}
-\item 1.\ miejsce: Sebastian Miller, \textit{2-Step Lookahead}, win-rate 0{,}723,
-\item 2.\ miejsce: Bohnhof, Graeffe, \textit{Dynamic Lookahead}, win-rate 0{,}709,
-\item 4.\ miejsce: Tracht, Mozheiko, \textit{3-Step Lookahead}, win-rate 0{,}676,
-\item 5.\ miejsce: Markus Hempel, Julia Heise, \textit{2-Step Lookahead}, win-rate 0{,}660,
-\item 6.\ miejsce: Kartik Mudgal, Kushagra Kumar, \textit{DFS Lookahead}, win-rate 0{,}586,
-\item 7.\ miejsce: Kartik Mudgal, Kushagra Kumar, \textit{DFS Lookahead}, win-rate 0{,}578, 
-\item 9.\ miejsce: Sathya Sudha Murugan, Maik Buettner, \textit{Balanced Lookahead}, win-rate 0{,}541~\cite{hearthstone_competition}.
-\end{itemize}
+Beam Search --- uproszczenie przeszukiwania wszerz zachowujące tylko $k$ najobiecujących ścieżek --- pojawił się w edycji 2019 w agencie Bokelmanna i Unkringa oraz w edycji 2020 w agencie Ortlama. Pokrewnym podejściem jest BFS stosowane przez Heberta i Hecka w edycji 2019. Podejścia te redukują złożoność pamięciową przeszukiwania kosztem utraty gwarancji optymalności~\cite{hearthstone_competition}.
 
-\subsection{Dynamic Lookahead}
+\subsection{Sieci neuronowe i uczenie maszynowe}
 
-Wariantem adaptacyjnym jest \textbf{Dynamic Lookahead}, w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęły boty Kiasa i Babela (win-rate 0{,}655) oraz Bohnhofa i Graeffego (win-rate 0{,}632), oba oparte na Dynamic Lookahead z talią MidrangeJadeShaman~\cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na ruch, zachowując jednocześnie możliwie największą głębokość przeszukiwania.
+Kilku uczestników stosowało podejścia oparte na uczeniu maszynowym. Grad~\cite{Grad2017} zaproponował użycie sieci neuronowej jako zamiennika ręcznie zaprojektowanej heurystyki --- sieć trenowano na danych z rozgrywek i wykorzystywano do oceny wartości stanu gry. Świechowski i in.~\cite{swiechowski2018} zastosowali modele nadzorowane jako sieć przewodnika w MCTS, kierując ekspansją drzewa ku akcjom obserwowanym u ludzkich graczy. W edycji 2019 Geis, Kleespies i Saflik zastosowali NN-based Tree Search w ścieżce \textit{User Created Deck Playing Track}~\cite{hearthstone_competition}.
 
-\subsection{Lookahead z modelowaniem przeciwnika}
+\subsection{Symboliczne wnioskowanie}
 
-Uzupełnieniem algorytmów lookahead jest modelowanie ruchów przeciwnika, opisane przez Dockhorna i in.~\cite{dockhorn2018}. Zamiast oceniać jedynie własne akcje, agent symuluje równocześnie odpowiedź przeciwnika w kolejnej turze i ocenia stan gry po obu ruchach. Dzięki temu agent unika ruchów, które wyglądają korzystnie w izolacji, lecz pozostawiają łatwe do wykorzystania pozycje. Bot autorstwa Dockhorna wygrał ścieżkę \textit{Premade Deck Playing Track} w 2018 roku właśnie z zastosowaniem tej techniki~\cite{dockhorn2018, hearthstone_competition}.
+Stiegler i in.~\cite{Stiegler2018} zaproponowali agenta opartego na wnioskowaniu symbolicznym, który koduje reguły strategiczne Hearthstone w postaci jawnych zasad logicznych. Podejście to kontrastuje z metodami czarnoskrzynkowymi --- agent jest w pełni interpretowalny, lecz wymaga ręcznego specyfikowania wiedzy o grze i słabo skaluje się wraz ze wzrostem jej złożoności.
 
-\subsection{Lookahead a MCTS — porównanie}
+\subsection{Rolling Horizon Evolutionary Algorithm}
 
-Zarówno MCTS, jak i lookahead wymagają dostępu do modelu przejść (ang.~\textit{forward model}) silnika gry. Kluczowa różnica polega na tym, że MCTS buduje drzewo probabilistycznie, kierując zasoby obliczeniowe na obiecujące gałęzie, podczas gdy lookahead przeszukuje drzewo deterministycznie i wyczerpująco do zadanej głębokości. Wyniki konkursów z lat 2018--2020 pokazują, że w Hearthstone lookahead z głębokością 2--3 jest co najmniej równoważny MCTS przy porównywalnym budżecie obliczeniowym, a w edycji 2020 konsekwentnie go przewyższał~\cite{hearthstone_competition, dockhorn2019}.
+W edycji 2018 Weimer (15. miejsce, kat. \textit{Premade Deck Playing Track}) zastosował podejście Rolling Horizon Evolutionary Algorithm (RHEA). W tej metodzie, opisanej przez Gainę i in.~\cite{gaina2020}, algorytm ewolucyjny optymalizuje sekwencję akcji na bieżącą turę w czasie podejmowania decyzji --- bez wstępnego trenowania. W każdej chwili decyzji uruchamiana jest krótka sesja ewolucyjna, która wyznacza najlepszą sekwencję ruchów w ramach dostępnego czasu. Podejście to stanowi interesującą hybrydę między algorytmami \textit{online}, jak MCTS, a ewolucyjnymi, jednak w edycji 2018 nie dało wyników porównywalnych z czołowymi botami~\cite{hearthstone_competition}.

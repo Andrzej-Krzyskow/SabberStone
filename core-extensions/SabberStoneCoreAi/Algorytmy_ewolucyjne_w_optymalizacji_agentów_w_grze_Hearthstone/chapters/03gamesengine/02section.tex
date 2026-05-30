@@ -1,5 +1,5 @@
 \section{Architektura i struktura projektu}
-Projekt jest zorganizowany w postaci kilku modułów, każdy z wydzielonym zadaniem. Główny trzon silnika odpowiada za implementację wszystkich mechanik gry i jest jedynym komponentem wymaganym do przeprowadzenia pełnej symulacji. Pozostałe moduły obejmują:
+Projekt jest podzielony na kilka modułów, z których każdy ma osobne zadanie. Główny trzon silnika odpowiada za implementację wszystkich mechanik gry i jest jedynym komponentem wymaganym do przeprowadzenia pełnej symulacji. Pozostałe moduły obejmują:
 
 \begin{itemize}
     \item \textbf{Testy jednostkowe} -- weryfikują poprawność implementacji poszczególnych kart.
@@ -7,7 +7,7 @@ Projekt jest zorganizowany w postaci kilku modułów, każdy z wydzielonym zadan
     \item \textbf{Moduł dla badaczy AI} -- zawiera gotową infrastrukturę do uruchamiania gier oraz turniejów między agentami \cite{sabberstone_github}.
 \end{itemize}
 
-Takie podejście sprawia, że badacz, chcący zaimplementować własny algorytm, nie musi zagłębiać się w szczegóły silnika. Wystarczy, że skorzysta z gotowego interfejsu agenta i skupi się wyłącznie na logice podejmowania decyzji.
+W praktyce oznacza to, że badacz implementujący własny algorytm nie musi zagłębiać się w szczegóły silnika. Wystarczy skorzystać z gotowego interfejsu agenta i skupić się na logice podejmowania decyzji.
 
 
 

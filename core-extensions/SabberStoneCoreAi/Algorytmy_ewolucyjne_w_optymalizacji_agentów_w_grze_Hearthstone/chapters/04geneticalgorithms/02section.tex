@@ -1,8 +1,8 @@
 \section{Paradygmat ewolucyjny}
 
-Algorytmy ewolucyjne (ang. \textit{evolutionary algorithms} --- EA) to rodzina metaheurystyk inspirowanych biologicznym procesem ewolucji przez dobór naturalny. Wspólnym mianownikiem wszystkich algorytmów tej rodziny jest operowanie na \textit{populacji} kandydatów rozwiązań. Następnie te populacje są iteracyjnie polepszane za pomocą \textit{operatorów ewolucyjnych}, takich jak mutacja czy krzyżowanie, oraz \textit{selekcji} faworyzującej osobniki o wyższej wartości funkcji przystosowania (ang. \textit{fitness function}) \cite{Katoch2021}.
+Algorytmy ewolucyjne (ang. \textit{evolutionary algorithms} --- EA) to rodzina metaheurystyk inspirowanych biologicznym procesem ewolucji przez dobór naturalny, a wspólnym mianownikiem wszystkich algorytmów tej rodziny jest operowanie na \textit{populacji} rozwiązań. Populacje te są iteracyjnie polepszane za pomocą \textit{operatorów ewolucyjnych}, takich jak mutacja czy krzyżowanie oraz \textit{selekcji} faworyzującej osobniki o wyższej wartości funkcji przystosowania (ang. \textit{fitness function}) \cite{Katoch2021}.
 
-Ogólny schemat działania algorytmu ewolucyjnego przebiega następująco:
+Ogólny schemat działania algorytmu ewolucyjnego jest następujący:
 \begin{enumerate}
 \item \textbf{Inicjalizacja} --- losowe wygenerowanie początkowej populacji $P_0$ złożonej z $NP$ osobników.
 \item \textbf{Ocena} --- wyznaczenie wartości funkcji przystosowania $f(x_i)$ dla każdego osobnika $x_i \in P_t$.
@@ -12,4 +12,4 @@ Ogólny schemat działania algorytmu ewolucyjnego przebiega następująco:
 \item \textbf{Warunek stopu} --- powrót do kroku 2 lub zakończenie po osiągnięciu budżetu ewaluacji bądź kryterium zbieżności.
 \end{enumerate}
 
-Algorytmy ewolucyjne dobrze radzą sobie w sytuacjach, w których klasyczne metody optymalizacji zawodzą. Następuję to np. gdy funkcja celu jest nieróżniczkowalna, silnie nieliniowa, wielomodalna lub gdy jej ocena jest obarczona szumem \cite{Bilal2020}. Poszczególne warianty różnią się reprezentacją osobnika, formą operatorów wariacyjnych oraz strategią selekcji, co sprawia, że rodzina EA jest wyjątkowo różnorodna i szeroko stosowana \cite{TogeliusYannakakis2023}.
+Algorytmy ewolucyjne radzą sobie dobrze tam, gdzie klasyczne metody optymalizacji zawodzą. Dotyczy to sytuacji, gdy funkcja celu jest nieróżniczkowalna, silnie nieliniowa, wielomodalna lub gdy jej ocena jest obarczona szumem \cite{Bilal2020}. Poszczególne warianty różnią się reprezentacją osobnika, formą operatorów wariacyjnych oraz strategią selekcji, dlatego rodzina EA pozostaje różnorodna i szeroko stosowana \cite{TogeliusYannakakis2023}.

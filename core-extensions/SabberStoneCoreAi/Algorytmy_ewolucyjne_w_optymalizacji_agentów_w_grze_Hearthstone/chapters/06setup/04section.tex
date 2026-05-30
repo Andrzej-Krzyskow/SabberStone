@@ -1,10 +1,10 @@
 \section{Protokół wyrównania budżetu obliczeniowego} \label{sec:budget}
 
-Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające: w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą round-robin, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie według samej liczby wywołań fitness prowadziłoby zatem do przydzielenia radykalnie różnych ilości rzeczywistych obliczeń poszczególnym konfiguracjom.
+Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą round-robin, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie tylko po liczbie wywołań fitness prowadziłoby więc do przydzielenia bardzo różnych ilości rzeczywistych obliczeń poszczególnym konfiguracjom.
 
 \subsection{Jednostka budżetowa}
 
-Podstawową jednostką obliczeniową jest jedno wywołanie symulatora SabberStone, pojedyncze uruchomienie \texttt{dotnet run} rozgrywające \texttt{NUM\_GAMES = 20} partii między dwoma wektorami wag w ramach jednej kombinacji talii. Liczba wywołań symulatora zależy wyłącznie od struktury algorytmu --- rozmiaru populacji, schematu ewaluacji i liczby przeciwników --- i jest niezależna od wartości \texttt{NUM\_GAMES}.
+Podstawową jednostką obliczeniową jest jedno wywołanie symulatora SabberStone, czyli pojedyncze uruchomienie \texttt{dotnet run} rozgrywające \texttt{NUM\_GAMES = 20} partii między dwoma wektorami wag w ramach jednej kombinacji talii. Liczba wywołań symulatora zależy wyłącznie od struktury algorytmu --- rozmiaru populacji, schematu ewaluacji i liczby przeciwników --- i jest niezależna od wartości \texttt{NUM\_GAMES}.
 
 \subsection{Liczba przeciwników w SHADE z Hall of Fame}
 
@@ -86,7 +86,7 @@ Dla SHADE z Hall of Fame wartość wyznaczana jest iteracyjnie jako największa 
 
 \subsection{Wyniki wyrównania}
 
-Tabele~\ref{tab:budget_coev} i~\ref{tab:budget_hof} zestawiają wyznaczone wartości \texttt{check\_evals} wraz z uzyskanymi budżetami i odchyleniami od $B^*$. Wszystkie konfiguracje mieszczą się w granicach $0{,}80\%$ budżetu docelowego, a odchylenia są zawsze ujemne lub zerowe --- budżet nie jest nigdy przekraczany. Wynikają one ze skokowego charakteru kosztu generacji: przy dużym $\mu$ żadna całkowita liczba generacji nie wynosi dokładnie w $B^*$.
+Tabele~\ref{tab:budget_coev} i~\ref{tab:budget_hof} zestawiają wyznaczone wartości \texttt{check\_evals} wraz z uzyskanymi budżetami i odchyleniami od $B^*$. Wszystkie konfiguracje mieszczą się w granicach $0{,}80\%$ budżetu docelowego, a odchylenia są zawsze ujemne lub zerowe --- budżet nigdy nie jest przekraczany. Wynikają one ze skokowego charakteru kosztu generacji --- przy dużym $\mu$ żadna całkowita liczba generacji nie daje dokładnie wartości $B^*$.
 
 \begin{table}[h]
 \centering

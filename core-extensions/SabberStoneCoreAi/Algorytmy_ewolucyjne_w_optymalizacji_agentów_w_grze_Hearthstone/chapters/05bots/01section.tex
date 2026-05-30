@@ -1,4 +1,24 @@
-\section{Ewolucja wag jako metoda trenowania agenta}
-W rozdziale~\ref{chap:ea} opisano algorytmy ewolucyjne i ich warianty adaptacyjne. Kluczowym pytaniem jest jednak to, jak przekładają się one na konkretnego agenta będącego w stanie obsłużyć rozgrywkę w Hearthstone. Odpowiedź leży w doborze dwóch elementów: \textbf{reprezentacji agenta} oraz \textbf{schematu oceny}. Agent, którego optymalizacją zajmuje się niniejsza praca, jest opisywany przez wektor wag $\mathbf{w} \in \mathbb{R}^D$ przekazywany do ważonej funkcji oceny stanu planszy. W celu optymalizacji tych wag García-Sánchez i in. \cite{sanchez2020} stosują strategię ewolucyjną. Każdy kandydat jest oceniany przez serię symulowanych rozgrywek. Schemat tej procedury opisano w dalszej części pracy. Obejmuje on definicję cech wektora stanu, funkcję przystosowania oraz protokół koewolucji.
+\section{Podejście ewolucyjne: agent z ważoną funkcją oceny} \label{sec:baseline}
 
-Celem rozdziału jest porównanie proponowanego podejścia z innymi metodami stosowanymi w literaturze. Omówiono podejście ewolucyjne będące bezpośrednią bazą eksperymentów, a następnie alternatywne podejścia zastosowane w ramach \textit{Hearthstone AI Competition} w edycjach 2018--2020: algorytm MCTS, algorytmy lookahead oraz inne wybrane rozwiązania. Zestawienie to pozwala wyraźnie odróżnić podejście \textit{offline} --- polegające na trenowaniu agenta przed meczem --- od podejść \textit{online}, które przeszukują drzewo gry w czasie podejmowania każdej decyzji. Pozwala to również uzasadnić wybór algorytmu ewolucyjnego jako metody badawczej.
+Podejście ewolucyjne do nauki agentów Hearthstone zaproponowali García-Sánchez i in.~\cite{sanchez2020}, a ich praca stanowi bezpośrednią bazę eksperymentów opisanych w tej pracy. Wcześniejsza publikacja tego samego zespołu dotyczyła ewolucyjnego budowania talii w Hearthstone~\cite{sanchez2018}, co pokazuje, że algorytmy ewolucyjne mają w tej grze szersze zastosowanie. Agent optymalizowany w tej pracy jest opisywany przez wektor wag $\mathbf{w} \in \mathbb{R}^D$ przekazywany do ważonej funkcji oceny stanu planszy. W celu optymalizacji tych wag García-Sánchez i in. stosują strategię ewolucyjną \cite{sanchez2020}. Każdy kandydat jest oceniany przez serię symulowanych rozgrywek, a schemat tej procedury opisano dalej i obejmuje on definicję cech wektora stanu, funkcję przystosowania oraz protokół koewolucji.
+
+\subsection{Reprezentacja agenta i funkcja oceny}
+Agent korzysta z \textbf{ważonej funkcji oceny stanu planszy}, w której cechy stronników (zdrowie, atak, właściwości specjalne) są ważone i łączone z wagami opisującymi znaczenie samych stronników dla przebiegu gry.
+
+Funkcja oceny uwzględnia m.in.:
+\begin{itemize}
+\item punkty zdrowia obu bohaterów (gracza oraz przeciwnika),
+\item atak obu bohaterów,
+\item statystyki wszystkich stronników na planszy, tj. ich zdrowie, atak, właściwości specjalne takie jak \textit{taunt}, \textit{divine shield}, \textit{charge} i inne,
+\item liczbę stronników zabitych i nowo wystawionych w danej akcji,
+\item zużytą manę,
+\item usunięte sekrety.
+\end{itemize}
+
+Wektor wag $\mathbf{w} \in \mathbb{R}^D$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym. Znalezienie optymalnego zestawu wag jest problemem optymalizacyjnym, który rozwiązuje algorytm ewolucyjny.
+
+\subsection{Strategia podejmowania decyzji}
+W każdej turze agent wybiera akcję w sposób zachłanny (ang.~\textit{greedy}). Bot symuluje konsekwencje wszystkich legalnych akcji dostępnych w danym stanie gry i wybiera tę, która prowadzi do stanu o najwyższej wartości funkcji oceny. Jest to strategia odpowiadająca przeszukiwaniu z horyzontem 1, analogiczna do zachowania \textit{GreedyAgent} dostępnego w SabberStone~\cite{sanchez2020}. Różnica polega na tym, że \textit{GreedyAgent} korzysta z uproszczonych, ręcznie zaprojektowanych funkcji oceny, podczas gdy agent parametryczny używa jednolitego, bogatszego zestawu cech, których wagi są wyznaczane ewolucyjnie.
+
+\subsection{Trening przez koewolucję}
+Populacja $NP$ agentów oceniana jest przez wzajemne rozgrywki wewnątrz populacji w schemacie każdy z każdym (ang.~\textit{round-robin}), w którym każda para osobników rozgrywa serie partii we wszystkich kombinacjach dostępnych talii. Funkcja przystosowania osobnika to łączna liczba zwycięstw uzyskanych we wszystkich rozegranych partiach. Nie ma tu potrzeby definiowania zewnętrznego przeciwnika referencyjnego --- agenci doskonalą się wyłącznie przez wzajemną rywalizację wewnątrz populacji. Autorzy przetestowali ten schemat, uzyskując agenta, który w edycji 2018 konkursu zajął 2. miejsce w tabeli wyników ścieżki \textit{Premade Deck Playing Track}~\cite{sanchez2020}.

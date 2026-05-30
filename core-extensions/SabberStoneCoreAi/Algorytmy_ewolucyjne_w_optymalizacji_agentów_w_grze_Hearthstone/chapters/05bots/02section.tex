@@ -1,24 +1,36 @@
-\section{Podejście ewolucyjne: agent z ważoną funkcją oceny} \label{sec:baseline}
+\section{Monte Carlo Tree Search} \label{sec:mcts}
 
-Podejście ewolucyjne do nauki agentów Hearthstone zostało zaproponowane przez García-Sáncheza i in.~\cite{sanchez2020}. Jest to bezpośrednia baza dla eksperymentów opisanych w tej pracy. Wcześniejsza publikacja tego samego zespołu zbadała ewolucyjne budowanie talii w Hearthstone~\cite{sanchez2018}, co pokazuje, że algorytmy ewolucyjne mają w tej grze szersze zastosowanie.
+Monte Carlo Tree Search (MCTS) to rodzina algorytmów przeszukiwania drzewa gry, która łączy systematyczną eksplorację przestrzeni stanów z losowym próbkowaniem wyników rozgrywki. Obszerne omówienie metody przedstawili Browne i in.~\cite{Browne2012}, a nowsze modyfikacje i zastosowania podsumowali Świechowski i in.~\cite{Swiechowski2022}.
 
-\subsection{Reprezentacja agenta i funkcja oceny}
-Agent korzysta z \textbf{ważonej funkcji oceny stanu planszy}, w której cechy stronników (zdrowie, atak, właściwości specjalne) są ważone i łączone z wagami opisującymi znaczenie samych stronników dla przebiegu gry.
+\subsection{Ogólny schemat MCTS}
 
-Cechy uwzględnione w funkcji oceny obejmują m.in.:
-\begin{itemize}
-\item punkty zdrowia obu bohaterów (gracza oraz przeciwnika),
-\item atak obu bohaterów,
-\item statystyki wszystkich stronników na planszy, tj. ich zdrowie, atak, właściwości specjalne takie jak \textit{taunt}, \textit{divine shield}, \textit{charge} i inne,
-\item liczbę stronników zabitych i nowo wystawionych w danej akcji,
-\item zużytą manę,
-\item usunięte sekrety.
-\end{itemize}
+Algorytm buduje drzewo stanów gry przez iteracyjne powtarzanie czterech faz~\cite{Browne2012}:
 
-Wektor wag $\mathbf{w} \in \mathbb{R}^D$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym. Znalezienie optymalnego zestawu wag jest problemem optymalizacyjnym, który rozwiązuje algorytm ewolucyjny.
+\begin{enumerate}
+\item \textbf{Selekcja} --- poczynając od korzenia, czyli aktualnego stanu gry, algorytm schodzi w dół drzewa według reguły wyboru węzła, która równoważy eksplorację słabo zbadanych gałęzi z eksploatacją dotychczas obiecujących węzłów. Najpopularniejszą taką regułą jest UCB1, na której oparty jest wariant UCT:
+\[
+\mathrm{UCB1}(v) = \frac{w_v}{n_v} + C\sqrt{\frac{\ln n_{\mathrm{parent}}}{n_v}}
+\]
+gdzie $w_v$ to suma wygranych w węźle $v$, $n_v$ to liczba wizyt, a $C$ to stała eksploracji~\cite{Browne2012}.
+\item \textbf{Ekspansja} --- do drzewa dodawany jest jeden lub więcej nowych węzłów potomnych.
+\item \textbf{Symulacja} --- od nowo dodanego węzła prowadzona jest losowa symulacja rozgrywki (ang.~\textit{rollout}) aż do końca gry lub limitu głębokości.
+\item \textbf{Propagacja wsteczna} --- wynik symulacji jest propagowany wstecz do korzenia, aktualizując statystyki odwiedzonych węzłów.
+\end{enumerate}
 
-\subsection{Strategia podejmowania decyzji}
-W każdej turze agent wybiera akcję w sposób zachłanny (ang.~\textit{greedy}). Bot symuluje konsekwencje wszystkich legalnych akcji dostępnych w danym stanie gry i wybiera tę, która prowadzi do stanu o najwyższej wartości funkcji oceny. Jest to strategia odpowiadająca przeszukiwaniu z horyzontem 1, analogiczna do zachowania \textit{GreedyAgent} dostępnego w SabberStone~\cite{sanchez2020}. Różnica polega na tym, że \textit{GreedyAgent} korzysta z uproszczonych, ręcznie zaprojektowanych funkcji oceny zależnych od klasy bohatera, podczas gdy agent parametryczny używa jednolitego, bogatszego zestawu cech, których wagi są wyznaczane ewolucyjnie.
+Po wyczerpaniu budżetu obliczeniowego algorytm zwraca akcję prowadzącą do najczęściej odwiedzanego lub najwyżej ocenianego dziecka korzenia.
 
-\subsection{Trening przez koewolucję}
-Populacja $NP$ agentów (genomów) oceniana jest przez wzajemne rozgrywki wewnątrz populacji w schemacie każdy z każdym (ang.~\textit{round-robin}). Każda para osobników rozgrywa serie partii we wszystkich kombinacjach dostępnych talii. Funkcja przystosowania osobnika to łączna liczba zwycięstw uzyskanych we wszystkich rozegranych partiach. Nie ma tu potrzeby definiowania zewnętrznego przeciwnika referencyjnego --- agenci doskonalą się wyłącznie przez wzajemną rywalizację wewnątrz populacji. Autorzy przetestowali ten schemat z różnymi wariantami algorytmu ewolucyjnego, uzyskując agenta, który w edycji 2018 konkursu zajął 2. miejsce w tabeli wyników ścieżki \textit{Premade Deck Playing Track}~\cite{sanchez2020}.
+\subsection{MCTS w środowisku Hearthstone}
+
+Zastosowanie MCTS w Hearthstone wiąże się z kilkoma wyzwaniami. Santos i in.~\cite{Santos2017} zbadali możliwości standardowego MCTS w tym środowisku, wskazując na ogromną przestrzeń akcji w pojedynczej turze jako główną przeszkodę dla efektywnego budowania drzewa. Częściowa obserwowalność (ukryte karty przeciwnika) i losowe efekty kart uniemożliwiają ponadto budowanie deterministycznego drzewa stanów, co wymaga zastosowania procedury determinizacji lub uśredniania po możliwych stanach ukrytych.
+
+
+\subsection{Bot PredatorMCTS i hybrydowe podejście Świechowskiego}
+
+Kluczową pracą opisującą zastosowanie MCTS w Hearthstone jest praca Świechowskiego, Tajmajera i Janusza~\cite{swiechowski2018}, w której autorzy zbadali wpływ modeli nadzorowanego uczenia maszynowego na skuteczność agentów MCTS. Punktem wyjścia była własna implementacja MCTS przystosowana do środowisk z częściowo ukrytą informacją i losowymi efektami. Autorzy wykazali, że nawet proste sieci neuronowe, wytrenowane na danych z rozgrywek ludzkich graczy, mogą pełnić rolę funkcji oceny stanów planszy (ang.~\textit{value network}) zamiast losowych \textit{rolloutów}. Uzupełnienie algorytmu o \textbf{sieć przewodnika} (ang.~\textit{policy network}) kierującą wyborem akcji --- tak, aby MCTS skupiał się na ruchach obserwowanych u doświadczonych graczy --- pozwoliło podnieść skuteczność agenta przy tym samym budżecie obliczeniowym~\cite{swiechowski2018}. Dane treningowe do modeli predykcyjnych zostały zebrane w ramach wcześniejszego wyzwania AAIA'17 Data Mining Challenge~\cite{Janusz2017}.
+
+Na podobnej zasadzie działał bot \textbf{PredatorMCTS} autorstwa Fricka i Akkaya~\cite{dockhorn2018}, który wygrał edycję 2018 ścieżki \textit{Premade Deck Playing Track}~\cite{hearthstone_competition}. Bot łączył MCTS z modelem predykcji ruchów przeciwnika, a na podstawie obserwacji aktualnego stanu planszy model szacował, które karty i akcje oponent najprawdopodobniej wykona w kolejnej turze. Włączenie tego modelu do procesu symulacji poprawiło jakość decyzji w momentach, gdy wynik zależy od przewidywanej odpowiedzi przeciwnika.
+
+\subsection{MCTS w kolejnych edycjach konkursu}
+
+MCTS utrzymał silną pozycję w kolejnych latach. W edycji 2019 drugie miejsce w \textit{PDPT} zajął bot García-Sáncheza, Marcosa i Fernándeza-Leiva oparty na MCTS, a czwarte --- bot Le i Bornemanna~\cite{hearthstone_competition}. Choe i Kim~\cite{choe2019} pokazali, że redukcja przestrzeni akcji przez grupowanie sekwencji ruchów w jedną \textit{fazę zagrywania} istotnie zmniejsza współczynnik rozgałęzień drzewa i pozwala MCTS działać efektywniej w turach o dużej liczbie możliwych akcji. W edycji 2020 trzecie miejsce zajął bot Romero i Mory oparty na klasycznym MCTS~\cite{hearthstone_competition}, a MCTS po raz pierwszy nie wygrał wtedy ścieżki \textit{Premade Deck Playing Track}, zdominowanej przez lookahead. Mimo tego wcześniejsze zwycięstwa i stabilna obecność w czołówce potwierdzają skuteczność tej klasy metod w Hearthstone.
+
