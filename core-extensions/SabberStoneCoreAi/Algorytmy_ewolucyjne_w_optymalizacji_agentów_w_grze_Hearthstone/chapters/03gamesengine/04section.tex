@@ -1,0 +1,7 @@
+\section{Model obserwacji i symulacji}
+
+Z perspektywy agenta AI stan gry jest udostępniony jedynie częściowo, co odpowiada realistycznym warunkom rozgrywki. Agent widzi pełne informacje o własnych kartach na ręce i jednostkach na planszy, natomiast karty przeciwnika na ręce, jak i w talii, są ukryte --- agent zna jedynie ich liczbę. Stan obu bohaterów, sojusznicze oraz wrogie jednostki na planszy oraz informacje o dostępnych zasobach są widoczne cały czas dla obu stron.
+
+Silnik udostępnia model przejść (ang. \textit{forward model}), pozwalający agentowi symulować przyszłe stany gry bez modyfikowania bieżącego stanu. Dzięki temu można ocenić rezultaty i konsekwencje każdego możliwego ruchu jeszcze przed podjęciem finalnej decyzji. Możliwość oceny konsekwencji ruchu bez modyfikowania bieżącego stanu jest szczególnie istotna dla algorytmów przeszukujących przestrzeń stanów, takich jak MCTS czy minimax \cite{Browne2012}. Część efektów kart jest niedeterministyczna, jak na przykład losowe przydzielanie obrażeń czy losowe efekty zaklęć. Oznacza to, że wielokrotne wywołanie symulacji dla tej samej akcji może zwracać różne wyniki, co należy uwzględnić przy projektowaniu agenta.
+
+Silnik wspiera również natywne klonowanie stanu gry, czyli tworzenie pełnej, niezależnej kopii bieżącej sytuacji na planszy. Jest to ważna operacja dla algorytmów, które równolegle eksplorują wiele gałęzi drzewa gry od tego samego punktu startowego \cite{sabberstone_hearthsim}.

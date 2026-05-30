@@ -1,0 +1,36 @@
+\section{Ewolucja różnicowa}
+\label{sec:de}
+Ewolucja różnicowa (ang. \textit{Differential Evolution} --- DE) to algorytm zaproponowany przez Storna i Price'a w 1997 roku jako prosta i efektywna metaheurystyka do optymalizacji globalnej funkcji opartej na liczbach rzeczywistych \cite{Storn1997}. Pomimo prostoty konceptualnej, DE wielokrotnie zwyciężało w konkursach optymalizacyjnych, stając się jednym z najszerzej stosowanych algorytmów swojej klasy, co dokumentuje obszerna literatura przeglądowa dokonań z ostatnich lat \cite{Bilal2020}.
+
+\subsection{Mechanizm działania}
+Populacja DE składa się z $NP$ osobników $\{\mathbf{x}_{i,G}\}_{i=1}^{NP}$, gdzie $G$ oznacza numer pokolenia, a każdy osobnik jest wektorem $D$-wymiarowym $\mathbf{x}_{i,G} \in \mathbb{R}^D$. Dla każdego \textit{wektora docelowego} $\mathbf{x}_{i,G}$ algorytm wykonuje trzy kroki:
+\begin{enumerate}
+    \item \textbf{Mutacja.} Wybierane są losowo trzy różne osobniki $\mathbf{x}_{r_1}$, $\mathbf{x}_{r_2}$, $\mathbf{x}_{r_3}$ spośród pozostałej populacji. Tworzony jest \textit{wektor mutanta}:
+    \[
+    \mathbf{v}_{i,G} = \mathbf{x}_{r_1,G} + F \cdot (\mathbf{x}_{r_2,G} - \mathbf{x}_{r_3,G})
+    \]
+    gdzie $F \in (0, 2]$ to \textit{współczynnik skalowania}, kontrolujący wielkość zaburzenia. Jest to wariant \texttt{DE/rand/1} --- bazowy schemat algorytmu \cite{Storn1997}. W literaturze spotykane są inne strategie mutacji, m.in. \texttt{DE/best/1} (zamiast losowego $\mathbf{x}_{r_1}$ używany jest najlepszy osobnik) czy \texttt{DE/current-to-best/1}, których własności są szczegółowo omawiane w pracy Bilala i in. \cite{Bilal2020}.
+
+    \item \textbf{Krzyżowanie.} Tworzony jest wektor próbny $\mathbf{u}_{i,G}$ przez binarne krzyżowanie równomierne wektora docelowego $\mathbf{x}_{i,G}$ i wektora mutanta $\mathbf{v}_{i,G}$:
+    \[
+    u_{i,G}^{(j)} =
+    \begin{cases}
+    v_{i,G}^{(j)} & \text{jeśli } \mathrm{rand}(0,1) \leq CR \text{ lub } j = j_{\mathrm{rand}} \\
+    x_{i,G}^{(j)} & \text{w przeciwnym wypadku}
+    \end{cases}
+    \]
+    gdzie $CR \in [0, 1]$ to \textit{współczynnik krzyżowania}, a $j_{\mathrm{rand}}$ to losowy indeks, który gwarantuje, że wektor próbny różni się od docelowego w co najmniej jednej współrzędnej \cite{Storn1997}.
+
+    \item \textbf{Selekcja.} Wektor próbny zastępuje wektor docelowy wyłącznie wtedy, gdy jego wartość funkcji celu jest nie gorsza:
+    \[
+    \mathbf{x}_{i,G+1} =
+    \begin{cases}
+    \mathbf{u}_{i,G} & \text{jeśli } f(\mathbf{u}_{i,G}) \leq f(\mathbf{x}_{i,G}) \\
+    \mathbf{x}_{i,G} & \text{w przeciwnym wypadku}
+    \end{cases}
+    \]
+\end{enumerate}
+
+\subsection{Parametry sterujące}
+
+Skuteczność DE zależy od doboru parametrów: liczebności populacji $NP$, współczynnika skalowania $F$ oraz współczynnika krzyżowania $CR$. Storn i Price wskazują, że dobór tych wartości nie jest szczególnie trudny. Zalecana liczebność populacji wynosi $NP \in [5D, 10D]$, przy czym $NP \geq 4$, aby zapewnić wystarczającą liczbę wzajemnie różnych wektorów do mutacji. Za dobry punkt startowy przyjmuje się $F = 0.5$. Wartości spoza przedziału $[0.4, 1.0]$ są rzadko skuteczne. W przypadku przedwczesnej zbieżności zaleca się zwiększenie $F$ i/lub $NP$. Dla współczynnika krzyżowania rekomendowaną wartością początkową jest $CR = 0.1$, jednak testowanie wysokich wartości ($CR = 0.9$ lub $CR = 1.0$) może przyspieszyć zbieżność \cite{Storn1997}. Wrażliwość na wartości parametrów stała się główną motywacją dla kolejnych badań nad adaptacyjnymi wariantami algorytmu, co szczegółowo dokumentuje przegląd Bilala i in. \cite{Bilal2020}.

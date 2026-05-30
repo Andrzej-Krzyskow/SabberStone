@@ -1,0 +1,243 @@
+\section{Proponowane modyfikacje agentów} \label{sec:modifications}
+
+Funkcja oceny agenta bazowego uwzględnia jedynie cechy bezpośrednio związane ze stronnikami i punktami zdrowia bohatera, pomijając szereg istotnych aspektów stanu gry. Pierwszy wariant
+rozszerza tę funkcję o siedem nowych cech kontekstowych. Wybór cech oparto na analizie mechanik rozgrywki oraz wiedzy eksperckiej autora niniejszej pracy, posiadającego wieloletnie doświadczenie w rozgrywce na poziomie zaawansowanym. Uzasadnienie każdej cechy podano przy jej definicji.
+
+\subsection{Wariant 28 parametrów --- rozszerzony zestaw cech}
+\label{sec:agent28}
+
+Funkcja oceny agenta bazowego uwzględnia jedynie cechy bezpośrednio związane ze stronnikami i statystykami bohatera, nie analizując innych istotnych aspektów stanu gry. Pierwszy wariant rozszerza tę funkcję o siedem nowych cech kontekstowych --- ich wybór uzasadniono przy każdej definicji.
+
+Rozszerzona funkcja oceny przyjmuje postać:
+\begin{equation}
+\begin{split}
+    f_{28}(s, a, \mathbf{w}) =\;&
+        f(s, a, \mathbf{w}) \\
+        +\;& \Delta \text{Br}^{\text{prz}} - \Delta \text{Br}^{\text{wł}}
+        + \Delta \text{Ręka}^{\text{prz}} - \Delta \text{Ręka}^{\text{wł}} \\
+        +\;& \Delta \text{Zak}^{\text{prz}} - \Delta \text{Zak}^{\text{wł}}
+        - \Delta \text{Prz}^{\text{wł}} \\
+        +\;& \Delta \text{Smok}^{\text{prz}} - \Delta \text{Smok}^{\text{wł}}
+        + \Delta \text{Jade}^{\text{prz}} - \Delta \text{Jade}^{\text{wł}} \\
+        +\;& \Delta \text{Pir}^{\text{prz}} - \Delta \text{Pir}^{\text{wł}}
+\end{split}
+    \label{eq:score28}
+\end{equation}
+gdzie $f(s, a, \mathbf{w})$ jest funkcją bazową~\eqref{eq:score}, a nowe składniki zdefiniowane są następująco.
+
+\paragraph{Trwałość broni $\Delta \text{Br}$.}
+
+Broń bohatera jest stałym źródłem obrażeń przez wiele tur --- każde uderzenie zużywa jeden punkt trwałości. Utrata trwałości przez przeciwnika lub utrzymanie własnej broni ma bezpośredni wpływ na tempo (ang.~\textit{tempo}) gry, szczególnie w taliach agresywnych, takich jak AggroPirateWarrior \cite{sanchez2020}. Cecha ta pozwala agentowi doceniać posiadanie broni i karać jej brak.
+\begin{equation}
+    \Delta \text{Br}(p, p', \mathbf{w}) =
+        w_{\text{Br}} \cdot \bigl(\text{wtrz}(p) - \text{wtrz}(p')\bigr)
+\end{equation}
+gdzie $\text{wtrz}(p)$ to trwałość (ang.~\textit{durability}) broni bohatera gracza $p$ (0, jeśli brak broni).
+
+\paragraph{Rozmiar ręki $\Delta \text{Ręka}$.}
+
+Liczba kart w ręce bezpośrednio mierzy dostępność możliwości gracza --- utrata kart przez przeciwnika lub przyrost własnej ręki zwiększa elastyczność strategiczną i liczbę dostępnych opcji decyzyjnych.
+\begin{equation}
+    \Delta \text{Ręka}(p, p', \mathbf{w}) =
+        w_{\text{ręka}} \cdot \bigl(|H_p| - |H_{p'}|\bigr)
+\end{equation}
+gdzie $|H_p|$ to liczba kart w ręce gracza $p$.
+
+\paragraph{Bonus do obrażeń zaklęć $\Delta \text{Zak}$.}
+
+Bonus do obrażeń zaklęć (ang.~\textit{spell damage}) wzmacnia wszystkie zaklęcia zadające obrażenia. Obecność stronników lub artefaktów przyznających ten bonus istotnie zwiększa potencjał ofensywny talii Maga i Szamana, umożliwiając np.\ jednorazowe usunięcie przeciwnych stronników. Śledzenie tej cechy pozwala agentowi premiować pozycje z aktywnym bonusem.
+\begin{equation}
+    \Delta \text{Zak}(p, p', \mathbf{w}) =
+        w_{\text{zak}} \cdot \bigl(\text{zk}(p) - \text{zk}(p')\bigr)
+\end{equation}
+gdzie $\text{zk}(p)$ to aktualny bonus do obrażeń zaklęć gracza (\texttt{CurrentSpellPower}).
+
+\paragraph{Przeciążenie many $\Delta \text{Prz}$.}
+
+Przeciążenie (ang.~\textit{overload}) to mechanika Szamana blokująca część kryształów many w następnej turze. Akcje generujące przeciążenie, pozornie silne w bieżącej turze, mogą okazać się niekorzystne globalnie, gdyż redukują możliwości działania w turze następnej. Brak tej cechy w agencie bazowym oznacza, że agent pomija odroczony koszt bieżących akcji.
+\begin{equation}
+    \Delta \text{Prz}(p, p', \mathbf{w}) =
+        w_{\text{prz}} \cdot \bigl(\text{prz}(p') - \text{prz}(p)\bigr)
+\end{equation}
+gdzie $\text{prz}(p)$ to wartość \texttt{OverloadOwed} gracza $p$. Składnik wchodzi do~\eqref{eq:score28} wyłącznie dla własnego gracza (samoukaranie za akcje generujące przeciążenie).
+
+\paragraph{Smoki w ręce $\Delta \text{Smok}$.}
+
+Wiele kart klas Maga, Kapłana i Wojownika z ekspansji \textit{Whispers of the Old Gods} oraz \textit{Blackrock Mountain} uaktywnia dodatkowe efekty warunkowo --- jeśli gracz trzyma smoka w ręce. Śledzenie liczby smoków w ręce pozwala agentowi uwzględnić gotowość do aktywacji tych synergii.
+\begin{equation}
+    \Delta \text{Smok}(p, p', \mathbf{w}) =
+        w_{\text{smok}} \cdot
+        \bigl(\text{smoki}(p) - \text{smoki}(p')\bigr)
+\end{equation}
+gdzie $\text{smoki}(p)$ to liczba kart rasy smok w ręce gracza.
+
+\paragraph{Postęp Jade Golem $\Delta \text{Jade}$.}
+
+Mechanika Jade Golem (klasy Szaman, Druid, Łotr) polega na przywoływaniu kolejnych golemów o rosnących statystykach: $n$-ty golem ma $n$ punktów ataku oraz $n$ punktów zdrowia. Im wyższy licznik, tym silniejszy jest każdy kolejny golem. Cecha ta modeluje narastającą przewagę długoterminową --- agent powinien premiować akcje zwiększające własny licznik i karać wzrost licznika przeciwnika.
+\begin{equation}
+    \Delta \text{Jade}(p, p', \mathbf{w}) =
+        w_{\text{jade}} \cdot
+        \bigl(\text{jade}(p) - \text{jade}(p')\bigr)
+\end{equation}
+gdzie $\text{jade}(p)$ to licznik \texttt{JadeGolem} gracza $p$.
+
+\paragraph{Synergia piratów $\Delta \text{Pir}$.}
+
+Piraci na planszy wzmacniają akcje --- wiele kart klas Wojownika i Łotra przyznaje dodatkowe obrażenia, efekty lub trwałość broni przy wystawieniu pirata lub posiadaniu go na ręce. Wartość synergii jest dodatkowo podwyższona, gdy bohater posiada aktywną broń, ponieważ piraci bezpośrednio zwiększają jej skuteczność bojową.
+\begin{equation}
+    \text{pir}(p) =
+        |\{m \in B_p : \text{rasa}(m) = \text{pirat}\}|
+        \cdot \bigl(1 + \mathbf{1}[\text{bohater posiada broń}]\bigr)
+\end{equation}
+\begin{equation}
+    \Delta \text{Pir}(p, p', \mathbf{w}) =
+        w_{\text{pir}} \cdot \bigl(\text{pir}(p) - \text{pir}(p')\bigr)
+\end{equation}
+
+Pełny zestaw siedmiu nowych parametrów (indeksy 22--28, kontynuując numerację od tabeli~\ref{tab:weights21}) zestawiono w tabeli~\ref{tab:weights28new}.
+
+\begin{table}[h]
+\centering
+\caption{Nowe parametry wariantu 28 parametrów (indeksy 22--28).}
+\label{tab:weights28new}
+\begin{tabular}{cll}
+\toprule
+Indeks & Oznaczenie & Opis \\
+\midrule
+22 & $w_{\text{Br}}$    & Trwałość broni bohatera \\
+23 & $w_{\text{ręka}}$  & Rozmiar ręki (liczba kart) \\
+24 & $w_{\text{zak}}$   & Bonus do obrażeń zaklęć \\
+25 & $w_{\text{prz}}$   & Przeciążenie many (Szaman) \\
+26 & $w_{\text{smok}}$  & Liczba smoków w ręce \\
+27 & $w_{\text{jade}}$  & Postęp Jade Golem \\
+28 & $w_{\text{pir}}$   & Synergia piratów z bronią \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Wariant 28 parametrów z normalizacją cech}
+\label{sec:agent28norm}
+
+Drugi wariant jest identyczny z wariantem 28 parametrów pod względem struktury i zestawu parametrów, lecz wprowadza \textbf{normalizację} każdej cechy do przedziału $[-1, 1]$ przed pomnożeniem przez wagę.
+
+Bez normalizacji poszczególne cechy mają bardzo różne zakresy wartości --- przykładowo zagregowana wartość stronnika $\nu(m)$ może wynosić nawet kilkaset punktów, podczas gdy zmiana licznika Jade Golem wynosi zazwyczaj co najwyżej~2. Powoduje to, że wagi cech o dużych wartościach bezwzględnych dominują w procesie optymalizacji, utrudniając algorytmowi ewolucyjnemu poprawne oszacowanie względnej ważności poszczególnych cech. Normalizacja wyrównuje skale tak, że każda waga $w_k$ wyraża bezpośrednio \emph{ważność} cechy, niezależnie od jej naturalnej skali liczbowej.
+
+Normalizacja obejmuje 28 cech obliczanych ze zmian stanu gry (różnic między stanami \textit{before}/\textit{after}), natomiast funkcja wartości stronnika $\nu(m, \mathbf{w})$~\eqref{eq:minion_value} pozostaje niezmieniona --- jej składniki (zdrowie, atak, zdolności) nie są normalizowane wewnętrznie, ponieważ $\nu(m, \mathbf{w})$ pełni rolę wagi agregującej, a nie bezpośredniej cechy stanu.
+
+Pułap normalizacyjny $C_k$ dla każdej cechy wyznaczono empirycznie. Przeprowadzono turniej między dwoma agentami bazowymi, rozgrywając $\approx1.08$ milion gier, w których zbierano wartości bezwzględne każdej cechy. Jako $C_k$ przyjęto obserwowane maksimum bezwzględne. Dzięki temu w typowych sytuacjach rozgrywki wartość znormalizowana mieści się w $[-1, 1]$, a wartości ekstremalnie duże (rzadkie) są obcinane do $\pm 1$, nie zaburzając skali.
+
+Niech $\hat{x}_k$ oznacza surową wartość cechy $k$. Normalizacja przyjmuje postać:
+\begin{equation}
+    \tilde{x}_k = \text{sgn}(\hat{x}_k) \cdot \min\!\left(\frac{|\hat{x}_k|}{C_k},\; 1\right)
+    \label{eq:normalize}
+\end{equation}
+gdzie $C_k > 0$ to empiryczny pułap normalizacyjny, a $\tilde{x}_k \in [-1, 1]$. Wartości $C_k$ dla wszystkich 28 cech zestawiono w tabeli~\ref{tab:weights28norm}.
+
+
+\begin{table}[h]
+\centering
+\caption{Parametry wariantu 28 z normalizacją: wszystkie cechy z pułapami normalizacyjnymi $C_k$.}
+\label{tab:weights28norm}
+\begin{tabular}{clc}
+\toprule
+Indeks & Cecha & $C_k$ \\
+\midrule
+1  & Redukcja zdrowia bohatera                & 29{,}0    \\
+2  & Redukcja ataku bohatera                  &  9{,}0    \\
+3  & Redukcja zdrowia stronnika               & 466{,}5   \\
+4  & Redukcja ataku stronnika                 & 826{,}0   \\
+5  & Pojawienie się stronnika                 &  24{,}2   \\
+6  & Zabicie stronnika                        &  27{,}4   \\
+7  & Usunięcie sekretu                        &   1{,}0   \\
+8  & Zużyta mana                              &  10{,}0   \\
+9  & Zdrowie stronnika ($\nu$)                &  17{,}0   \\
+10 & Atak stronnika ($\nu$)                   &  28{,}0   \\
+11 & Zdolność: Szarża                         &   1{,}0   \\
+12 & Zdolność: Deathrattle                    &   1{,}0   \\
+13 & Zdolność: Boska tarcza                   &   1{,}0   \\
+14 & Zdolność: Inspire                        &   1{,}0   \\
+15 & Zdolność: Kradzież życia                 &   1{,}0   \\
+16 & Zdolność: Skradanie                      &   1{,}0   \\
+17 & Zdolność: Prowokacja                     &   1{,}0   \\
+18 & Zdolność: Podwójny atak                  &   1{,}0   \\
+19 & Zdolność: Trujący                        &   1{,}0   \\
+20 & Rzadkość karty stronnika                 &   4{,}0   \\
+21 & Koszt many karty stronnika               &  25{,}0   \\
+22 & Trwałość broni bohatera                  &   8{,}0   \\
+23 & Rozmiar ręki (liczba kart)               &   7{,}0   \\
+24 & Bonus do obrażeń zaklęć                  &  10{,}0   \\
+25 & Przeciążenie many                        &   3{,}0   \\
+26 & Liczba smoków w ręce                     &   4{,}0   \\
+27 & Postęp Jade Golem                        &   2{,}0   \\
+28 & Synergia piratów                         &  14{,}0   \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Wariant 63 parametrów --- trójfazowy agent}
+\label{sec:agent63}
+
+Rozgrywka w Hearthstone przebiega przez trzy jakościowo różne etapy. We wczesnej fazie (tury 1--3) obaj gracze dysponują ograniczoną maną i zagrywają tanie karty, walcząc o kontrolę planszy. Faza środkowa (tury 4--6) charakteryzuje się eskalacją siły stronników i aktywacją kluczowych synergii. W późnej fazie (od tury 7) gracze grają najdroższe, decydujące karty. Agent bazowy stosuje ten sam wektor wag przez całą grę, nie uwzględniając tych jakościowo różnych kontekstów decyzyjnych.
+
+Niniejszy wariant wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiowanej na podstawie numeru tury:
+\begin{equation}
+    \text{faza}(t) =
+    \begin{cases}
+        1 & \text{jeśli } t \leq 3 \\
+        2 & \text{jeśli } 4 \leq t \leq 6 \\
+        3 & \text{jeśli } t > 6
+    \end{cases}
+    \label{eq:phase}
+\end{equation}
+Łączna liczba parametrów wynosi $D = 63 = 21 \times 3$. Wektor wag $\mathbf{w} \in [0,1]^{63}$ jest konkatenacją trzech niezależnych wektorów:
+\begin{equation}
+    \mathbf{w} = \bigl[\mathbf{w}^{(1)} \mid \mathbf{w}^{(2)}
+    \mid \mathbf{w}^{(3)}\bigr], \quad \mathbf{w}^{(i)} \in [0,1]^{21}
+\end{equation}
+
+\subsection{Wariant 63 parametrów z płynnym przejściem}
+\label{sec:agent63smooth}
+
+Niezależna reprezentacja wag faz w wariancie~\ref{sec:agent63} może prowadzić do niespójności na granicach tur --- skoki wartości wag skutkowałyby niestabilną strategią agenta. Przykładowo, jeśli waga prowokacji w fazie~1 wynosi 0,9, a w fazie~2 wynosi 0,1, to po przekroczeniu tury~3 agent nagle przestaje cenić stronniki z prowokacją, co jest nienaturalne z punktu widzenia spójnej strategii.
+
+Niniejszy wariant koduje wagi faz~2 i~3 jako \textbf{deltę względem fazy poprzedniej}, ograniczając wielkość możliwej zmiany do $\pm 0{,}1$ na każdy parametr między kolejnymi fazami. Zamiast optymalizować bezpośrednio wartości wag faz~2 i~3, algorytm ewolucyjny optymalizuje \emph{wielkość zmiany} względem fazy poprzedniej.
+
+Niech $g^{(i)}_k \in [0,1]$ oznacza $k$-ty gen w $i$-tej fazie, a $\mathbf{g} \in [0,1]^{63}$. Dekodowanie wag przyjmuje postać:
+\begin{align}
+    w^{(1)}_k &= g^{(1)}_k
+    \label{eq:smooth1} \\
+    w^{(2)}_k &= \text{clip}\!\left(
+        w^{(1)}_k + \delta_{\min}
+        + g^{(2)}_k \cdot (\delta_{\max} - \delta_{\min}),
+        \; 0,\; 1\right)
+    \label{eq:smooth2} \\
+    w^{(3)}_k &= \text{clip}\!\left(
+        w^{(2)}_k + \delta_{\min}
+        + g^{(3)}_k \cdot (\delta_{\max} - \delta_{\min}),
+        \; 0,\; 1\right)
+    \label{eq:smooth3}
+\end{align}
+gdzie $\delta_{\min} = -0{,}1$, $\delta_{\max} = 0{,}1$, a $\text{clip}(x, 0, 1) = \max(0, \min(1, x))$. Wagi każdej fazy mogą różnić się od wag fazy poprzedniej o co najwyżej $|\Delta w^{(i)}_k| \leq 0{,}1$, co wymusza ciągłość strategii i zawęża przestrzeń poszukiwań.
+
+\subsection{Wariant 21 parametrów z przeszukiwaniem głębokościowym}
+\label{sec:agent21depth}
+
+Agent bazowy stosuje strategię zachłanną z horyzontem 1 --- ocenia akcje wyłącznie na podstawie natychmiastowej zmiany stanu gry, ignorując przyszłe konsekwencje w obrębie bieżącej tury. Tymczasem w Hearthstone wiele silnych kombinacji (ang. \textit{combo}) wymaga wykonania sekwencji akcji, gdzie pierwsza akcja sama w sobie ma niską wartość, ale otwiera możliwość wykonania kolejnej o dużej wartości. Strategia zachłanna jest zatem ślepa na takie kombinacje --- przykładowo, zagranie taniej karty wzmacniającej (ang.~\textit{buff}) przed atakiem stronnika przynosi łącznie wyższy zysk niż sama ocena zagrania wzmocnienia, która bez kontekstu kolejnej akcji wydaje się przeciętna.
+
+Piąty wariant zachowuje bazowy zestaw 21 parametrów, lecz zmienia \textbf{strategię decyzyjną} z zachłannej \eqref{eq:greedy} na przeszukiwanie z wyprzedzeniem (ang. \textit{lookahead}) o stałej głębokości $d = 2$ w obrębie tej samej tury. Wartość akcji $a$ wyznaczana jest rekurencyjnie:
+\begin{equation}
+    F(s, a, \mathbf{w}, d) =
+    \begin{cases}
+        f(s, a, \mathbf{w}) & \text{jeśli } d = 1 \text{ lub koniec tury} \\
+        f(s, a, \mathbf{w}) +
+        \displaystyle\max_{a' \in \mathcal{A}(s')}
+            F(s', a', \mathbf{w}, d-1)
+        & \text{w p.p.}
+    \end{cases}
+    \label{eq:lookahead}
+\end{equation}
+gdzie $s' = T(s, a)$, a warunek \emph{końca tury} zachodzi, gdy akcja $a$ jest akcją zakończenia tury lub gdy po jej wykonaniu tura przechodzi do przeciwnika.
+
+Głębokość $d = 2$ oznacza, że agent ocenia bezpośredni efekt akcji oraz najlepszą możliwą kontynuację w tej samej turze. Złożoność obliczeniowa wynosi $O(|\mathcal{A}(s)|^2)$ na każdą turę, co przy typowej liczbie dostępnych akcji $|\mathcal{A}(s)| \approx 10$--$20$ daje od 100 do 400 wywołań symulatora --- akceptowalny koszt w porównaniu z wariantem głębokości~3, gdzie liczba wywołań wzrasta do~$10^3$--$8\,000$.
+
+Wariant ten nie wprowadza nowych parametrów --- wagi $\mathbf{w}$ pozostają identyczne z agentem bazowym. Zmiana dotyczy wyłącznie sposobu ich wykorzystania: zamiast oceniać każdą akcję w izolacji, agent przeszukuje sekwencje dwóch kolejnych akcji i wybiera tę pierwszą, która prowadzi do najwyższej sumy ocen. Dzięki temu możliwe jest wykrycie kombinacji niewidocznych dla strategii zachłannej, bez zwiększania liczby optymalizowanych parametrów.

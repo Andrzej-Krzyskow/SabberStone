@@ -1,0 +1,158 @@
+\section{Formalizacja agenta bazowego} \label{sec:formalization}
+
+Niniejsza sekcja zawiera formalny opis agenta parametrycznego, będącego podstawą wszystkich modyfikacji. Notację ujednolicono z opisem rozszerzeń przedstawionych w dalszej części pracy. Notacja ta może ona różnić się od notacji stosowanej przez García-Sánchez i in.~\cite{sanchez2020}.
+
+\subsection{Reprezentacja i strategia decyzyjna}
+
+W poniższych wzorach indeks górny $(\cdot)^{\text{wł}}$ odnosi się do gracza, a $(\cdot)^{\text{prz}}$ --- do przeciwnika. Agent przechowuje wektor wag $\mathbf{w} \in [0,1]^D$, gdzie $D$ jest liczbą parametrów danego wariantu. W każdej turze, dla każdej legalnej akcji $a$ dostępnej w stanie $s$, agent symuluje stan wynikowy $s' = T(s, a)$ i oblicza wartość akcji:
+
+\begin{equation}
+    f(s, a, \mathbf{w}) =
+        \Delta H^{\text{prz}} - \Delta H^{\text{wł}}
+        + \Delta M^{\text{prz}} - \Delta M^{\text{wł}}
+        + \Delta S^{\text{prz}} - \Delta S^{\text{wł}}
+        - \Delta \text{mana}
+    \label{eq:score}
+\end{equation}
+
+Następnie agent wybiera akcję o najwyższej wartości:
+\begin{equation}
+    a^* = \arg\max_{a \in \mathcal{A}(s)}\; f(s, a, \mathbf{w})
+    \label{eq:greedy}
+\end{equation}
+gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich legalnych akcji dostępnych
+w stanie $s$. Jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
+
+\subsection{Składniki funkcji oceny}
+
+Każdy składnik równania~\eqref{eq:score} opisuje \textbf{różnicę} pewnej cechy między stanem przed akcją ($s$) a po akcji ($s'$), zawsze z perspektywy gracza, którego cecha ta dotyczy. Wartości dodatnie są korzystne z punktu widzenia gracza wykonującego akcję (tj.\ wzrost $\Delta H^{\text{prz}}$ oznacza, że przeciwnik utracił punkty zdrowia, co jest pożądane).
+
+\paragraph{Zmiana stanu bohatera $\Delta H$.}
+
+Dla bohatera gracza $p$ przed akcją i $p'$ po akcji:
+\begin{equation}
+    \Delta H(p, p', \mathbf{w}) =
+        w_{\text{HP}} \cdot
+        \bigl[(z_p + \text{pan}_p) - (z_{p'} + \text{pan}_{p'})\bigr]
+        + w_{\text{HA}} \cdot
+        \bigl[\text{atk}_p - \text{atk}_{p'}\bigr]
+    \label{eq:delta_h}
+\end{equation}
+gdzie $z_p$ oznacza punkty zdrowia bohatera, $\text{pan}_p$ --- jego pancerz (ang.~\textit{armor}), a $\text{atk}_p$ --- aktualny atak bohatera. Dodatni wynik oznacza, że bohater utracił punkty, co z perspektywy \emph{przeciwnika} jest korzystne.
+
+\paragraph{Funkcja wartości stronnika $\nu$.}
+
+Przed obliczeniem zmiany stanu planszy definiuje się pomocniczą funkcję wartości pojedynczego stronnika $m$. Wprowadza się następujące oznaczenia:
+\begin{itemize}
+    \item $\text{zdr}(m)$ --- punkty zdrowia stronnika,
+    \item $\text{atk}(m)$ --- atak stronnika,
+    \item $\text{koszt}(m)$ --- koszt many karty stronnika,
+    \item $r(m) \in \{0, 1, 2, 3, 4\}$ --- rzadkość karty (brak/zwykła, pospolita, rzadka, epicka, legendarna),
+    \item $\mathbf{1}[\text{posiada}(m, k)]$ --- indykator wskazujący, czy stronnik $m$ posiada zdolność $k$.
+\end{itemize}
+
+\begin{equation}
+    \nu(m, \mathbf{w}) =
+        w_{\text{mH}} \cdot \text{zdr}(m)
+        + w_{\text{mA}} \cdot \text{atk}(m)
+        + \sum_{k \in \mathcal{K}} w_k \cdot \mathbf{1}[\text{posiada}(m, k)]
+        + w_{\text{cost}} \cdot \text{koszt}(m)
+        + w_{\text{rar}} \cdot r(m)
+    \label{eq:minion_value}
+\end{equation}
+
+Zbiór $\mathcal{K}$ zawiera dziewięć zdolności specjalnych stronnika (nazwy polskie zgodne z tabelą~\ref{tab:weights21}):
+\[
+    \mathcal{K} = \{
+        \text{Szarża},\;
+        \text{Deathrattle},\;
+        \text{Boska tarcza},\;
+        \text{Inspire},\;
+        \text{Kradzież życia},\;
+        \text{Skradanie},\;
+        \text{Prowokacja},\;
+        \text{Podwójny atak},\;
+        \text{Trujący}
+    \}
+\]
+
+\paragraph{Zmiana stanu planszy $\Delta M$.}
+
+Niech $B$ i $B'$ oznaczają strefę stronników gracza przed i po akcji. Wyróżnia się trzy klasy zdarzeń:
+\begin{itemize}
+    \item stronnik $m \in B \cap B'$ przeżył --- zmiana zdrowia lub ataku,
+    \item stronnik $m \in B \setminus B'$ zginął,
+    \item stronnik $m \in B' \setminus B$ pojawił się na planszy.
+\end{itemize}
+
+\begin{equation}
+\begin{split}
+    \Delta M(B, B', \mathbf{w}) =\;
+        & \sum_{m \in B \cap B'} \Bigl[
+            w_{\text{HR}} \cdot \Delta\text{zdr}(m) \cdot \nu(m, \mathbf{w})
+            + w_{\text{AR}} \cdot \Delta\text{atk}(m) \cdot \nu(m, \mathbf{w})
+          \Bigr] \\
+        +\; & \sum_{m \in B \setminus B'} w_{\text{kill}} \cdot \nu(m, \mathbf{w}) \\
+        -\; & \sum_{m \in B' \setminus B} w_{\text{app}} \cdot \nu(m, \mathbf{w})
+\end{split}
+    \label{eq:delta_m}
+\end{equation}
+
+gdzie $\Delta\text{zdr}(m) = \text{zdr}_B(m) - \text{zdr}_{B'}(m)$ oraz analogicznie $\Delta\text{atk}(m) = \text{atk}_B(m) - \text{atk}_{B'}(m)$. Trzeci człon jest odejmowany, ponieważ pojawienie się nowego stronnika przeciwnika jest zdarzeniem niekorzystnym.
+
+\paragraph{Zmiana sekretów $\Delta S$.}
+
+\begin{equation}
+    \Delta S(p, p', \mathbf{w}) =
+        w_S \cdot \bigl(|Z^{\text{sek}}_p| - |Z^{\text{sek}}_{p'}|\bigr)
+    \label{eq:delta_s}
+\end{equation}
+gdzie $|Z^{\text{sek}}_p|$ oznacza liczbę aktywnych sekretów gracza $p$.
+
+\paragraph{Koszt many $\Delta\text{mana}$.}
+
+\begin{equation}
+    \Delta\text{mana}(s, s', \mathbf{w}) =
+        w_{\text{mana}} \cdot
+        \bigl(\text{mana}^{\text{rem}}_s - \text{mana}^{\text{rem}}_{s'}\bigr)
+    \label{eq:delta_mana}
+\end{equation}
+gdzie $\text{mana}^{\text{rem}}$ oznacza pozostałą ilość many gracza. Składnik ten jest \emph{odejmowany} w równaniu~\eqref{eq:score}, penalizując akcje o wysokim koszcie many.
+
+\subsection{Wektor wag i genom}
+
+Bazowy agent posiada $D = 21$ parametrów. Pełny wektor wag $\mathbf{w} \in [0,1]^{21}$ zestawiono w tabeli~\ref{tab:weights21}. Wektor $\mathbf{w}$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym. Przestrzeń przeszukiwań to $[0,1]^D$, która to wyznaczana jest przez każdego agenta.
+
+\begin{table}[h]
+\centering
+\caption{Parametry agenta bazowego (21 wag).}
+\label{tab:weights21}
+\begin{tabular}{cll}
+\toprule
+Indeks & Oznaczenie & Opis \\
+\midrule
+1  & $w_{\text{HP}}$            & Redukcja zdrowia bohatera \\
+2  & $w_{\text{HA}}$            & Redukcja ataku bohatera \\
+3  & $w_{\text{HR}}$            & Redukcja zdrowia stronnika \\
+4  & $w_{\text{AR}}$            & Redukcja ataku stronnika \\
+5  & $w_{\text{app}}$           & Pojawienie się stronnika na planszy \\
+6  & $w_{\text{kill}}$          & Zabicie stronnika \\
+7  & $w_S$                      & Usunięcie sekretu \\
+8  & $w_{\text{mana}}$          & Zużyta mana \\
+9  & $w_{\text{mH}}$            & Zdrowie stronnika (wartość ogólna) \\
+10  & $w_{\text{mA}}$           & Atak stronnika (wartość ogólna) \\
+11 & $w_{\text{Charge}}$        & Zdolność: Szarża \\
+12 & $w_{\text{Deathrattle}}$   & Zdolność: Agonia \\
+13 & $w_{\text{DivineShield}}$  & Zdolność: Boska Tarcza \\
+14 & $w_{\text{Inspire}}$       & Zdolność: Inspiracja \\
+15 & $w_{\text{LifeSteal}}$     & Zdolność: Kradzież Życia \\
+16 & $w_{\text{Stealth}}$       & Zdolność: Ukrycie \\
+17 & $w_{\text{Taunt}}$         & Zdolność: Prowokacja \\
+18 & $w_{\text{Windfury}}$      & Zdolność: Furia Wiatru \\
+19 & $w_{\text{Poisonous}}$     & Zdolność: Trucizna \\
+20 & $w_{\text{rar}}$           & Rzadkość stronnika \\
+21 & $w_{\text{cost}}$          & Koszt stronnika \\
+
+\bottomrule
+\end{tabular}
+\end{table}

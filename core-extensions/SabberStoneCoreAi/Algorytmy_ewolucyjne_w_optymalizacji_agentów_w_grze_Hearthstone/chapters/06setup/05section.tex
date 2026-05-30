@@ -1,0 +1,177 @@
+\section{Środowisko eksperymentalne} \label{sec:setup}
+
+Niniejsza sekcja opisuje sprzęt, konfigurację parametrów oraz talie użyte we wszystkich eksperymentach. Opisana konfiguracja stanowi punkt odniesienia dla porównań między wariantami opisanymi w kolejnych sekcjach.
+
+\subsection{Sprzęt i oprogramowanie}
+
+Wszystkie eksperymenty przeprowadzono na serwerze wyposażonym w dwa procesory AMD EPYC 7601 (łącznie 64 rdzenie fizyczne, 128 wątków logicznych), skonfigurowanymi jako jedna jednostka obliczeniowa, z 256 GB pamięci RAM DDR4 (2400 MHz) oraz systemem operacyjnym Windows Server 2019. Rozgrywki symulowano w środowisku SabberStone \cite{sabberstone_github}, który został napisany w języku C\# na platformie .NET Core. Skrypty optymalizacyjne uruchamiano w środowisku Python 3.
+
+Rozgrywki nadają się do trywialnej równoległości (ang. \textit{embarrassingly parallel}) --- każda para agentów może być symulowana w osobnym wątku, co pozwala na wywoływanie walk jednocześnie na 128 wątkach procesora i w pełni obciążyć dostępne rdzenie. Pojedyncze uruchomienie eksperymentu trwało około 9,5 godziny. Wyjątek stanowi wariant z przeszukiwaniem głębokościowym \textit{lookahead}(sekcja~\ref{sec:agent21depth}), który wymagał około 3,5 razy dłuższego czasu, tj. około 33 godzin, z uwagi na wzrost przestrzeni akcji przy głębszym przeszukiwaniu. Z tego powodu uruchamiany był tylko raz, aby wyrównać nakład obliczeniowy w stosunku do innych propozycji.
+
+Łączny orientacyjny czas obliczeniowy wszystkich eksperymentów wyniósł około \textbf{572,81 godzin} ($\approx 23.87$ dni ciągłej pracy serwera). Zestawienie liczby uruchomień poszczególnych wariantów przedstawia tabela \ref{tab:runs}.
+
+\begin{table}[p]
+\centering
+\small
+\caption{Zestawienie uruchomień eksperymentów.} 
+\label{tab:runs}
+\begin{tabular}{llcc}
+\toprule
+Wariant & Schemat oceny & Uruch. & Czas [h] \\
+\midrule
+\multicolumn{4}{l}{\textit{Modyfikacje agenta bazowego (koewolucja, POP\_SIZE = 10)}} \\
+\hspace{1em}28 params        & koewolucja & 3 & 27,71 \\
+\hspace{1em}28 params norm   & koewolucja & 3 & 29,71 \\
+\hspace{1em}63 params        & koewolucja & 3 & 27,09 \\
+\hspace{1em}63 params smooth & koewolucja & 3 & 26,86 \\
+\hspace{1em}21 depth         & koewolucja & 1 & 34.51 \\
+\midrule
+\multicolumn{4}{l}{\textit{Tuning parametru POP\_SIZE dla SHADE}} \\
+\hspace{1em}SHADE koew., POP\_SIZE = 5    & koewolucja   & 2 & 18,81 \\
+\hspace{1em}SHADE koew., POP\_SIZE = 10   & koewolucja   & 2 & 18,14 \\
+\hspace{1em}SHADE koew., POP\_SIZE = 15   & koewolucja   & 2 & 17,83 \\
+\hspace{1em}SHADE HoF, POP\_SIZE = 5      & Hall of Fame & 2 & 18,86 \\
+\hspace{1em}SHADE HoF, POP\_SIZE = 10     & Hall of Fame & 2 & 19,31 \\
+\hspace{1em}SHADE HoF, POP\_SIZE = 15     & Hall of Fame & 2 & 19,37 \\
+\midrule
+\multicolumn{4}{l}{\textit{Testy SHADE na agencie 21 params}} \\
+\hspace{1em}21 params        & SHADE koew.  & 1 & 8.89 \\
+\hspace{1em}21 params        & SHADE HoF    & 1 & 9.70 \\
+\midrule
+\multicolumn{4}{l}{\textit{Warianty SHADE koewolucyjnego (POP\_SIZE = 15)}} \\
+\hspace{1em}28 params        & SHADE koew. & 3 & 27,81 \\
+\hspace{1em}28 params norm   & SHADE koew. & 3 & 29,37 \\
+\hspace{1em}63 params        & SHADE koew. & 3 & 26,57 \\
+\hspace{1em}63 params smooth & SHADE koew. & 3 & 26,42 \\
+\hspace{1em}21 depth         & SHADE koew. & 1 & 30.21 \\
+\midrule
+\multicolumn{4}{l}{\textit{Warianty SHADE z Hall of Fame (POP\_SIZE = 15)}} \\
+\hspace{1em}28 params        & SHADE HoF & 3 & 30.36 \\
+\hspace{1em}28 params norm   & SHADE HoF & 3 & 31.78 \\
+\hspace{1em}63 params        & SHADE HoF & 3 & 29.41 \\
+\hspace{1em}63 params smooth & SHADE HoF & 3 & 29.47 \\
+\hspace{1em}21 depth         & SHADE HoF & 1 & 34.62 \\
+\midrule
+\textbf{Suma} & & \textbf{53} & \textbf{572,81} \\
+\bottomrule
+\end{tabular}
+\end{table}
+\subsection{Parametry algorytmów}
+\label{sec:params}
+
+Parametry algorytmu dla modyfikacji agenta podstawowego (warianty koewolucyjne) przyjęto zgodnie z konfiguracją oryginalnego badania~\cite{sanchez2020}, aby zachować porównywalność wyników i zbadać wyłącznie wpływ samych modyfikacji funkcji oceny. Jedyną zmianą względem oryginału jest zwiększenie parametru odpowiedzialnego za liczbę rdzeni, co wynika  z dostępności wieloprocesorowego serwera. Parametry te zestawiono w tabeli~\ref{tab:params_base}.
+
+\begin{table}[ht]
+\centering
+\caption{Parametry dla modyfikacji agenta bazowego (warianty koewolucyjne).}
+\label{tab:params_base}
+\begin{tabular}{lll}
+\toprule
+Parametr & Wartość & Opis \\
+\midrule
+\texttt{NUM\_GAMES}       & 20           & Liczba partii na parę / na kombinację talii \\
+\texttt{POP\_SIZE}        & 10           & Rozmiar populacji \\
+\texttt{MAX\_EVALUATIONS} & 1000         & Maksymalna liczba ewaluacji osobników \\
+\texttt{NUM\_THREADS}     & 128          & Liczba równoległych wątków symulacji \\
+$D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybranej podczas tuningu (sekcja~\ref{sec:popsize_tuning}). Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, a wynika to z tego, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariance co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
+
+\begin{table}[ht]
+\centering
+\caption{Parametry dla SHADE koewolucyjnego.}
+\label{tab:params_coev}
+\begin{tabular}{lll}
+\toprule
+Parametr & Wartość & Opis \\
+\midrule
+\texttt{NUM\_GAMES}       & 20           & Liczba partii na parę / na kombinację talii \\
+\texttt{POP\_SIZE}        & 15           & Rozmiar populacji (po tuningu) \\
+\texttt{MAX\_EVALUATIONS} & 645          & Maksymalna liczba ewaluacji osobników \\
+\texttt{NUM\_THREADS}     & 128          & Liczba równoległych wątków symulacji \\
+$H$                       & 100          & Maksymalne okno historii parametrów SHADE \\
+$D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Parametry dla SHADE z Hall of Fame.}
+\label{tab:params_hof}
+\begin{tabular}{lll}
+\toprule
+Parametr & Wartość & Opis \\
+\midrule
+\texttt{NUM\_GAMES}          & 20           & Liczba partii na parę / na kombinację talii \\
+\texttt{POP\_SIZE}           & 15           & Rozmiar populacji (po tuningu) \\
+\texttt{MAX\_EVALUATIONS}    & 525          & Maksymalna liczba ewaluacji osobników \\
+\texttt{NUM\_THREADS}        & 128          & Liczba równoległych wątków symulacji \\
+$H$                          & 100          & Maksymalne okno historii parametrów SHADE \\
+$|\mathcal{R}|$              & 29           & Liczba agentów w pliku referencyjnym \\
+$K_{\text{HOF}}$             & 5            & Interwał aktualizacji Hall of Fame [gen.] \\
+$D$                          & 21 / 28 / 63 & Wymiar przestrzeni wag \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Talie eksperymentalne}
+
+Eksperymenty prowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu~\cite{sanchez2020}. Każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \times 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
+
+\paragraph{RenoKazakusMage --- klasa Mag.}
+Talia kontrolna oparta na unikalnej mechanice Kazakusa: każda karta w talii jest unikalna, nie ma swoich duplikatów, co aktywuje zdolność Reno Jacksona, czyli pełne leczenie bohatera. Strategia polega na przeżyciu wczesnej gry, uniemożliwieniu przeciwnikowi rozbudowy planszy i wygraniu poprzez silne zaklęcia w późnej fazie. Talia faworyzuje agentów zarządzających zasobami kosztem agresywnych strategii.
+
+\paragraph{MidrangeJadeShaman --- klasa Szaman.}
+Talia midrange oparta na mechanice Jade Golem --- każdy kolejny przywołany golem ma o 1/1 więcej statystyk niż poprzedni. Strategia łączy wczesną kontrolę planszy z narastającą przewagą w fazie środkowej i końcowej. Mechanika ta wymaga od agenta uwzględnienia wartości stronników w horyzoncie wielu tur, a nie tylko aktualnego stanu planszy.
+
+\paragraph{AggroPirateWarrior --- klasa Wojownik.}
+Talia agresywna oparta na mechanice piratów i synergii z bronią bohatera. Celem jest zadanie jak największych obrażeń bezpośrednio bohaterowi przeciwnika, zanim agresja opadnie i przewaga zasobów przejdzie na stronę przeciwnika. Talia premiuje agentów rozumiejących wartość broni i synergii z piratami.
+
+\begin{table}[p]
+\centering
+\small
+\caption{Składy talii użytych w eksperymentach. Karty posegregowane alfabetycznie. Liczba przy nazwie oznacza liczbę kopii w talii.}
+\label{tab:decklists}
+\begin{tabular}{p{4.8cm} p{4.8cm} p{4.8cm}}
+\toprule
+\textbf{AggroPirateWarrior} & \textbf{MidrangeJadeShaman} & \textbf{RenoKazakusMage} \\
+\textbf{(klasa Wojownik)} & \textbf{(klasa Szaman)} & \textbf{(klasa Mag)} \\
+\midrule
+Arkanitowy Rozpruwacz ×2        & Al'Akir, Władca Wichrów ×1   & Alexstraza ×1 \\
+Elita Kor'kronu ×2              & Aya Czarny Pazur ×1          & Bełkocząca Księga ×1 \\
+Grabieżca Krwawych Żagli ×2     & Barnes ×1                    & Brann Miedziobrody ×1 \\
+Heroiczne Cios ×2               & Błyskawica ×1                & Brudny Szczur ×1 \\
+Kapitan Południowych Mórz ×2    & Burza z Piorunami ×1         & Fala Płomieni ×1 \\
+Kaprawe Oczko ×1                & Istota z Otchłani ×2         & Kozakus ×1 \\
+Korsarz Naga ×2                 & Kaprawe Oczko ×1             & Księga Kabalisty ×1 \\
+Kultystka Krwawych Żagli ×2     & Lazurowy Smokowiec ×2        & Kula Ognia ×1 \\
+Majtek z Południowych Mórz ×2   & Mag Krwi Thalnos ×1          & Kurierka Konfraterni ×1 \\
+Ognisty Wojenny Topór ×2        & Nefrytowa Błyskawica ×2      & Lazurowy Smokowiec ×1 \\
+Pierwszy Mat N'Zotha ×2         & Nefrytowe Pazury ×2          & Lodowa Bariera ×1 \\
+Pomniejszy Bukanier ×2          & Pomniejszy Bukanier ×2       & Lodowy Blok ×1 \\
+Rozjuszony Berserker ×2         & Portal Maelstromu ×2         & Mag Krwi Thalnos ×1 \\
+Sir Płetwin Mrrgglton ×1        & Ragnaros, Władca Ognia ×1    & Pocisk Lodu ×1 \\
+Straszliwy Korsarz ×2           & Totemiczny Golem ×2          & Polimorfia ×1 \\
+Ulepszenie! ×2                  & Totem Ognistego Języka ×2    & Portal Krainy Ognia ×1 \\
+                                & Trogg Tunelarz ×2            & Prorok Zagłady ×1 \\
+                                & Widmowe Pazury ×2            & Reno Jackson ×1 \\
+                                & Zły Urok ×2                  & Sprzedawca Przekąsek ×1 \\
+                                &                              & Sylwana Bieżywiatr ×1 \\
+                                &                              & Szalona Duszomantka ×1 \\
+                                &                              & Tajemny Intelekt ×1 \\
+                                &                              & Tajemny Wybuch ×1 \\
+                                &                              & Technik Kontroli Umysłu ×1 \\
+                                &                              & Wulkaniczna Mikstura ×1 \\
+                                &                              & Zakazany Płomień ×1 \\
+                                &                              & Zamieć ×1 \\
+                                &                              & Zapomniana Pochodnia ×1 \\
+                                &                              & Żrący Bagienny Szlam ×1 \\
+                                &                              & Żywiołak Wody ×1 \\
+\bottomrule
+\end{tabular}
+\end{table}

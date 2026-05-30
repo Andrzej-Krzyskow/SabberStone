@@ -1,0 +1,15 @@
+\section{Paradygmat ewolucyjny}
+
+Algorytmy ewolucyjne (ang. \textit{evolutionary algorithms} --- EA) to rodzina metaheurystyk inspirowanych biologicznym procesem ewolucji przez dobór naturalny. Wspólnym mianownikiem wszystkich algorytmów tej rodziny jest operowanie na \textit{populacji} kandydatów rozwiązań. Następnie te populacje są iteracyjnie polepszane za pomocą \textit{operatorów ewolucyjnych}, takich jak mutacja czy krzyżowanie, oraz \textit{selekcji} faworyzującej osobniki o wyższej wartości funkcji przystosowania (ang. \textit{fitness function}) \cite{Katoch2021}.
+
+Ogólny schemat działania algorytmu ewolucyjnego przebiega następująco:
+\begin{enumerate}
+\item \textbf{Inicjalizacja} --- losowe wygenerowanie początkowej populacji $P_0$ złożonej z $NP$ osobników.
+\item \textbf{Ocena} --- wyznaczenie wartości funkcji przystosowania $f(x_i)$ dla każdego osobnika $x_i \in P_t$.
+\item \textbf{Selekcja i reprodukcja} --- wybór osobników do tworzenia potomstwa na podstawie ich przystosowania.
+\item \textbf{Operatory wariacyjne} --- zastosowanie mutacji i/lub krzyżowania w celu generowania nowych kandydatów rozwiązań.
+\item \textbf{Wymiana pokolenia} --- zastąpienie całości lub części populacji przez potomstwo.
+\item \textbf{Warunek stopu} --- powrót do kroku 2 lub zakończenie po osiągnięciu budżetu ewaluacji bądź kryterium zbieżności.
+\end{enumerate}
+
+Algorytmy ewolucyjne dobrze radzą sobie w sytuacjach, w których klasyczne metody optymalizacji zawodzą. Następuję to np. gdy funkcja celu jest nieróżniczkowalna, silnie nieliniowa, wielomodalna lub gdy jej ocena jest obarczona szumem \cite{Bilal2020}. Poszczególne warianty różnią się reprezentacją osobnika, formą operatorów wariacyjnych oraz strategią selekcji, co sprawia, że rodzina EA jest wyjątkowo różnorodna i szeroko stosowana \cite{TogeliusYannakakis2023}.

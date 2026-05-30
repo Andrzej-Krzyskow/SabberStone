@@ -1,0 +1,39 @@
+\section{Faza III — konfrontacja z agentem zewnętrznym}
+\label{sec:phase3}
+
+Po turnieju głównym fazy II przeprowadzono walidację zewnętrzną. Sprawdzono tutaj, czy przewaga wariantu \textit{21 głębokościowego} nie jest tylko przypadkiem porównań między zaproponowanymi wariantami i czy utrzymuje się także w starciu z agentem spoza eksperymentu. Punktem odniesienia był agent referencyjny z konkursu \textit{Hearthstone AI Competition}~\cite{hearthstone_competition,hearthstoneai_botdownloads_2020}.
+
+Jako benchmark wybrano agenta Sebastiana Millera (\textit{2-Step Lookahead}), zwycięzcę edycji 2020. Agenta Millera nie jest prostym agentem parametrycznym, lecz reprezentuje rodzinę metod przeszukujących sekwencje ruchów, co stawia go wyżej pod względem złożoności decyzyjnej względem .
+
+\subsection{Protokół porównawczy}
+
+Przeprowadzono dwa niezależne turnieje:
+\begin{enumerate}
+    \item wariant \textit{21 głębokościowy} (reprezentant fazy II) przeciwko agentowi Millera,
+    \item agent bazowy 21-parametrowy z wagami publikowanymi przez autorów podejścia referencyjnego~\cite{sabberstone_coreai_results} przeciwko agentowi Millera.
+\end{enumerate}
+
+Protokół pozostał identyczny jak w poprzednich fazach: \(9\) par talii, \(1000\) gier na parę talii dla każdej kolejności graczy, co daje łącznie \(18\,000\) partii na agenta.
+
+\subsection{Wyniki i interpretacja}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{llrrr}
+\toprule
+Agent badany & Przeciwnik & Wygrane & Partie & Odsetek zwycięstw [\%] \\
+\midrule
+21 głębokościowy & Sebastian Miller & 8525 & 18000 & 47.36 \\
+Agent bazowy (wagi publikowane) & Sebastian Miller & 6249 & 18000 & 34.72 \\
+\bottomrule
+\end{tabular}
+\caption{Wyniki fazy III: porównanie wariantu głębokościowego i agenta bazowego względem agenta Sebastiana Millera.}
+\label{tab:phase3-external-benchmark}
+\end{table}
+
+Tabela~\ref{tab:phase3-external-benchmark} pokazuje, że Miller wygrywa oba porównania --- ale skala jego przewagi jest zupełnie inna. Przeciwko wariantowi \textit{21 głębokościowemu} wynosi ona zaledwie \(5{,}28\) p.p., natomiast przeciwko agentowi bazowemu aż \(30{,}56\) p.p.
+
+Różnica ta sporo mówi o wartości zaproponowanej modyfikacji. Przejście od agenta bazowego do wariantu \textit{21 głębokościowego} podnosi skuteczność o \(12{,}64\) p.p. w starciu z tym samym, silnym przeciwnikiem. Wynik nie jest więc przypadkiem porównań wewnętrznych z fazy II, a ma praktycznie przełożenie na rywalizację z zewnętrznym przeciwnikiem.
+
+Z perspektywy pytań badawczych faza III wzmacnia odpowiedź na RQ3: komponent planowania sekwencji akcji jest najważniejszym źródłem poprawy jakości agenta. Jednocześnie wyniki wyznaczają granice obecnej pracy --- mimo wyraźnego postępu, agent konkursowy pozostaje silniejszy, co wskazuje możliwy kierunek dalszego rozwoju.

@@ -1,0 +1,23 @@
+\definecolor{wrLow}{RGB}{178,24,43}
+\definecolor{wrMid}{RGB}{247,247,247}
+\definecolor{wrHigh}{RGB}{33,102,172}
+
+\begin{table}[ht]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Macierz odsetków zwycięstw agent vs agent w turnieju fazy II (wiersze: agent oceniany, kolumny: przeciwnik).}
+\label{tab:phase2-agent-vs-agent-heatmap}
+\begin{tabular}{lrrrrrr}
+\toprule
+Agent & \rotatebox{60}{bazowy 21} & \rotatebox{60}{63 parametry} & \rotatebox{60}{63 płynny} & \rotatebox{60}{28 parametrów} & \rotatebox{60}{28 znormalizowany} & \rotatebox{60}{21 głębokościowy} \\
+\midrule
+bazowy 21 & \cellcolor{black!8}-- & \cellcolor{wrHigh!1}50.2 & \cellcolor{wrLow!5}48.6 & \cellcolor{wrLow!14}46.5 & \cellcolor{wrLow!4}49.0 & \cellcolor{wrLow!47}38.3 \\
+63 parametry & \cellcolor{wrLow!1}49.9 & \cellcolor{black!8}-- & \cellcolor{wrLow!6}48.5 & \cellcolor{wrLow!14}46.5 & \cellcolor{wrLow!4}49.1 & \cellcolor{wrLow!48}37.9 \\
+63 płynny & \cellcolor{wrHigh!5}51.4 & \cellcolor{wrHigh!6}51.6 & \cellcolor{black!8}-- & \cellcolor{wrLow!9}47.7 & \cellcolor{wrLow!2}49.6 & \cellcolor{wrLow!44}38.9 \\
+28 parametrów & \cellcolor{wrHigh!14}53.5 & \cellcolor{wrHigh!14}53.5 & \cellcolor{wrHigh!9}52.3 & \cellcolor{black!8}-- & \cellcolor{wrHigh!10}52.6 & \cellcolor{wrLow!37}40.8 \\
+28 znormalizowany & \cellcolor{wrHigh!4}51.0 & \cellcolor{wrHigh!4}50.9 & \cellcolor{wrHigh!2}50.4 & \cellcolor{wrLow!10}47.4 & \cellcolor{black!8}-- & \cellcolor{wrLow!44}38.9 \\
+21 głębokościowy & \cellcolor{wrHigh!47}61.7 & \cellcolor{wrHigh!48}62.1 & \cellcolor{wrHigh!44}61.1 & \cellcolor{wrHigh!37}59.2 & \cellcolor{wrHigh!44}61.1 & \cellcolor{black!8}-- \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,47 @@
+\chapter{Wprowadzenie}\label{chapter:introduction}
+
+Hearthstone jest reprezentantem kolekcjonerskich gier karcianych, w których decyzje podejmowane są w warunkach niepełnej informacji, dużej liczby możliwych akcji i wysokiej zmienności stanu gry. Te właściwości powodują, że projektowanie skutecznych agentów wymaga rozwiązania problemu reprezentacji stanu gry, oceny jakości pozycji i wyboru ruchu w ograniczonym czasie. W literaturze podkreśla się, że gry tego typu stanowią trudne środowisko badawcze dla sztucznej inteligencji~\cite{hoover2020}.
+
+Motywacją do rozwoju w tym obszarze była inicjatywa \textit{Hearthstone AI Competition}, która dostarczyła platformę porównań i zestaw agentów~\cite{hearthstone_competition}. Część podejść konkursowych opierała się na złożonych mechanizmach przeszukiwania drzewa gry, co utrudnia ich bezpośrednie przeniesienie do prostszych, parametrycznych agentów heurystycznych. W tym kontekście szczególnie wartościowe jest podejście zaproponowane przez García-Sáncheza i in.~\cite{sanchez2020}, w którym agent bazowy optymalizowany jest za pomocą algorytmów ewolucyjnych.
+
+Niniejsza praca rozwija ten kierunek. Główne pytanie brzmi, jak zmodyfikować reprezentację i mechanizm decyzyjny agenta parametrycznego, żeby poprawić jego skuteczność. Badania przeprowadzono w środowisku SabberStone~\cite{sabberstone_github}, które umożliwia replikację eksperymentów turniejowych i porównania między agentami.
+
+\section{Problem badawczy}
+
+Główny problem badawczy można sformułować następująco --- \textit{w jaki sposób zaprojektować i zoptymalizować agenta parametrycznego dla gry Hearthstone, aby uzyskać istotną poprawę skuteczności względem wariantu bazowego i potwierdzić tę poprawę w porównaniu z zewnętrznym agentem konkursowym?}
+
+W praktyce problem ten obejmuje trzy zagadnienia. Po pierwsze, które modyfikacje funkcji oceny stanu planszy rzeczywiście zwiększają jakość decyzji. Po drugie, czy poprawa wynika z liczby parametrów, czy z ich struktury i sposobu użycia. Po trzecie, czy nowszy algorytm optymalizacji --- SHADE --- prowadzi do lepszych wyników niż klasyczna koewolucja.
+
+Znaczenie problemu ma charakter zarówno poznawczy, jak i praktyczny. Z perspektywy naukowej praca dostarcza danych o zależności między reprezentacją agenta, sposobem optymalizacji i wynikiem turniejowym. Z perspektywy praktycznej pozwala wskazać, które modyfikacje mają największą wartość przy ograniczonym budżecie obliczeniowym.
+
+\section{Cele pracy}
+
+Celem pracy jest opracowanie i doświadczalna ocena modyfikacji agenta parametrycznego dla gry Hearthstone oraz doprowadzenie do poprawy skuteczności turniejowej względem rozwiązania bazowego.
+
+Cel główny rozbito na:
+\begin{itemize}
+    \item zaprojektowanie i implementację pięciu modyfikacji agenta bazowego, obejmujących rozszerzenia przestrzeni wag oraz wariant przeszukiwania głębokościowego,
+    \item zastosowanie dwóch wariantów algorytmu SHADE i porównanie ich z klasycznym schematem koewolucyjnym,
+    \item opracowanie trójfazowej procedury eksperymentalnej: selekcji reprezentantów, turnieju głównego i walidacji zewnętrznej,
+    \item analizę wyników z wykorzystaniem statystyk uzyskanych podczas turnieju, przebiegów zbieżności i wykresów wag.
+\end{itemize}
+
+Realizacja powyższych celów umożliwia nie tylko wskazanie najlepszego wariantu, ale też wyjaśnienie, dlaczego dany wariant osiąga przewagę.
+
+\section{Zakres pracy}
+
+Zakres pracy obejmuje projektowanie i analizę agentów heurystycznych w środowisku SabberStone, z naciskiem na metody ewolucyjne i ich adaptacyjne rozszerzenia.
+
+Zakres pracy obejmuje:
+\begin{itemize}
+    \item implementację modyfikacji reprezentacji agenta oraz wariantu głębokościowego,
+    \item optymalizację parametrów z użyciem koewolucji i SHADE,
+    \item eksperymenty turniejowe na ustalonym zbiorze talii,
+    \item analizę wyników ilościowych i jakościowych oraz walidację względem zewnętrznego agenta.
+\end{itemize}
+
+Praca ma następującą strukturę. Rozdział \ref{chapter:hearthstone} przedstawia specyfikę gry Hearthstone oraz wyzwania dla sztucznej inteligencji. Rozdział \ref{chapter:engine} opisuje środowisko eksperymentalne SabberStone. Rozdział \ref{chap:ea} zawiera przegląd metod stosowanych w konkursie Hearthstone AI Competition. Rozdział \ref{chap:sota} omawia podstawy algorytmów ewolucyjnych wykorzystywanych w dalszych badaniach. Rozdział \ref{chap:modifications} formalizuje agenta bazowego, zaproponowane modyfikacje, konfigurację eksperymentów oraz pytania badawcze. Rozdział \ref{chap:results} prezentuje wyniki i omawia rezultaty. Rozdział \ref{chap:conclusions} podsumowuje najważniejsze wnioski i wskazuje kierunki dalszych badań.
+
+\section{Wykorzystanie AI}
+
+W procesie redakcji niniejszej pracy wykorzystano wtyczkę do edytora Overleaf opartą na modelu GPT firmy OpenAI. Narzędzie pełniło funkcję pomocniczą i wspierało poprawę tekstu pod kątem stylistycznym, interpunkcyjnym i gramatycznym. Nie zastępowało pracy autora w zakresie treści merytorycznej, projektowania badań, interpretacji wyników ani formułowania wniosków.

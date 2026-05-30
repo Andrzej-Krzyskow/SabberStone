@@ -1,0 +1,101 @@
+\section{Zastosowanie algorytmu SHADE} \label{sec:shade_application}
+\todo[inline]{opisać czemu użyliśmy SHADE a nie CMA-ES (bo CMA-ES wyamga stałej funkcji celu)}
+
+Każdy z pięciu wariantów agenta opisanych w sekcji~\ref{sec:modifications} był optymalizowany przy użyciu dwóch niezależnych podejść. Pierwsze podejście to \textbf{koewolucja} --- schemat przyjęty zgodnie z podejściem García-Sáncheza i in. \cite{sanchez2020}, w którym osobniki oceniane są nawzajem w obrębie każdej generacji. Drugie podejście to \textbf{algorytm SHADE} z dwoma wariantami schematu ewaluacji: koewolucyjnym oraz z mechanizmem Hall of Fame. Zestawienie obu optymalizatorów na identycznych wariantach reprezentacji pozwala ocenić, czy adaptacyjna regulacja parametrów SHADE przekłada się na wyższy wskaźnik wygranych względem klasycznej koewolucji.
+
+\subsection{Dobór rozmiaru populacji} \label{sec:popsize_tuning}
+
+Przed właściwymi eksperymentami przeprowadzono wstępny dobór rozmiaru populacji \texttt{POP\_SIZE} dla obu wariantów SHADE. Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla bazowego wariantu agenta (21 parametrów) --- łącznie 6 konfiguracji (po 2 niezależne uruchomienia dla każdej wartości). Agentów wytrenowanych w każdej konfiguracji poddano turniejowi w formacie round-robin, rozgrywając 270\,000 gier (2000 na każdą parę kombinacji talii) dla każdego z dwóch wariantów SHADE osobno.
+
+Wyniki turnieju zestawiono w tabeli~\ref{tab:popsize}. W obu wariantach agenci wytrenowani z $\texttt{POP\_SIZE} = 15$ uzyskali najwyższy wskaźnik wygranych --- odpowiednio 52,15\% i 51,65\% (wariant koewolucyjny) oraz 52,30\% i 51,20\% (wariant Hall of Fame), wyraźnie przewyższając konfiguracje z $\texttt{POP\_SIZE} = 5$, które osiągnęły jedynie ok.\ 48\%--50\%. Na podstawie tych wyników przyjęto $\texttt{POP\_SIZE} = 15$ jako wartość bazową dla dalszych eksperymentów przy użyciu SHADE .
+
+\begin{table}[h]
+\centering
+\caption{Wyniki turnieju doboru rozmiaru populacji}  \label{tab:popsize}
+\begin{tabular}{llrrr}
+\toprule
+Wariant & Agent & Wygrane & Gry & Win\% \\
+\midrule
+\multirow{6}{*}{Koewolucyjny}
+    & POP\_SIZE = 5,  uruch.\ 1 & 43\,775 & 90\,000 & 48,64\% \\
+    & POP\_SIZE = 5,  uruch.\ 2 & 43\,312 & 90\,000 & 48,12\% \\
+    & POP\_SIZE = 10, uruch.\ 1 & 45\,824 & 90\,000 & 50,92\% \\
+    & POP\_SIZE = 10, uruch.\ 2 & 43\,663 & 90\,000 & 48,51\% \\
+    & \textbf{POP\_SIZE = 15, uruch.\ 1} & \textbf{46\,938} & \textbf{90\,000} & \textbf{52,15\%} \\
+    & \textbf{POP\_SIZE = 15, uruch.\ 2} & \textbf{46\,488} & \textbf{90\,000} & \textbf{51,65\%} \\
+\midrule
+\multirow{6}{*}{Hall of Fame}
+    & POP\_SIZE = 5,  uruch.\ 1 & 45\,150 & 90\,000 & 50,17\% \\
+    & POP\_SIZE = 5,  uruch.\ 2 & 40\,291 & 90\,000 & 44,77\% \\
+    & POP\_SIZE = 10, uruch.\ 1 & 46\,232 & 90\,000 & 51,37\% \\
+    & POP\_SIZE = 10, uruch.\ 2 & 45\,180 & 90\,000 & 50,20\% \\
+    & \textbf{POP\_SIZE = 15, uruch.\ 1} & \textbf{46\,079} & \textbf{90\,000} & \textbf{51,20\%} \\
+    & \textbf{POP\_SIZE = 15, uruch.\ 2} & \textbf{47\,068} & \textbf{90\,000} & \textbf{52,30\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+\subsection{SHADE koewolucyjny} \label{sec:shade_coev}
+
+W wariancie koewolucyjnym mutanci i rodzice są oceniani łącznie w każdej generacji. Niech $P_t = \{\mathbf{w}_1, \ldots, \mathbf{w}_{NP}\}$ oznacza populację w generacji $t$, a $U_t = \{\mathbf{u}_1, \ldots, \mathbf{u}_{NP}\}$ --- populację mutantów wygenerowanych przez SHADE. Ocena obejmuje jednocześnie oba zbiory w ramach jednego turnieju round-robin:
+\begin{equation}
+    [f_1, \ldots, f_{NP},\; g_1, \ldots, g_{NP}]
+    = \textsc{Eval}(P_t \cup U_t)
+\end{equation}
+gdzie $f_i$ to fitness rodzica $\mathbf{w}_i$, a $g_i$ --- mutanta $\mathbf{u}_i$, obliczone w tej samej puli rozgrywek. Fitness osobnika definiuje się jako łączną liczbę zwycięstw w starciach ze wszystkimi pozostałymi osobnikami w puli:
+
+\begin{equation}
+    \phi(\mathbf{w}_i) = \sum_{\mathbf{w}_j \in P_t \cup U_t,\; j \neq i}
+        \sum_{d_1 \in \mathcal{D}} \sum_{d_2 \in \mathcal{D}}
+        \text{wygr}(\mathbf{w}_i,\; \mathbf{w}_j,\; d_1,\; d_2)
+    \label{eq:fitness_coev}
+\end{equation}
+
+gdzie $\text{wygr}(\mathbf{w}_i, \mathbf{w}_j, d_1, d_2)$ oznacza liczbę partii z zakresu $0$ do $\texttt{NUM\_GAMES}$ wygranych przez agenta $\mathbf{w}_i$ w starciu z $\mathbf{w}_j$, gdy gracz pierwszy używa talii $d_1$, a gracz drugi~--- $d_2$. Selekcja porównuje każdego mutanta z jego rodzicem na jednolitej skali, eliminując błąd wynikający ze stochastyczności środowiska:
+
+\begin{equation}
+    \mathbf{w}_i^{(t+1)} =
+    \begin{cases}
+        \mathbf{u}_i & \text{jeśli } g_i \geq f_i \\
+        \mathbf{w}_i & \text{w p.p.}
+    \end{cases}
+\end{equation}
+
+Niezależnie od wyniku selekcji, wartość fitness rodzica jest aktualizowana do wartości $f_i$ obliczonej w bieżącej generacji. Zapobiega to sytuacji, w której fitness rodziców i mutantów byłby obliczany w różnych pulach rozgrywek, co prowadziłoby do nieporównywalnych wartości i błędnych decyzji selekcyjnych.
+
+\subsection{SHADE z Hall of Fame} \label{sec:shade_hof}
+
+W wariancie z Hall of Fame każdy osobnik oceniany jest względem ustalonego zbioru referencyjnego $\mathcal{R}$. Fitness przyjmuje postać analogiczną do~\eqref{eq:fitness_coev}, lecz suma przebiega po stałym zbiorze przeciwników:
+\begin{equation}
+    \phi_{\mathcal{R}}(\mathbf{w}) =
+        \sum_{\mathbf{r} \in \mathcal{R}}
+        \sum_{d_1 \in \mathcal{D}} \sum_{d_2 \in \mathcal{D}}
+        \text{wins}(\mathbf{w},\; \mathbf{r},\; d_1,\; d_2)
+    \label{eq:fitness_hof}
+\end{equation}
+gdzie $\mathbf{w}$ to oceniany osobnik, a $\mathbf{r}$ --- agent ze zbioru referencyjnego $\mathcal{R}$.
+
+Skład zbioru $\mathcal{R}$ dobierano osobno dla każdego wariantu agenta. Dla wariantów korzystających z 21 parametrów (agent bazowy oraz wariant z przeszukiwaniem głębokościowym) zbiór zainicjalizowano 29 agentami:
+\begin{itemize}
+    \item 20 najlepszych osobników z ostatniej generacji eksperymentu García-Sáncheza i in.~\cite{sanchez2020}, pobranych z repozytorium autorów,
+    \item 3 agentów wytrenowanych przez autora niniejszej pracy (200 generacji, $\texttt{POP\_SIZE} = 8$, $\texttt{NUM\_GAMES} = 8$),
+    \item 6 agentów o losowo zainicjalizowanych wagach.
+\end{itemize}
+Dla wariantów z 28 i 63 parametrami przygotowano osobne zbiory referencyjne, złożone z 20 najlepszych osobników uzyskanych w odpowiadającym wariancie eksperymentów koewolucyjnych, przeprowadzonych przed badaniami wariantów SHADE, 3 agentów wytrenowanych przez autora niniejszej pracy oraz 6 agentów o losowo zainicjalizowanych wagach.
+
+Skład zbioru $\mathcal{R}$ został dobrany tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, zatem zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę fitness między oboma wariantami. Silni przeciwnicy --- wytrenowani wcześniej agenci --- wymuszają presję selekcyjną w kierunku rzeczywiście skutecznych strategii, zapobiegając zbieżności do optimów lokalnych. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile dostarcza algorytmowi wczesnego sygnału: osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. Nadaje to początkowy kierunek poszukiwaniom, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
+
+Co $K_{\text{HOF}} = 5$ generacji wykonywana jest aktualizacja zbioru $\mathcal{R}$. Zastępowany jest ten agent, przeciwko któremu bieżąca populacja zdobyła łącznie najwięcej zwycięstw --- jest on uznawany za najsłabszego i najmniej przydatnego przeciwnika:
+
+\begin{equation}
+    r^* = \arg\max_{\mathbf{r} \in \mathcal{R}}\;
+        \sum_{i=1}^{NP} \text{wins}(\mathbf{w}_i,\; \mathbf{r},\;
+        \cdot,\; \cdot)
+\end{equation}
+\begin{equation}
+    \mathcal{R} \leftarrow
+        (\mathcal{R} \setminus \{r^*\}) \cup
+        \left\{\arg\max_{\mathbf{w} \in P_t}
+        \phi_{\mathcal{R}}(\mathbf{w})\right\}
+\end{equation}
+
+Po każdej aktualizacji $\mathcal{R}$ wszyscy rodzice są ponownie ewaluowani względem nowego zbioru, a zaktualizowane wartości fitness zastępują dotychczasowe w wektorze $\phi$, zapewniając spójność skali przed kolejną generacją mutacji. Dodatkowy koszt tej operacji jest przyczyną niższej wartości \texttt{MAX\_EVALUATIONS} w tym wariancie względem wariantu koewolucyjnego.

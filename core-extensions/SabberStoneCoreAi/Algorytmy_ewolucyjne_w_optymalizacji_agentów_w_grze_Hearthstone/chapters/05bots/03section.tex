@@ -1,0 +1,36 @@
+\section{Monte Carlo Tree Search} \label{sec:mcts}
+
+Monte Carlo Tree Search (MCTS) to rodzina algorytmów przeszukiwania drzewa gry, które łączą systematyczną eksplorację przestrzeni stanów z losowym próbkowaniem wyników rozgrywki. Algorytm doczekał się obszernego przeglądu w pracy Browne'a i in.~\cite{Browne2012}, a jego liczne modyfikacje i zastosowania dokumentuje nowsza analiza Świechowskiego i in.~\cite{Swiechowski2022}.
+
+\subsection{Ogólny schemat MCTS}
+
+Algorytm buduje drzewo stanów gry przez iteracyjne powtarzanie czterech faz~\cite{Browne2012}:
+
+\begin{enumerate}
+\item \textbf{Selekcja} --- poczynając od korzenia, czyli aktualnego stanu gry, algorytm schodzi w dół drzewa według reguły wyboru węzła, która równoważy eksplorację słabo zbadanych gałęzi z eksploatacją dotychczas obiecujących węzłów. Najpopularniejszą taką regułą jest UCB1, na której oparty jest wariant UCT:
+\[
+\mathrm{UCB1}(v) = \frac{w_v}{n_v} + C\sqrt{\frac{\ln n_{\mathrm{parent}}}{n_v}}
+\]
+gdzie $w_v$ to suma wygranych w węźle $v$, $n_v$ to liczba wizyt, a $C$ to stała eksploracji~\cite{Browne2012}.
+\item \textbf{Ekspansja} --- do drzewa dodawany jest jeden lub więcej nowych węzłów potomnych.
+\item \textbf{Symulacja} --- od nowo dodanego węzła prowadzona jest losowa symulacja rozgrywki (ang.~\textit{rollout}) aż do końca gry lub limitu głębokości.
+\item \textbf{Propagacja wsteczna} --- wynik symulacji jest propagowany wstecz do korzenia, aktualizując statystyki odwiedzonych węzłów.
+\end{enumerate}
+
+Po wyczerpaniu budżetu obliczeniowego algorytm zwraca akcję prowadzącą do najczęściej odwiedzanego lub najwyżej ocenianego dziecka korzenia.
+
+\subsection{MCTS w środowisku Hearthstone}
+
+Zastosowanie MCTS w Hearthstone wiąże się z kilkoma nietrywialnymi wyzwaniami. Santos i in.~\cite{Santos2017} zbadali możliwości standardowego MCTS w tym środowisku, wskazując na ogromną przestrzeń akcji w pojedynczej turze jako główną przeszkodę dla efektywnego budowania drzewa. Częściowa obserwowalność (ukryte karty przeciwnika) i losowe efekty kart uniemożliwiają ponadto budowanie deterministycznego drzewa stanów, co wymaga zastosowania procedury determinizacji lub uśredniania po możliwych stanach ukrytych.
+
+
+\subsection{Bot PredatorMCTS i hybrydowe podejście Świechowskiego}
+
+Kluczową pracą opisującą zastosowanie MCTS w Hearthstone jest praca Świechowskiego, Tajmajera i Janusza~\cite{swiechowski2018}, w której autorzy zbadali wpływ modeli nadzorowanego uczenia maszynowego na skuteczność agentów MCTS. Punktem wyjścia była własna implementacja MCTS przystosowana do środowisk z częściowo ukrytą informacją i losowymi efektami. Autorzy wykazali, że nawet proste sieci neuronowe, wytrenowane na danych z rozgrywek ludzkich graczy, mogą pełnić rolę funkcji oceny stanów planszy (ang.~\textit{value network}) zamiast losowych \textit{rolloutów}. Uzupełnienie algorytmu o \textbf{sieć przewodnika} (ang.~\textit{policy network}) kierującą wyborem akcji --- tak, aby MCTS skupiał się na ruchach obserwowanych u doświadczonych graczy --- pozwoliło podnieść skuteczność agenta przy tym samym budżecie obliczeniowym~\cite{swiechowski2018}. Dane treningowe do modeli predykcyjnych zostały zebrane w ramach wcześniejszego wyzwania AAIA'17 Data Mining Challenge~\cite{Janusz2017}.
+
+Na podobnej zasadzie działał bot \textbf{PredatorMCTS} autorstwa Fricka i Akkaya~\cite{dockhorn2018}, który wygrał edycję 2018 ścieżki \textit{Premade Deck Playing Track}~\cite{hearthstone_competition}. Bot łączył MCTS z modelem predykcji ruchów przeciwnika. Na podstawie obserwacji aktualnego stanu planszy model szacował, które karty i akcje oponent najprawdopodobniej wykona w kolejnej turze. Włączenie tego modelu do procesu symulacji poprawiło jakość decyzji w momentach, gdy wynik zależy od przewidywanej odpowiedzi przeciwnika.
+
+\subsection{MCTS w kolejnych edycjach konkursu}
+
+MCTS utrzymał silną pozycję w kolejnych latach. W edycji 2019 drugie miejsce w \textit{PDPT} zajął bot García-Sáncheza, Marcosa i Fernándeza-Leiva oparty na MCTS, a czwarte --- bot Le i Bornemanna~\cite{hearthstone_competition}. Choe i Kim~\cite{choe2019} pokazali natomiast, że redukcja przestrzeni akcji przez grupowanie sekwencji ruchów w jedną \textit{fazę zagrywania} istotnie zmniejsza współczynnik rozgałęzień drzewa i pozwala MCTS działać efektywniej w turach o dużej liczbie możliwych akcji. W edycji 2020 trzecie miejsce zajął bot Romero i Mory oparty na klasycznym MCTS~\cite{hearthstone_competition}. Pomimo że w tej edycji MCTS po raz pierwszy nie wygrał ścieżki \textit{Premade Deck Playing Track}, która została zdominowana przez lookahead, jego wygrana w poprzednich edycjach i stabilna obecność w czołówce potwierdzają skuteczność tej klasy metod w Hearthstone.
+

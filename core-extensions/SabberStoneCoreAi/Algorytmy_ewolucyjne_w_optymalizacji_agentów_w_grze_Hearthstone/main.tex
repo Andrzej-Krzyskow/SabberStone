@@ -1,0 +1,51 @@
+ % !TEX encoding = UTF-8 Unicode
+% !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
+\documentclass[12pt, twoside]{book}
+\input{latex-settings.tex}
+
+\frontmatter
+%check the current front page here:
+%https://wiz.pwr.edu.pl/en/students/thesis
+%and generate pdfs, and save in title_page folder.
+\begin{document}
+
+\includepdf[pages={1}]{title_page/strona_tytułowa.pdf}
+\doublepage
+% Add table of contents
+\pagestyle{tableOfContentStyle}
+% Add abstract
+\pagenumbering{Roman}
+\input{chapters/00abstract/abstract}
+\doublepage
+\tableofcontents 
+\doublepage
+% Set page style 
+\pagestyle{custom}
+\mainmatter
+ 
+% Create chapters:
+\input{chapters/01introduction/introduction}
+\input{chapters/02hearthstone/00main}
+\input{chapters/03gamesengine/00main}
+\input{chapters/04geneticalgorithms/00main}
+\input{chapters/05bots/00main}
+\input{chapters/06setup/00main}
+\input{chapters/07analysis/00main}
+\input{chapters/08conclusion/00main}
+% Redefine plain for 1st bibliography page style
+\resetformatting
+% Please read :
+%https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex
+\pagestyle{bibliographyStyle}
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+\cleardoublepage
+% Add list of figures and tables
+\pagestyle{custom}
+\newpage
+\pagestyle{ListofFiguresStyle}
+\listoffigures
+\newpage
+\pagestyle{ListofTablesStyle}
+\listoftables
+\end{document}
