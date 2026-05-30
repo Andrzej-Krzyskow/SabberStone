@@ -3,14 +3,14 @@
 
 Celem fazy I było wyznaczenie jednego reprezentanta dla każdego z sześciu badanych wariantów agenta. Reprezentant to wektor wag, który uzyskał dobrą jakość w przebiegu optymalizacji i potwierdził ją w procedurze porównawczej opisanej w sekcji~\ref{sec:analysis-scheme}.
 
-Taka selekcja jest istotna z metodologicznego punktu widzenia. W zadaniach koewolucyjnych wynik pojedynczego przebiegu zależy częściowo od składu populacji przeciwników i losowości symulacji. Dwuetapowy turniej --- najpierw wewnątrz każdego schematu optymalizacji, a potem między schematami --- zmniejsza ryzyko wyboru osobnika, który był dobry przypadkowo.
+Taka selekcja jest istotna z metodologicznego punktu widzenia. W zadaniach koewolucyjnych wynik pojedynczego przebiegu zależy częściowo od składu populacji przeciwników i losowości symulacji. Dwuetapowy turniej --- najpierw wewnątrz każdego optymalizatora, a potem między optymalizatorami --- zmniejsza ryzyko wyboru osobnika, który był dobry przypadkowo.
 
-Wyjątek dotyczy wariantu \textit{21 głębokościowego}. Ze względu na około \(3{,}5\)-krotnie dłuższy czas pojedynczego treningu uruchamiano po jednym agencie na schemat optymalizacji, dlatego dla tego wariantu pominięto pierwszy mini-turniej dla tego wariantu.
+Wyjątek dotyczy wariantu \textit{21 głębokościowego}. Ze względu na około \(3{,}5\)-krotnie dłuższy czas pojedynczego treningu uruchamiano po jednym agencie na każdy optymalizator, dlatego dla tego wariantu pominięto pierwszy mini-turniej wewnątrz optymalizatora.
 
 \begin{table}[ht]
 \centering
 \small
-\caption{Reprezentanci wyłonieni w fazie I oraz odpowiadający im zwycięski schemat optymalizacji.}
+\caption{Reprezentanci wyłonieni w fazie I oraz odpowiadający im zwycięski optymalizator.}
 \label{tab:phase1-representatives}
 \begin{tabular}{ll}
 \toprule
@@ -26,9 +26,9 @@ bazowy 21          & SHADE koewolucyjny \\
 \end{tabular}
 \end{table}
 
-Z tabeli \ref{tab:phase1-representatives} wynikają dwie obserwacje. Po pierwsze, SHADE koewolucyjny okazał się najskuteczniejszy dla pięciu spośród sześciu wariantów, co sugeruje, że jest to schemat optymalizacji dobrze dopasowany do większości badanych konfiguracji. Po drugie, dla wariantu głębokościowego lepszy okazał się schemat z Hall of Fame --- co można tłumaczyć tym, że bardziej zróżnicowany zbiór przeciwników jest dla tego wariantu istotniejszy.
+Z tabeli \ref{tab:phase1-representatives} wynikają dwie obserwacje. Po pierwsze, SHADE koewolucyjny okazał się najskuteczniejszy dla pięciu spośród sześciu wariantów, co sugeruje, że jest dobrze dopasowany do większości badanych konfiguracji. Po drugie, dla wariantu głębokościowego lepszy okazał się SHADE z Hall of Fame --- co można tłumaczyć tym, że bardziej zróżnicowany zbiór przeciwników jest dla tego wariantu istotniejszy.
 
 Na tym etapie nie wyciąga się jeszcze wniosków o tym, który wariant agenta jest najlepszy --- faza I dotyczy tylko wyboru reprezentantów. Warto jednak zauważyć, że sama liczba parametrów nie decyduje o jakości agenta --- ważne jest też to, jak była prowadzona optymalizacja.
 
 \paragraph{Wniosek fazy I --- odpowiedź na RQ4.}
-Algorytm koewolucyjny nie wyłonił najlepszego reprezentanta w żadnym z badanych wariantów. We wszystkich sześciu przypadkach zwyciężył jeden z wariantów SHADE zaproponowanych w niniejszej pracy. SHADE koewolucyjny okazał się dominującym schematem (5 z 6 wariantów). Odpowiedź na pytanie badawcze nr 4 (RQ4) jest zatem jednoznaczna: oba warianty SHADE przewyższają algorytm koewolucyjny przy równoważnym budżecie obliczeniowym, choć wybór między nimi zależy od rodzaju modyfikacji agenta.
+Algorytm koewolucyjny nie wyłonił najlepszego reprezentanta w żadnym z badanych wariantów. We wszystkich sześciu przypadkach zwyciężył jeden z wariantów SHADE zaproponowanych w niniejszej pracy. SHADE koewolucyjny okazał się dominujący (5 z 6 wariantów). Odpowiedź na pytanie badawcze nr 4 (RQ4) jest zatem jednoznaczna: oba warianty SHADE przewyższają algorytm koewolucyjny przy równoważnym budżecie obliczeniowym, choć wybór między nimi zależy od rodzaju modyfikacji agenta.

@@ -27,6 +27,8 @@ Rysunki~\ref{fig:weights-v28} i~\ref{fig:weights-v28norm} pokazują, że różni
 
 Normalizacja stabilizuje zachowanie modelu, ale może osłabiać cechy, które w niektórych sytuacjach powinny działać wyraźniej. Wariant z normalizacją zyskuje regularność, ale może tracić część zdolności do silnej reakcji w trudnych stanach gry.
 
+Jedną z prawdopodobnych przyczyn słabszego wyniku wariantu \textit{28 znormalizowany} może być sama metoda wyznaczania maksymalnych progów parametrów. W badaniu pułap dla każdej cechy wyznaczano na podstawie wartości maksymalnej obserwowanej po rozegraniu $\approx1.08$ miliona gier Taki sposób jest wrażliwy na rzadkie anomalie. Pojedynczy, bardzo wysoki odczyt może zawyżyć pułap i w konsekwencji niesprawiedliwie zaniżyć znormalizowane wartości tej wagi. W kolejnych eksperymentach warto rozważyć bardziej odporne podejście, np.\ użycie mediany lub średniej z \(N\) najwyższych obserwacji i obcięcie wartości powyżej tego progu do \(1\).
+
 Najistotniejsze okazały się następujące cechy: \textit{Br}, \textit{Zak}, \textit{Smok} i \textit{Jade}. Te parametry niosą ze sobą jasną informację o planie tury. \textit{Br} zwykle przekłada się na tempo wymian i kontrolę stołu. \textit{Zak} zwiększa wartość sekwencji z zaklęciami, więc pomaga wybierać bardziej opłacalne układy ruchów. \textit{Smok} i \textit{Jade} wzmacniają decyzje związane z synergią talii i planem na kilka tur do przodu.
 
 Mniejsza rola \textit{Prz} i \textit{Pir} wynika z sytuacyjności tych cech --- dają zysk głównie w części układów stołu i części zestawień talii, więc w ujęciu globalnym mają mniejszy wpływ niż cechy, które działają często i szeroko. Z tego powodu model traktuje je jako dodatek, a niekoniecznie jako główny trzon decyzji.
