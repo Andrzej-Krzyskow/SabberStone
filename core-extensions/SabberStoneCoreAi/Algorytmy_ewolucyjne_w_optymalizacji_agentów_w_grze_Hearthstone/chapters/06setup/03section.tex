@@ -5,7 +5,7 @@ Każdy z pięciu wariantów agenta opisanych w sekcji~\ref{sec:modifications} by
 
 \subsection{Dobór rozmiaru populacji} \label{sec:popsize_tuning}
 
-Przed właściwymi eksperymentami przeprowadzono wstępny dobór rozmiaru populacji \texttt{POP\_SIZE} dla obu wariantów SHADE. Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla bazowego wariantu agenta (21 parametrów) --- łącznie 6 konfiguracji (po 2 niezależne uruchomienia dla każdej wartości). Agentów wytrenowanych w każdej konfiguracji poddano turniejowi w formacie round-robin, rozgrywając 270\,000 gier (2000 na każdą parę kombinacji talii) dla każdego z dwóch wariantów SHADE osobno.
+Przed właściwymi eksperymentami przeprowadzono wstępny dobór rozmiaru populacji \texttt{POP\_SIZE} dla obu wariantów SHADE. Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla bazowego wariantu agenta (21 parametrów) --- łącznie 6 konfiguracji (po 2 zestawy wag dla każdej wartości). Agentów wytrenowanych w każdej konfiguracji poddano turniejowi w formacie round-robin, rozgrywając 270\,000 gier (2000 na każdą parę kombinacji talii) dla każdego z dwóch wariantów SHADE osobno.
 
 Wyniki turnieju zestawiono w tabeli~\ref{tab:popsize}. W obu wariantach agenci wytrenowani z $\texttt{POP\_SIZE} = 15$ uzyskali najwyższy wskaźnik wygranych --- odpowiednio 52,15\% i 51,65\% (wariant koewolucyjny) oraz 52,30\% i 51,20\% (wariant Hall of Fame), wyraźnie przewyższając konfiguracje z $\texttt{POP\_SIZE} = 5$, które osiągnęły jedynie ok.\ 48\%--50\%. Na podstawie tych wyników przyjęto $\texttt{POP\_SIZE} = 15$ jako wartość bazową dla dalszych eksperymentów przy użyciu SHADE .
 
@@ -17,20 +17,20 @@ Wyniki turnieju zestawiono w tabeli~\ref{tab:popsize}. W obu wariantach agenci w
 Wariant & Agent & Wygrane & Gry & Win\% \\
 \midrule
 \multirow{6}{*}{Koewolucyjny}
-    & POP\_SIZE = 5,  uruch.\ 1 & 43\,775 & 90\,000 & 48,64\% \\
-    & POP\_SIZE = 5,  uruch.\ 2 & 43\,312 & 90\,000 & 48,12\% \\
-    & POP\_SIZE = 10, uruch.\ 1 & 45\,824 & 90\,000 & 50,92\% \\
-    & POP\_SIZE = 10, uruch.\ 2 & 43\,663 & 90\,000 & 48,51\% \\
-    & \textbf{POP\_SIZE = 15, uruch.\ 1} & \textbf{46\,938} & \textbf{90\,000} & \textbf{52,15\%} \\
-    & \textbf{POP\_SIZE = 15, uruch.\ 2} & \textbf{46\,488} & \textbf{90\,000} & \textbf{51,65\%} \\
+    & POP\_SIZE = 5,  zestaw 1 & 43\,775 & 90\,000 & 48,64\% \\
+    & POP\_SIZE = 5,  zestaw 2 & 43\,312 & 90\,000 & 48,12\% \\
+    & POP\_SIZE = 10, zestaw 1 & 45\,824 & 90\,000 & 50,92\% \\
+    & POP\_SIZE = 10, zestaw 2 & 43\,663 & 90\,000 & 48,51\% \\
+    & \textbf{POP\_SIZE = 15, zestaw 1} & \textbf{46\,938} & \textbf{90\,000} & \textbf{52,15\%} \\
+    & \textbf{POP\_SIZE = 15, zestaw 2} & \textbf{46\,488} & \textbf{90\,000} & \textbf{51,65\%} \\
 \midrule
 \multirow{6}{*}{Hall of Fame}
-    & POP\_SIZE = 5,  uruch.\ 1 & 45\,150 & 90\,000 & 50,17\% \\
-    & POP\_SIZE = 5,  uruch.\ 2 & 40\,291 & 90\,000 & 44,77\% \\
-    & POP\_SIZE = 10, uruch.\ 1 & 46\,232 & 90\,000 & 51,37\% \\
-    & POP\_SIZE = 10, uruch.\ 2 & 45\,180 & 90\,000 & 50,20\% \\
-    & \textbf{POP\_SIZE = 15, uruch.\ 1} & \textbf{46\,079} & \textbf{90\,000} & \textbf{51,20\%} \\
-    & \textbf{POP\_SIZE = 15, uruch.\ 2} & \textbf{47\,068} & \textbf{90\,000} & \textbf{52,30\%} \\
+    & POP\_SIZE = 5,  zestaw 1 & 45\,150 & 90\,000 & 50,17\% \\
+    & POP\_SIZE = 5,  zestaw 2 & 40\,291 & 90\,000 & 44,77\% \\
+    & POP\_SIZE = 10, zestaw 1 & 46\,232 & 90\,000 & 51,37\% \\
+    & POP\_SIZE = 10, zestaw 2 & 45\,180 & 90\,000 & 50,20\% \\
+    & \textbf{POP\_SIZE = 15, zestaw 1} & \textbf{46\,079} & \textbf{90\,000} & \textbf{51,20\%} \\
+    & \textbf{POP\_SIZE = 15, zestaw 2} & \textbf{47\,068} & \textbf{90\,000} & \textbf{52,30\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
