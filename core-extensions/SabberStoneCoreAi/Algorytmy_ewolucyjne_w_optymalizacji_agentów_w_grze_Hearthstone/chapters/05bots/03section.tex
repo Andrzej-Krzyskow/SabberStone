@@ -1,10 +1,10 @@
 \section{Algorytmy lookahead} \label{sec:lookahead}
 
-Algorytmy \textit{lookahead} są prostszą alternatywą dla MCTS. Zamiast budować drzewo przez losowe symulacje, agent systematycznie sprawdza możliwe sekwencje akcji do zadanej głębokości i ocenia stan końcowy za pomocą heurystycznej funkcji oceny~\cite{dockhorn2019}. Podejście to nie wymaga kosztownych \textit{rolloutów}, ale liczba stanów rośnie wykładniczo z głębokością, co w Hearthstone szybko staje się to problemem.
+Algorytmy \textit{lookahead} są prostszą alternatywą dla MCTS. Zamiast budować drzewo przez losowe symulacje, agent systematycznie sprawdza możliwe sekwencje akcji do zadanej głębokości i ocenia stan końcowy za pomocą heurystycznej funkcji oceny~\cite{dockhorn2019}. Podejście to nie wymaga kosztownych \textit{rolloutów}, ale liczba stanów rośnie wykładniczo z głębokością, co w Hearthstone szybko staje się problemem.
 
 \subsection{Greedy: 1-Step Lookahead}
 
-Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej legalnej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{greedy agent} opisanemu w sekcji~\ref{sec:baseline}. Boty tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany bot zachłanny zajął 7. miejsce (win-rate 0{,}570 w UCDT)~\cite{hearthstone_competition}.
+Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej legalnej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Boty tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany bot zachłanny zajął 7. miejsce (win-rate 0{,}570 w UCDT)~\cite{hearthstone_competition}.
 
 \subsection{N-Step Lookahead}
 
@@ -29,4 +29,4 @@ Uzupełnieniem algorytmów lookahead jest modelowanie ruchów przeciwnika, opisa
 
 \subsection{Lookahead a MCTS}
 
-Zarówno MCTS, jak i lookahead wymagają dostępu do modelu przejść (ang.~\textit{forward model}) silnika gry. Kluczowa różnica polega na tym, że MCTS buduje drzewo probabilistycznie, kierując zasoby obliczeniowe na obiecujące gałęzie, podczas gdy lookahead przeszukuje drzewo deterministycznie i wyczerpująco do zadanej głębokości. Wyniki konkursów z lat 2018--2020 pokazują, że lookahead z głębokością 2--3 jest co najmniej równoważny MCTS przy porównywalnym budżecie obliczeniowym, a w edycji 2020 konsekwentnie go przewyższał~\cite{hearthstone_competition, dockhorn2019}.
+Zarówno MCTS, jak i lookahead wymagają dostępu do modelu przejść (ang.~\textit{forward model}) silnika gry. Kluczowa różnica polega na tym, że MCTS buduje drzewo probabilistyczne, kierując zasoby obliczeniowe na obiecujące gałęzie, podczas gdy lookahead przeszukuje drzewo deterministycznie i wyczerpująco do zadanej głębokości. Wyniki konkursów z lat 2018--2020 pokazują, że lookahead z głębokością 2--3 jest co najmniej równoważny MCTS przy porównywalnym budżecie obliczeniowym, a w edycji 2020 konsekwentnie go przewyższał~\cite{hearthstone_competition, dockhorn2019}.

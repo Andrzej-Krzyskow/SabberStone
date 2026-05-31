@@ -21,11 +21,11 @@ Następnie agent wybiera akcję o najwyższej wartości:
     \label{eq:greedy}
 \end{equation}
 gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich legalnych akcji dostępnych
-w stanie $s$ -- jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
+w stanie $s$ --- jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
 
 \subsection{Składniki funkcji oceny}
 
-Każdy składnik równania~\eqref{eq:score} opisuje \textbf{różnicę} pewnej cechy między stanem przed akcją ($s$) a po akcji ($s'$), zawsze z perspektywy gracza, którego cecha ta dotyczy. Wartości dodatnie są korzystne z punktu widzenia gracza wykonującego akcję (tj.\ wzrost $\Delta H^{\text{prz}}$ oznacza, że przeciwnik utracił punkty zdrowia, co jest pożądane).
+Każdy składnik równania~\eqref{eq:score} opisuje \textbf{różnicę} pewnej cechy między stanem przed akcją ($s$) a po akcji ($s'$), zawsze z perspektywy gracza, którego cecha ta dotyczy. Wartości dodatnie są korzystne z punktu widzenia gracza wykonującego akcję (tj. wzrost $\Delta H^{\text{prz}}$ oznacza, że przeciwnik utracił punkty zdrowia, co jest pożądane).
 
 \paragraph{Zmiana stanu bohatera $\Delta H$.}
 
@@ -117,7 +117,7 @@ gdzie $\text{mana}^{\text{rem}}$ oznacza pozostałą ilość many gracza. Skład
 
 \subsection{Wektor wag i genom}
 
-Bazowy agent posiada $D = 21$ parametrów. Pełny wektor wag $\mathbf{w} \in [0,1]^{21}$ zestawiono w tabeli~\ref{tab:weights21}. Wektor $\mathbf{w}$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym. Przestrzeń przeszukiwań to $[0,1]^D$, która to wyznaczana jest przez każdego agenta.
+Bazowy agent posiada $D = 21$ parametrów. Pełny wektor wag $\mathbf{w} \in [0,1]^{21}$ zestawiono w tabeli~\ref{tab:weights21}. Wektor $\mathbf{w}$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym. Przestrzeń przeszukiwań to $[0,1]^D$, która jest wyznaczana przez każdego agenta.
 
 \begin{table}[h]
 \centering

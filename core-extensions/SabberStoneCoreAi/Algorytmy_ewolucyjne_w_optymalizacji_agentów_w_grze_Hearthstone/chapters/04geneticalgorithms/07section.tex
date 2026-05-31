@@ -12,7 +12,7 @@ Po każdym pokoleniu do tablic wpisywana jest ważona średnia Lehmera wartości
 \[
 M_{CR,k} \leftarrow \mathrm{mean}_\mathrm{WL}(S_{CR}), \quad M_{F,k} \leftarrow \mathrm{mean}_\mathrm{WL}(S_F)
 \]
-gdzie wagi proporcjonalne są do poprawy wartości funkcji celu \cite{Tanabe2013SHADE}. Indeks $k$ jest aktualizowany cyklicznie po każdym pokoleniu, od $1$ do $H$. Przechowywanie $H$ niezależnych wartości historycznych, zamiast jednej aktualizowanej średniej jak w JADE, sprawia, że SHADE jest odporniejszy na przedwczesną zbieżność parametrów, szczególnie w przestrzeniach wielomodalnych \cite{Tanabe2013SHADE}.
+gdzie wagi proporcjonalne są do poprawy wartości funkcji celu \cite{Tanabe2013SHADE}. Indeks $k$ jest aktualizowany cyklicznie po każdym pokoleniu, od $1$ do $H$. Przechowywanie $H$ niezależnych wartości historycznych, zamiast jednej aktualizowanej średniej, jak w JADE, sprawia, że SHADE jest odporniejszy na przedwczesną zbieżność parametrów, szczególnie w przestrzeniach wielomodalnych \cite{Tanabe2013SHADE}.
 
 \subsection{L-SHADE --- SHADE z liniową redukcją populacji}
 W 2014 roku Tanabe i Fukunaga zaproponowali rozszerzenie SHADE o mechanizm \textbf{liniowej redukcji liczebności populacji} (ang. \textit{Linear Population Size Reduction} --- LPSR), tworząc wariant L-SHADE \cite{Tanabe2014LSHADE}. Liczebność populacji jest zmniejszana liniowo od wartości początkowej $NP_{\mathrm{init}}$ do minimalnej $NP_{\mathrm{min}}$ w miarę wyczerpywania budżetu ewaluacji:

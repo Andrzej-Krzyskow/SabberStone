@@ -22,7 +22,7 @@ Rozszerzona funkcja oceny przyjmuje postać:
 \end{split}
     \label{eq:score28}
 \end{equation}
-gdzie $f(s, a, \mathbf{w})$ jest funkcją bazową~\eqref{eq:score}, a nowe składniki zdefiniowane są następująco.
+gdzie $f(s, a, \mathbf{w})$ jest funkcją bazową \eqref{eq:score}, a nowe składniki zdefiniowane są następująco.
 
 \paragraph{Trwałość broni $\Delta \text{Br}$.}
 
@@ -31,7 +31,7 @@ Broń bohatera jest stałym źródłem obrażeń przez wiele tur --- każde uder
     \Delta \text{Br}(p, p', \mathbf{w}) =
         w_{\text{Br}} \cdot \bigl(\text{wtrz}(p) - \text{wtrz}(p')\bigr)
 \end{equation}
-gdzie $\text{wtrz}(p)$ to trwałość (ang.~\textit{durability}) broni bohatera gracza $p$ (0, jeśli brak broni).
+gdzie $\text{wtrz}(p)$ to trwałość (ang.~\textit{durability}) broni bohatera gracza $p$ (0, jeśli brakuje broni).
 
 \paragraph{Rozmiar ręki $\Delta \text{Ręka}$.}
 
@@ -44,7 +44,7 @@ gdzie $|H_p|$ to liczba kart w ręce gracza $p$.
 
 \paragraph{Bonus do obrażeń zaklęć $\Delta \text{Zak}$.}
 
-Bonus do obrażeń zaklęć (ang.~\textit{spell damage}) wzmacnia wszystkie zaklęcia zadające obrażenia. Obecność stronników lub artefaktów przyznających ten bonus zwiększa potencjał ofensywny talii Maga i Szamana, umożliwiając np.\ jednorazowe usunięcie przeciwnych stronników. Śledzenie tej cechy pozwala agentowi premiować pozycje z aktywnym bonusem.
+Bonus do obrażeń zaklęć (ang.~\textit{spell damage}) wzmacnia wszystkie zaklęcia zadające obrażenia. Obecność stronników lub artefaktów przyznających ten bonus zwiększa potencjał ofensywny talii Maga i Szamana, umożliwiając np. jednorazowe usunięcie przeciwnych stronników. Śledzenie tej cechy pozwala agentowi premiować pozycje z aktywnym bonusem.
 \begin{equation}
     \Delta \text{Zak}(p, p', \mathbf{w}) =
         w_{\text{zak}} \cdot \bigl(\text{zk}(p) - \text{zk}(p')\bigr)
@@ -53,7 +53,7 @@ gdzie $\text{zk}(p)$ to aktualny bonus do obrażeń zaklęć gracza (\texttt{Cur
 
 \paragraph{Przeciążenie many $\Delta \text{Prz}$.}
 
-Przeciążenie (ang.~\textit{overload}) to mechanika Szamana blokująca część kryształów many w następnej turze. Akcje generujące przeciążenie, pozornie silne w bieżącej turze, mogą okazać się niekorzystne globalnie, gdyż redukują możliwości działania w turze następnej. Brak tej cechy w agencie bazowym oznacza, że agent pomija odroczony koszt bieżących akcji.
+Przeciążenie (ang. \textit{overload}) to mechanika Szamana blokująca część kryształów many w następnej turze. Akcje generujące przeciążenie, pozornie silne w bieżącej turze, mogą okazać się niekorzystne globalnie, gdyż redukują możliwości działania w turze następnej. Brak tej cechy w agencie bazowym oznacza, że agent pomija odroczony koszt bieżących akcji.
 \begin{equation}
     \Delta \text{Prz}(p, p', \mathbf{w}) =
         w_{\text{prz}} \cdot \bigl(\text{prz}(p') - \text{prz}(p)\bigr)
@@ -119,7 +119,7 @@ Indeks & Oznaczenie & Opis \\
 
 Drugi wariant jest identyczny z wariantem 28 parametrów pod względem struktury i zestawu parametrów, ale wprowadza \textbf{normalizację} każdej cechy do przedziału $[-1, 1]$ przed pomnożeniem przez wagę.
 
-Bez normalizacji poszczególne cechy mają bardzo różne zakresy wartości --- przykładowo zagregowana wartość stronnika $\nu(m)$ może wynosić nawet kilkaset punktów, podczas gdy zmiana licznika Jade Golem zwykle wynosi co najwyżej~2. To powoduje, że wagi cech o dużych wartościach bezwzględnych dominują w procesie optymalizacji i utrudniają poprawne oszacowanie względnej ważności cech. Normalizacja wyrównuje skale tak, że każda waga $w_k$ wyraża bezpośrednio \emph{ważność} cechy, niezależnie od jej naturalnej skali liczbowej.
+Bez normalizacji poszczególne cechy mają bardzo różne zakresy wartości --- przykładowo agregowana wartość stronnika $\nu(m)$ może wynosić nawet kilkaset punktów, podczas gdy zmiana licznika Jade Golem zwykle wynosi co najwyżej 2. To powoduje, że wagi cech o dużych wartościach bezwzględnych dominują w procesie optymalizacji i utrudniają poprawne oszacowanie względnej ważności cech. Normalizacja wyrównuje skale tak, że każda waga $w_k$ wyraża bezpośrednio \emph{ważność} cechy, niezależnie od jej naturalnej skali liczbowej.
 
 Normalizacja obejmuje 28 cech obliczanych ze zmian stanu gry (różnic między stanami \textit{before}/\textit{after}), natomiast funkcja wartości stronnika $\nu(m, \mathbf{w})$~\eqref{eq:minion_value} pozostaje niezmieniona --- jej składniki (zdrowie, atak, zdolności) nie są normalizowane wewnętrznie, ponieważ $\nu(m, \mathbf{w})$ pełni rolę wagi agregującej, a nie bezpośredniej cechy stanu.
 
@@ -221,7 +221,7 @@ gdzie $\delta_{\min} = -0{,}1$, $\delta_{\max} = 0{,}1$, a $\text{clip}(x, 0, 1)
 \subsection{Wariant 21 parametrów z przeszukiwaniem głębokościowym}
 \label{sec:agent21depth}
 
-Agent bazowy stosuje strategię zachłanną z horyzontem 1 --- ocenia akcje wyłącznie na podstawie natychmiastowej zmiany stanu gry, ignorując przyszłe konsekwencje w obrębie bieżącej tury. Tymczasem w Hearthstone wiele silnych kombinacji (ang. \textit{combo}) wymaga wykonania sekwencji akcji, gdzie pierwsza akcja sama w sobie ma niską wartość, ale otwiera możliwość wykonania kolejnej o dużej wartości. Strategia zachłanna jest zatem ślepa na takie kombinacje --- przykładowo, zagranie taniej karty wzmacniającej (ang.~\textit{buff}) przed atakiem stronnika przynosi łącznie wyższy zysk niż sama ocena zagrania wzmocnienia, która bez kontekstu kolejnej akcji wydaje się przeciętna.
+Agent bazowy stosuje strategię zachłanną z horyzontem 1 --- ocenia akcje wyłącznie na podstawie natychmiastowej zmiany stanu gry, ignorując przyszłe konsekwencje w obrębie bieżącej tury. Tymczasem w Hearthstone wiele silnych kombinacji (ang. \textit{combo}) wymaga wykonania sekwencji akcji, gdzie pierwsza akcja sama w sobie ma niską wartość, ale otwiera możliwość wykonania kolejnej o dużej wartości. Strategia zachłanna jest zatem ślepa na takie kombinacje --- przykładowo, zagranie taniej karty wzmacniającej (ang. \textit{buff}) przed atakiem stronnika przynosi łącznie wyższy zysk niż sama ocena zagrania wzmocnienia, która bez kontekstu kolejnej akcji wydaje się przeciętna.
 
 Piąty wariant zachowuje bazowy zestaw 21 parametrów, lecz zmienia \textbf{strategię decyzyjną} z zachłannej \eqref{eq:greedy} na przeszukiwanie z wyprzedzeniem (ang. \textit{lookahead}) o stałej głębokości $d = 2$ w obrębie tej samej tury. Wartość akcji $a$ wyznaczana jest rekurencyjnie:
 \begin{equation}

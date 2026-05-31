@@ -4,7 +4,7 @@ Strategie ewolucyjne (ang. \textit{evolution strategies} --- ES) to gałąź alg
 \[
 x_i' = x_i + \mathcal{N}(0, \sigma_i^2)
 \]
-gdzie $\sigma_i$ to odchylenie standardowe, zwane \textit{wielkością kroku} (ang. \textit{step size}). Ważną cechą strategii ewolucyjnych jest \textbf{samodostosowywanie} parametrów mutacji --- wektory $\boldsymbol{\sigma}$ są optymalizowane równolegle z samym rozwiązaniem, co pozwala to algorytmowi dostosowywać kierunek i skalę poszukiwań do lokalnej geometrii przestrzeni funkcji celu \cite{Hansen2016CMA}.
+gdzie $\sigma_i$ to odchylenie standardowe, zwane \textit{wielkością kroku} (ang. \textit{step size}). Ważną cechą strategii ewolucyjnych jest \textbf{samodostosowywanie} parametrów mutacji --- wektory $\boldsymbol{\sigma}$ są optymalizowane równolegle z samym rozwiązaniem, co pozwala algorytmowi dostosowywać kierunek i skalę poszukiwań do lokalnej geometrii przestrzeni funkcji celu \cite{Hansen2016CMA}.
 
 Strategie ewolucyjne określa się za pomocą notacji $(\mu + \lambda)$ lub $(\mu, \lambda)$, gdzie $\mu$ oznacza liczbę rodziców, a $\lambda$ liczbę potomków. W wariancie $(\mu + \lambda)$ selekcja obejmuje zarówno rodziców, jak i potomstwo (podejście elitarne), natomiast w wariancie $(\mu, \lambda)$ populacja rodziców jest w całości zastępowana przez potomstwo, co sprzyja eksploracji \cite{Hansen2016CMA}.
 

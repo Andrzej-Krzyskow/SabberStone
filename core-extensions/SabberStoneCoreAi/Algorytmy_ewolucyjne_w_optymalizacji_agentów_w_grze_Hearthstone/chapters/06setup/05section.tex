@@ -78,7 +78,7 @@ $D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 \end{tabular}
 \end{table}
 
-Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybranej podczas tuningu (sekcja~\ref{sec:popsize_tuning}). Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, a wynika to z tego, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariance co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
+Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybranej podczas tuningu (sekcja~\ref{sec:popsize_tuning}). Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, a wynika to z tego, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
 
 \begin{table}[ht]
 \centering
@@ -121,7 +121,7 @@ $D$                          & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 
 \subsection{Talie eksperymentalne}
 
-Eksperymenty przeprowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu~\cite{sanchez2020}, a każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \times 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
+Eksperymenty przeprowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu \cite{sanchez2020}, a każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \times 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
 
 \paragraph{RenoKazakusMage --- klasa Mag.}
 Jest to talia skupiająca uwagę na kontroli planszy i opiera się na unikalnej mechanice Kazakusa --- każda karta w talii jest unikalna, nie ma swoich duplikatów, co aktywuje zdolność Reno Jacksona, czyli pełne leczenie bohatera. Strategia polega na przeżyciu wczesnej gry, uniemożliwieniu przeciwnikowi rozbudowy planszy i wygraniu poprzez silne zaklęcia w późnej fazie. Talia faworyzuje agentów zarządzających zasobami kosztem agresywnych strategii.

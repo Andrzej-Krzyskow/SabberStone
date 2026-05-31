@@ -49,7 +49,7 @@ gdzie $f_i$ to fitness rodzica $\mathbf{w}_i$, a $g_i$ --- mutanta $\mathbf{u}_i
     \label{eq:fitness_coev}
 \end{equation}
 
-gdzie $\text{wygr}(\mathbf{w}_i, \mathbf{w}_j, d_1, d_2)$ oznacza liczbę partii z zakresu $0$ do $\texttt{NUM\_GAMES}$ wygranych przez agenta $\mathbf{w}_i$ w starciu z $\mathbf{w}_j$, gdy gracz pierwszy używa talii $d_1$, a gracz drugi~--- $d_2$. Selekcja porównuje każdego mutanta z jego rodzicem na jednolitej skali, eliminując błąd wynikający ze stochastyczności środowiska:
+gdzie $\text{wygr}(\mathbf{w}_i, \mathbf{w}_j, d_1, d_2)$ oznacza liczbę partii z zakresu $0$ do $\texttt{NUM\_GAMES}$ wygranych przez agenta $\mathbf{w}_i$ w starciu z $\mathbf{w}_j$, gdy gracz pierwszy używa talii $d_1$, a gracz drugi --- $d_2$. Selekcja porównuje każdego mutanta z jego rodzicem na jednolitej skali, eliminując błąd wynikający ze stochastyczności środowiska:
 
 \begin{equation}
     \mathbf{w}_i^{(t+1)} =
@@ -63,7 +63,7 @@ Niezależnie od wyniku selekcji, wartość fitness rodzica jest aktualizowana do
 
 \subsection{SHADE z Hall of Fame} \label{sec:shade_hof}
 
-W wariancie z Hall of Fame każdy osobnik oceniany jest względem ustalonego zbioru referencyjnego $\mathcal{R}$. Fitness przyjmuje postać analogiczną do~\eqref{eq:fitness_coev}, lecz suma przebiega po stałym zbiorze przeciwników:
+W wariancie z Hall of Fame każdy osobnik oceniany jest względem ustalonego zbioru referencyjnego $\mathcal{R}$. Fitness przyjmuje postać analogiczną do \eqref{eq:fitness_coev}, lecz suma przebiega po stałym zbiorze przeciwników:
 \begin{equation}
     \phi_{\mathcal{R}}(\mathbf{w}) =
         \sum_{\mathbf{r} \in \mathcal{R}}
@@ -81,7 +81,7 @@ Skład zbioru $\mathcal{R}$ dobierano osobno dla każdego wariantu agenta. Dla w
 \end{itemize}
 Dla wariantów z 28 i 63 parametrami przygotowano osobne zbiory referencyjne, złożone z 20 najlepszych osobników uzyskanych w odpowiadającym wariancie eksperymentów koewolucyjnych, przeprowadzonych przed badaniami wariantów SHADE, 3 agentów wytrenowanych na lokalnej maszynie przez autora niniejszej pracy oraz 6 agentów o losowo zainicjalizowanych wagach.
 
-Skład zbioru $\mathcal{R}$ dobrano tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, więc zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę fitness między obiema wersjami. Silni przeciwnicy --- wytrenowani wcześniej agenci --- zwiększają presję selekcyjną w kierunku skutecznych strategii i ograniczają zbieżność do optimów lokalnych. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile daje algorytmowi wczesny sygnał do nauki, a osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. To porządkuje poszukiwania, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
+Skład zbioru $\mathcal{R}$ dobrano tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, więc zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę fitness między obiema wersjami. Silni przeciwnicy — wytrenowani wcześniej agenci — zwiększają presję selekcyjną w kierunku skutecznych strategii i ograniczają zbieżność do optima lokalnego. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile daje algorytmowi wczesny sygnał do nauki, a osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. To porządkuje poszukiwania, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
 
 Co $K_{\text{HOF}} = 5$ generacji wykonywana jest aktualizacja zbioru $\mathcal{R}$. Zastępowany jest ten agent, przeciwko któremu bieżąca populacja zdobyła łącznie najwięcej zwycięstw --- jest on uznawany za najsłabszego i najmniej przydatnego przeciwnika:
 

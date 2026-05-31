@@ -12,11 +12,11 @@ Wyniki potwierdzają, że połączenie adaptacyjnej optymalizacji ewolucyjnej z 
 
 \section*{Abstract}
 
-This thesis focuses on optimizing Hearthstone agents using evolutionary algorithms. The starting point is a baseline agent built on a parametric game-state evaluation function. The study checks whether modifications to the agent's representation and decision process improve tournament performance, and whether adaptive SHADE outperforms classical coevolution.
+This thesis focuses on optimizing Hearthstone agents using evolutionary algorithms. The starting point is a baseline agent built on a parametric game-state evaluation function. The study checks whether modifications to the agent's representation and decision process improve tournament performance and whether adaptive SHADE outperforms classical coevolution.
 
-Five variants were designed and evaluated: a 28-parameter extension, a normalized 28-parameter variant, a 63-parameter phased variant, a smooth 63-parameter phased variant, and a 21-parameter depth-based lookahead variant. Evaluation was organized into three stages. The first was representative selection, the second was a main tournament across all variants, and finally the best agent was compared against Sebastian Miller's \textit{2-Step Lookahead} --- the winner of the 2020 Hearthstone AI Competition.
+Five variants were designed and evaluated: a 28-parameter extension, a normalized 28-parameter variant, a 63-parameter phased variant, a smooth 63-parameter phased variant, and a 21-parameter depth-based lookahead variant. Evaluation was organized into three stages. The first was representative selection, the second was a main tournament across all variants, and finally, the best agent was compared against Sebastian Miller's \textit{2-Step Lookahead} --- the winner of the 2020 Hearthstone AI Competition.
 
-The 21-parameter depth-based variant achieved the best main-tournament result. Convergence and weight-profile analyses indicated that most of the quality gain comes from changing the decision procedure, not only from adding more evaluation features. In SHADE tuning, the most stable behavior was obtained for population size 15. In external validation, the depth-based variant performed clearly better against Sebastian Miller's agent than the baseline.
+The 21-parameter depth-based variant achieved the best main-tournament result. Convergence and weight-profile analyzes indicated that most of the quality gain comes from changing the decision procedure, not only from adding more evaluation features. In SHADE tuning, the most stable behavior was obtained for a population size of 15. In external validation, the depth-based variant performed clearly better against Sebastian Miller's agent than the baseline.
 
 Overall, the results support combining adaptive evolutionary optimization with depth-based planning for building agents in imperfect-information collectible card games.
 

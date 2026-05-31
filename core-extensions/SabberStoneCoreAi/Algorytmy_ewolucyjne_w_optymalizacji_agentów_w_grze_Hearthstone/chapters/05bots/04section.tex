@@ -1,14 +1,14 @@
 \section{Inne wybrane podejścia}
 
-Poza ewolucją i metodami przeszukiwania drzewa gry uczestnicy konkursu stosowali także inne techniki.
+Poza ewolucją i metodami przeszukiwania drzewa gry, uczestnicy konkursu stosowali także inne techniki.
 
 \subsection{Alpha-Beta i Minimax}
 
-Klasyczne podejście z teorii gier --- przeszukiwanie Minimax z przycinaniem Alfa-Beta --- zostało zaadaptowane do Hearthstone przez Wulfmeyera, który zajął 5. miejsce w edycji 2018 \cite{hearthstone_competition}. Wyzwaniem jest tu losowość mechanik gry: Minimax zakłada deterministyczność, więc losowe efekty kart wymagają uśredniania (ang.~\textit{expectimax}) lub przybliżenia deterministycznego. W edycji 2019 Sparks i Djartov posłużyli się agentem opartym na Min-Max, a w 2020 bot Lamprechta Mini-Max Search zajął 12. miejsce~\cite{hearthstone_competition}.
+Klasyczne podejście z teorii gier --- przeszukiwanie Minimax z przycinaniem Alfa-Beta --- zostało zaadaptowane do Hearthstone przez Wulfmeyera, który zajął 5. miejsce w edycji 2018 \cite{hearthstone_competition}. Wyzwaniem jest tu losowość mechanik gry: Minimax zakłada deterministyczność, więc losowe efekty kart wymagają uśredniania (ang. \textit{expectimax}) lub przybliżenia deterministycznego. W edycji 2019 Sparks i Djartov posłużyli się agentem opartym na Min-Max, a w 2020 bot Lamprechta Mini-Max Search zajął 12. miejsce \cite{hearthstone_competition}.
 
 \subsection{Beam Search i BFS}
 
-Beam Search --- uproszczenie przeszukiwania wszerz zachowujące tylko $k$ najobiecujących ścieżek --- pojawił się w edycji 2019 w agencie Bokelmanna i Unkringa oraz w edycji 2020 w agencie Ortlama. Pokrewnym podejściem jest BFS stosowane przez Heberta i Hecka w edycji 2019. Podejścia te redukują złożoność pamięciową przeszukiwania kosztem utraty gwarancji optymalności~\cite{hearthstone_competition}.
+Beam Search --- uproszczenie przeszukiwania wszerz, zachowujące tylko $k$ najobiecujących ścieżek --- pojawił się w edycji 2019 w agencie Bokelmanna i Unkringa oraz w edycji 2020 w agencie Ortlama. Pokrewnym podejściem jest BFS stosowane przez Heberta i Hecka w edycji 2019. Podejścia te redukują złożoność pamięciową przeszukiwania kosztem utraty gwarancji optymalności~\cite{hearthstone_competition}.
 
 \subsection{Sieci neuronowe i uczenie maszynowe}
 

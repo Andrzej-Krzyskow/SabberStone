@@ -1,6 +1,6 @@
 \section{Model obserwacji i symulacji}
 
-Stan gry dla agenta jest udostępniony jedynie częściowo, co odpowiada realistycznym warunkom rozgrywki --- agent widzi pełne informacje o własnych kartach na ręce i jednostkach na planszy, natomiast karty przeciwnika na ręce, jak i w talii, są ukryte i agent zna jedynie ich liczbę. Stan obu bohaterów, sojusznicze oraz wrogie jednostki na planszy oraz informacje o dostępnych zasobach są widoczne przez cały czas dla obu stron.
+Stan gry dla agenta jest udostępniony jedynie częściowo, co odpowiada realistycznym warunkom rozgrywki --- agent widzi pełne informacje o własnych kartach na ręce i jednostkach na planszy, natomiast karty przeciwnika na ręce, jak i w talii, są ukryte, a agent zna jedynie ich liczbę. Stan obu bohaterów, sojusznicze oraz wrogie jednostki na planszy oraz informacje o dostępnych zasobach są widoczne przez cały czas dla obu stron.
 
 Silnik udostępnia tzw. model przejść (ang. \textit{forward model}), który pozwala agentowi symulować przyszłe stany gry bez modyfikowania bieżącego stanu. Pozwala to na ocenę konsekwencji każdej możliwości jeszcze przed podjęciem decyzji. Jest to szczególnie ważne dla algorytmów przeszukujących przestrzeń stanów, takich jak MCTS czy minimax \cite{Browne2012}. Część efektów kart jest niedeterministyczna, np. losowe przydzielanie obrażeń czy losowe efekty zaklęć, co oznacza, że wielokrotne wywołanie symulacji dla tej samej akcji może zwracać różne wyniki i należy  uwzględnić to przy projektowaniu agenta.
 
