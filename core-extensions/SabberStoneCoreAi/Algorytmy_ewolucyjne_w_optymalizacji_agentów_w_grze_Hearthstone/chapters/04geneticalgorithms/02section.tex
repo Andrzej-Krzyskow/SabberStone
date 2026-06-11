@@ -5,11 +5,11 @@ Algorytmy ewolucyjne (ang. \textit{evolutionary algorithms} --- EA) to rodzina m
 Ogólny schemat działania algorytmu ewolucyjnego jest następujący:
 \begin{enumerate}
 \item \textbf{Inicjalizacja} --- losowe wygenerowanie początkowej populacji $P_0$ złożonej z $NP$ osobników.
-\item \textbf{Ocena} --- wyznaczenie wartości funkcji przystosowania $f(x_i)$ dla każdego osobnika $x_i \in P_t$.
+\item \textbf{Ocena} --- wyznaczenie wartości funkcji przystosowania $f(x_i)$ dla każdego osobnika $x_i \in P_t$, gdzie $t$ to numer populacji (generacji).
 \item \textbf{Selekcja i reprodukcja} --- wybór osobników do tworzenia potomstwa na podstawie ich przystosowania.
 \item \textbf{Operatory wariacyjne} --- zastosowanie mutacji i/lub krzyżowania w celu generowania nowych kandydatów rozwiązań.
 \item \textbf{Wymiana pokolenia} --- zastąpienie całości lub części populacji przez potomstwo.
-\item \textbf{Warunek stopu} --- powrót do kroku 2 lub zakończenie po osiągnięciu budżetu ewaluacji bądź kryterium zbieżności.
+\item \textbf{Warunek zatrzymania} --- powrót do kroku 2 lub zakończenie po osiągnięciu zadanego budżetu ewaluacji bądź kryterium zbieżności.
 \end{enumerate}
 
 Algorytmy ewolucyjne radzą sobie dobrze tam, gdzie klasyczne metody optymalizacji zawodzą. Dotyczy to sytuacji, gdy funkcja celu jest nieróżniczkowalna, silnie nieliniowa, wielomodalna lub gdy jej ocena jest obarczona szumem \cite{Bilal2020}. Poszczególne warianty różnią się reprezentacją osobnika, formą operatorów wariacyjnych oraz strategią selekcji, dlatego rodzina EA pozostaje różnorodna i szeroko stosowana \cite{TogeliusYannakakis2023}.

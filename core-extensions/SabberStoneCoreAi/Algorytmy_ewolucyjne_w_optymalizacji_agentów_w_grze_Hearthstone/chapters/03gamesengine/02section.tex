@@ -1,13 +1,4 @@
-\section{Architektura i struktura projektu}
-Projekt jest podzielony na kilka modułów, z których każdy ma osobne zadanie. Główny trzon silnika odpowiada za implementację wszystkich mechanik gry i jest jedynym komponentem wymaganym do przeprowadzenia pełnej symulacji. Pozostałe moduły obejmują:
+\section{Pokrycie kart i mechanik gry}
 
-\begin{itemize}
-    \item \textbf{Testy jednostkowe} -- weryfikują poprawność implementacji poszczególnych kart.
-    \item \textbf{Projekt konsolowy} -- służy do szybkiego prototypowania rozwiązań.
-    \item \textbf{Moduł dla badaczy AI} -- zawiera gotową infrastrukturę do uruchamiania gier oraz turniejów między agentami \cite{sabberstone_github}.
-\end{itemize}
-
-W praktyce oznacza to, że badacz implementujący własny algorytm nie musi zagłębiać się w szczegóły silnika. Wystarczy skorzystać z gotowego interfejsu agenta i skupić się na logice podejmowania decyzji.
-
-
+Ważnym parametrem symulatora gry karcianej jest pokrycie puli dostępnych kart. Niepełny zakres implementacji kart ogranicza przestrzeń badawczą i może wpływać na wiarygodność wyników eksperymentów. SabberStone pokrywa ponad 98\% kart formatu standardowego aktywnego w 2019 roku, osiągając 100\% pokrycie dla wszystkich podstawowych i klasycznych zestawów kart oraz starszych dodatków. Karty z nowszych rozszerzeń, takich jak \textit{Rise of Shadows} czy \textit{The Boomsday Project}, zaimplementowano w przedziale 94--99\% \cite{sabberstone_github}.
 

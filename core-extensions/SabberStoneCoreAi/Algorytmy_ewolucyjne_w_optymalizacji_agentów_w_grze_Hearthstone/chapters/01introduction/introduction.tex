@@ -1,52 +1,53 @@
 \chapter{Wprowadzenie}\label{chapter:introduction}
 
-Gra Hearthstone to reprezentant cyfrowych kolekcjonerskich gier karcianych, w których decyzje podejmowane są w warunkach niepełnej informacji, przy dużej liczbie możliwych akcji i wysokiej zmienności stanu gry. Te właściwości powodują, że projektowanie skutecznych agentów wymaga rozwiązania kilku problemów jednocześnie. Agent  musi zmierzyć się z problemem reprezentacji stanu gry, oceny jakości pozycji i wyboru ruchu w ograniczonym czasie. Literatura podkreśla, że gry tego typu stanowią wymagające środowisko badawcze dla sztucznej inteligencji~\cite{hoover2020}.
+Sztuczna inteligencja od lat jest wykorzystywana do tworzenia agentów w grach --- programów, które podejmują decyzje w symulowanych rozgrywkach. Badania nad agentami gry są ważne nie tylko dla rozwoju metod sztucznej inteligencji, lecz także dla projektowania gier, testowania mechanik i budowania systemów uczących się w złożonych środowiskach~\cite{TogeliusYannakakis2025}. Historię tego kierunku dobrze ilustrują przełomowe wyniki, takie jak pokonanie mistrza świata w szachach przez program Deep Blue w 1997 roku~\cite{campbell2002} czy pokonanie profesjonalnych graczy w go przez system AlphaGo w 2016 roku~\cite{silver2016}. Pokazują one, że agent może osiągnąć bardzo wysoki poziom gry, ale wymaga to odpowiedniej reprezentacji stanu, funkcji oceny i metody wyboru ruchu.
 
-Motywacją do rozwoju w tym obszarze była inicjatywa \textit{Hearthstone AI Competition}, która dostarcza platformę porównań i zestaw gotowych agentów \cite{hearthstone_competition}. Część podejść konkursowych opiera się na złożonych mechanizmach przeszukiwania drzewa gry, co utrudnia ich wykorzystanie w metodach ewolucyjnych. W tym kontekście szczególnie wartościowe jest podejście zaproponowane przez García-Sáncheza i in.~\cite{sanchez2020}, w którym agent bazowy optymalizowany jest za pomocą algorytmów ewolucyjnych.
+Jednym z wymagających środowisk dla agentów są cyfrowe kolekcjonerskie gry karciane,a do do z najpopularniejszych gier tego typu należy Hearthstone --- gra opracowana przez Blizzard Entertainment~\cite{hearthstone2014}. Gracze podejmują w niej decyzje w warunkach niepełnej informacji, przy dużej liczbie możliwych akcji i wysokiej zmienności stanu gry --- te właściwości sprawiają, że projektowanie skutecznych agentów jest trudne, ponieważ wymaga to jednocześnie reprezentacji stanu planszy, oceny jakości pozycji i wyboru ruchu w ograniczonym czasie~\cite{hoover2020}.
 
-Praca rozwija ten kierunek. Główne pytanie dotyczy tego, jak zmodyfikować reprezentację i mechanizm decyzyjny agenta parametrycznego, żeby poprawić jego skuteczność. Badania przeprowadzono w środowisku SabberStone~\cite{sabberstone_github}, które umożliwia replikację eksperymentów turniejowych i porównania między agentami.
+Rozwój agentów dla Hearthstone jest popularyzowany dzięki konkursom takim jak \textit{Hearthstone AI Competition}, które zapewniają wspólną platformę porównań i udostępniają gotowe implementacje prostych agentów~\cite{hearthstone_competition}. Część silnych rozwiązań konkursowych opiera się na złożonym przeszukiwaniu drzewa gry, co utrudnia ich bezpośrednie zastosowanie w prostszych agentach optymalizowanych ewolucyjnie.
+
+Jednym ze schematów ewaluacji w uczeniu strategii gier jest koewolucja konkurencyjna (ang. competitive coevolution), w której przystosowanie osobnika wyznacza się na podstawie rywalizacji z innymi osobnikami populacji, a nie za pomocą bezwzględnej miary jakości~\cite{stanley2004}. W tym kontekście szczególnie wartościowe jest podejście zaproponowane przez García-Sáncheza i in.~\cite{sanchez2020}, w którym strategia agenta parametrycznego jest optymalizowana za pomocą algorytmów ewolucyjnych.
+
+\textbf{Agent parametryczny} to agent, którego zachowanie opisuje wektor liczbowych parametrów, na przykład wag funkcji oceny stanu gry, zamiast ręcznie zaprojektowanej, sztywnej logiki decyzyjnej. Wartości tych parametrów nie są ustalane z góry, lecz znajdywane algorytmem optymalizacyjnym na podstawie wyników rozgrywek.
+
+Niniejsza praca rozwija ten kierunek, a główne pytanie dotyczy tego, jak zmodyfikować reprezentację i mechanizm decyzyjny agenta parametrycznego, aby poprawić jego skuteczność mierzoną liczbą zwycięstw. Parametry agenta będą optymalizowane przy użyciu wybranych algorytmów ewolucyjnych, a zadanie to można nazwać optymalizacją agenta parametrycznego.
 
 \section{Problem badawczy}
 
-Główny problem badawczy można sformułować następująco --- \textit{w jaki sposób zaprojektować i zoptymalizować agenta parametrycznego dla gry Hearthstone, aby uzyskać istotną poprawę skuteczności względem wariantu bazowego i potwierdzić tę poprawę w porównaniu z zewnętrznym agentem konkursowym?}
+Główny problem badawczy jest sformułowany następująco --- \textit{w jaki sposób zaprojektować i zoptymalizować agenta parametrycznego dla gry Hearthstone, aby uzyskać poprawę skuteczności, mierzoną liczbą zwycięstw, w porównaniu do innego, znanego z literatury, agenta parametrycznego, którego wartości parametrów optymalizowane były algorytmem ewolucyjnym?}
 
-Problem obejmuje trzy zagadnienia
- \begin{itemize}
-    \item które modyfikacje funkcji oceny stanu planszy rzeczywiście zwiększają jakość decyzji,
-    \item czy poprawa wynika z liczby parametrów, czy raczej z ich struktury i sposobu użycia,
-    \item czy nowszy algorytm optymalizacji --- SHADE --- prowadzi do lepszych wyników niż klasyczna koewolucja.
+Problem obejmuje dwa zagadnienia:
+\begin{itemize}
+    \item w jaki sposób zmiana reprezentacji parametrycznego agenta wpływa na jakość wyników,
+    \item w jaki sposób wybór odpowiedniego algorytmu ewolucyjnego wpływa na jakość wyników.
 \end{itemize}
 
-Znaczenie problemu ma zarówno wymiar poznawczy, jak i praktyczny. Z perspektywy naukowej praca dostarcza danych o zależności między reprezentacją agenta, sposobem optymalizacji i wynikiem turniejowym. W praktyce pozwala wskazać, które modyfikacje mają największą wartość przy ograniczonym budżecie obliczeniowym.
+Znaczenie problemu ma zarówno wymiar poznawczy, jak i praktyczny. Z perspektywy naukowej praca dostarcza danych o zależności między reprezentacją agenta, sposobem optymalizacji a wynikiem turniejowym. W praktyce pozwala wskazać, które modyfikacje mają największą wartość przy ograniczonym budżecie obliczeniowym.
 
 \section{Cele pracy}
 
-Celem pracy jest opracowanie i doświadczalna ocena modyfikacji agenta parametrycznego dla gry Hearthstone oraz doprowadzenie do poprawy skuteczności turniejowej względem rozwiązania bazowego.
-
-Na cel główny składają się:
-\begin{itemize}
-    \item zaprojektowanie i implementację pięciu modyfikacji agenta bazowego, obejmujących rozszerzenia przestrzeni wag oraz wariant przeszukiwania głębokościowego,
-    \item zaprojektowanie oraz zastosowanie dwóch wariantów algorytmu SHADE i porównanie ich z klasycznym schematem koewolucyjnym,
-    \item opracowanie trójfazowej procedury eksperymentalnej --- selekcji reprezentantów, turnieju głównego i walidacji zewnętrznej,
-    \item analizę wyników z wykorzystaniem statystyk uzyskanych podczas turnieju, przebiegów zbieżności i wykresów wag.
-\end{itemize}
-
-Realizacja tych celów pozwala wskazać najlepszy wariant i wyjaśnić, skąd bierze się jego przewaga.
+Celem pracy jest zaproponowanie nowej strategii podejmowania decyzji przez agentów parametrycznych dla gry Hearthstone. Dobór odpowiednich wartości parametrów powinien wynikać z odpowiednio zdefiniowanego i rozwiązywanego metodą ewolucyjną zadania optymalizacji. Agenci parametryczni utworzeni za pomocą nowo zaproponowanej strategii powinni być skuteczniejsi niż inni, znani z literatury agenci wytrenowani w sposób ewolucyjny, a skuteczność agentów będzie mierzona liczbą zwycięstw.
 
 \section{Zakres pracy}
 
-Zakres pracy obejmuje projektowanie i analizę agentów heurystycznych w środowisku SabberStone, z naciskiem na metody ewolucyjne i ich adaptacyjne rozszerzenia.
+Zakres pracy obejmuje projektowanie i analizę agentów heurystycznych dla gry Hearthstone, z naciskiem na metody ewolucyjne i ich adaptacyjne rozszerzenia.
 
-Zakres pracy objął:
-\begin{itemize}
-    \item implementację modyfikacji reprezentacji agenta oraz wariantu głębokościowego,
-    \item optymalizację parametrów z użyciem koewolucji i SHADE,
-    \item eksperymenty turniejowe na ustalonym zbiorze talii,
-    \item analizę wyników ilościowych i jakościowych oraz walidację względem zewnętrznego agenta.
-\end{itemize}
-
-W rozdziale \ref{chapter:hearthstone} przedstawiono specyfikę gry Hearthstone oraz wyzwania dla sztucznej inteligencji. Rozdział \ref{chapter:engine} opisuje środowisko eksperymentalne SabberStone. Rozdział \ref{chap:ea} omawia podstawy algorytmów ewolucyjnych wykorzystywanych w dalszych badaniach. Rozdział \ref{chap:sota} zawiera przegląd metod stosowanych w konkursie Hearthstone AI Competition. Rozdział \ref{chap:modifications} formalizuje agenta bazowego, zaproponowane modyfikacje i konfigurację eksperymentów, a pytania badawcze definiuje sekcja~\ref{sec:rq}. Rozdział \ref{chap:results} prezentuje wyniki i omawia rezultaty. Rozdział \ref{chap:conclusions} podsumowuje wnioski i proponuje dalsze kierunki badań.
+Zadania do wykonania w ramach pracy:
+\begin{enumerate}
+    \item Wybór środowiska, w którym agenci będą rozgrywać swoje pojedynki w grze Hearthstone.
+    \item Przegląd literatury w celu identyfikacji aktualnych podejść ewolucyjnych i nieewolucyjnych do projektowania agentów dla gry Hearthstone, w szczególności dla wybranego środowiska z punktu~1.
+    \item Zdefiniowanie parametrów rozgrywek, na podstawie których oceniani będą agenci.
+    \item Opracowanie własnej strategii podejmowania decyzji przez agentów w grze Hearthstone, bazującej na wykorzystaniu nowoczesnych algorytmów ewolucyjnych.
+    \item Wybór strategii konkurujących, zarówno takich, które korzystają z algorytmów ewolucyjnych, jak i strategii wykorzystujących inne podejścia.
+    \item Przeprowadzenie eksperymentów w postaci rozgrywek sprawdzających skuteczność strategii opracowanej w punkcie~4 na tle strategii z punktu~5.
+    \item Analiza uzyskanych wyników.
+    \item Wnioski i wskazanie kierunku przyszłych badań.
+\end{enumerate}
 
 \section{Wykorzystanie AI}
 
-W procesie redakcji niniejszej pracy wykorzystano wtyczkę do edytora Overleaf opartą na modelu GPT firmy OpenAI. Narzędzie pełniło funkcję pomocniczą i wspierało poprawę tekstu pod kątem stylistycznym, interpunkcyjnym i gramatycznym. Nie zastępowało pracy autora w zakresie treści merytorycznej, projektowania badań, interpretacji wyników ani formułowania wniosków.
+W procesie redakcji niniejszej pracy wykorzystano wtyczkę do edytora Overleaf opartą na modelu GPT firmy OpenAI. Narzędzie pełniło funkcję pomocniczą i wspierało poprawę tekstu pod kątem stylistycznym, interpunkcyjnym i gramatycznym. Nie zastępowało pracy autora w zakresie treści merytorycznej, projektowania i przeprowadzania badań, interpretacji wyników ani formułowania wniosków.
+
+\section{Struktura pracy}
+W rozdziale~\ref{chapter:hearthstone} przedstawiono specyfikę gry Hearthstone oraz wyzwania dla sztucznej inteligencji. Rozdział~\ref{chapter:engine} opisuje środowisko eksperymentalne SabberStone. Rozdział~\ref{chap:ea} omawia podstawy algorytmów ewolucyjnych wykorzystywanych w dalszych badaniach. Rozdział~\ref{chap:sota} zawiera przegląd metod stosowanych w konkursie Hearthstone AI Competition. Rozdział~\ref{chap:modifications} formalizuje agenta García-Sáncheza i proponowane modyfikacje oraz konfigurację eksperymentów, a pytania badawcze definiuje sekcja~\ref{sec:rq}. Rozdział~\ref{chap:results} prezentuje wyniki i omawia rezultaty. Rozdział~\ref{chap:conclusions} podsumowuje wnioski i proponuje dalsze kierunki badań.
+

@@ -20,7 +20,7 @@ Następnie agent wybiera akcję o najwyższej wartości:
     a^* = \arg\max_{a \in \mathcal{A}(s)}\; f(s, a, \mathbf{w})
     \label{eq:greedy}
 \end{equation}
-gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich legalnych akcji dostępnych
+gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich dostępnych akcji dostępnych
 w stanie $s$ --- jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
 
 \subsection{Składniki funkcji oceny}
@@ -113,7 +113,7 @@ gdzie $|Z^{\text{sek}}_p|$ oznacza liczbę aktywnych sekretów gracza $p$.
         \bigl(\text{mana}^{\text{rem}}_s - \text{mana}^{\text{rem}}_{s'}\bigr)
     \label{eq:delta_mana}
 \end{equation}
-gdzie $\text{mana}^{\text{rem}}$ oznacza pozostałą ilość many gracza. Składnik ten jest \emph{odejmowany} w równaniu~\eqref{eq:score}, penalizując akcje o wysokim koszcie many.
+gdzie $\text{mana}^{\text{rem}}$ oznacza pozostałą ilość many gracza. Składnik ten jest \emph{odejmowany} w równaniu~\eqref{eq:score}, karząc akcje o wysokim koszcie many.
 
 \subsection{Wektor wag i genom}
 

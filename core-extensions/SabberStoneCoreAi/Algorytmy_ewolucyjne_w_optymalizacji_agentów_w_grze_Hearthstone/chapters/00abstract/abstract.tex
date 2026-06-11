@@ -1,23 +1,27 @@
 \section*{Streszczenie}
 
-Praca dotyczy optymalizacji agentów dla gry Hearthstone z użyciem algorytmów ewolucyjnych. Punktem wyjścia był agent bazowy oparty na parametrycznej funkcji oceny stanu gry. Sprawdzono, czy modyfikacje reprezentacji i procesu decyzyjnego poprawiają skuteczność agenta w rozgrywkach turniejowych, a także czy adaptacyjny algorytm SHADE daje lepsze wyniki niż klasyczna koewolucja.
+Hearthstone to jedna z najpopularniejszych cyfrowych kolekcjonerskich gier karcianych. Gracze podejmują w niej decyzje w warunkach niepełnej informacji, przy dużej liczbie możliwych akcji i wysokiej zmienności stanu gry. Te cechy sprawiają, że projektowanie skutecznych agentów komputerowych jest trudne i wymaga rozwiązania kilku problemów naraz --- od reprezentacji stanu planszy po wybór ruchu w ograniczonym czasie.
 
-Zaprojektowano pięć wariantów agenta --- rozszerzenie do 28 parametrów, wariant 28 z normalizacją, wariant 63-parametrowy, wariant 63 z płynnym przejściem faz oraz wariant 21 głębokościowy, a ocenę wykonano w trzech fazach. Pierwsza faza to selekcja reprezentantów, drugą fazę stanowił turniej główny wszystkich wariantów, a na koniec porównano najlepszego agenta uzyskanego podczas badań względem agenta Sebastiana Millera (\\textit{2-Step Lookahead}), czyli zwycięzcy edycji 2020 konkursu Hearthstone AI Competition.
+Konkursy, takie jak \textit{Hearthstone AI Competition}, popularyzują rozwój agentów dla Hearthstone oraz zapewniają wspólną platformę porównań i udostępniają gotowe implementacje prostych agentów. Mimo to wiele silnych rozwiązań konkursowych opiera się na złożonym przeszukiwaniu drzewa gry, co utrudnia ich bezpośrednie zastosowanie w prostszych, parametrycznych agentach optymalizowanych ewolucyjnie.
 
-Najlepszy wynik w turnieju głównym uzyskał wariant 21 głębokościowy. Analizy zbieżności i profili wag wskazały, że największy efekt jakościowy wynika ze zmiany sposobu podejmowania decyzji, a nie tylko ze zwiększenia liczby współczynników funkcji oceny. W strojeniu parametrów SHADE najbardziej stabilne wyniki uzyskano dla populacji o rozmiarze 15. W walidacji zewnętrznej wariant 21 głębokościowy osiągnął wyraźnie lepszy wynik przeciwko agentowi Sebastiana Millera niż agent bazowy.
+Jednym z podejść do tego problemu jest metoda ewolucyjna. García-Sánchez i in. zaproponowali agenta parametrycznego z ważoną funkcją oceny stanu planszy, trenowanego przez koewolucję konkurencyjną. Takie rozwiązanie ma jednak ograniczenia, ponieważ korzysta z prostej strategii ewolucyjnej, wąskiej 21-parametrowej funkcji oceny oraz klasycznego schematu koewolucji wewnątrz populacji.
 
-Wyniki potwierdzają, że połączenie adaptacyjnej optymalizacji ewolucyjnej z planowaniem głębokościowym dobrze sprawdza się w projektowaniu agentów dla gier karcianych o niepełnej informacji.
+W pracy zaproponowano pięć modyfikacji agenta i funkcji oceny, m.in. rozszerzenie przestrzeni wag do 28 i 63 parametrów, wariant ze znormalizowanymi cechami oraz fazowy podział oceny z płynnym przejściem między etapami gry. Dodatkowo podstawową strategię ewolucyjną zastąpiono adaptacyjną ewolucją różnicową SHADE w dwóch wariantach: koewolucyjnym i z mechanizmem Hall of Fame.
 
-\textbf{Słowa kluczowe:} Hearthstone, sztuczna inteligencja w grach, algorytmy ewolucyjne, SHADE, optymalizacja agentów.
+Eksperymenty przeprowadzono w środowisku SabberStone na ustalonym zbiorze talii. Wyniki pokazują, że zaproponowane modyfikacje osiągają wyższą skuteczność turniejową niż agent bazowy, a warianty SHADE przewyższają klasyczną koewolucję.
+
+\textbf{Słowa kluczowe:} Hearthstone, sztuczna inteligencja w grach, algorytmy ewolucyjne, optymalizacja agentów.
 
 \section*{Abstract}
 
-This thesis focuses on optimizing Hearthstone agents using evolutionary algorithms. The starting point is a baseline agent built on a parametric game-state evaluation function. The study checks whether modifications to the agent's representation and decision process improve tournament performance and whether adaptive SHADE outperforms classical coevolution.
+Hearthstone is one of the most popular digital collectible card games. Players make decisions under incomplete information, with a large number of possible actions and high game-state variability. These properties make designing effective computer agents difficult and require solving several problems at once --- from board-state representation to move selection under a limited time budget.
 
-Five variants were designed and evaluated: a 28-parameter extension, a normalized 28-parameter variant, a 63-parameter phased variant, a smooth 63-parameter phased variant, and a 21-parameter depth-based lookahead variant. Evaluation was organized into three stages. The first was representative selection, the second was a main tournament across all variants, and finally, the best agent was compared against Sebastian Miller's \textit{2-Step Lookahead} --- the winner of the 2020 Hearthstone AI Competition.
+Competitions such as the \textit{Hearthstone AI Competition} popularize agent development for Hearthstone by providing a common benchmarking platform and ready-made implementations of simple agents. However, many strong competition solutions rely on complex game-tree search, which makes them difficult to apply directly in simpler parametric agents optimized evolutionarily.
 
-The 21-parameter depth-based variant achieved the best main-tournament result. Convergence and weight-profile analyzes indicated that most of the quality gain comes from changing the decision procedure, not only from adding more evaluation features. In SHADE tuning, the most stable behavior was obtained for a population size of 15. In external validation, the depth-based variant performed clearly better against Sebastian Miller's agent than the baseline.
+One approach to this problem is evolutionary learning. García-Sánchez et al. proposed a parametric agent with a weighted board-state evaluation function trained through competitive coevolution. However, this solution has limitations: it uses a simple evolutionary strategy, a narrow 21-parameter evaluation function, and a classical within-population coevolution scheme.
 
-Overall, the results support combining adaptive evolutionary optimization with depth-based planning for building agents in imperfect-information collectible card games.
+This thesis proposes five modifications to the agent and evaluation function, including extending the weight space to 28 and 63 parameters, a normalized-feature variant, and phased evaluation with smooth transitions between game stages. In addition, the basic evolutionary strategy was replaced with adaptive differential evolution SHADE in two variants: coevolutionary and with a Hall of Fame mechanism.
 
-\textbf{Keywords:} Hearthstone, game artificial intelligence, evolutionary algorithms, SHADE, agent optimization.
+Experiments were conducted in the SabberStone environment on a fixed set of decks. The results show that the proposed modifications achieve higher tournament performance than the baseline agent, and SHADE variants outperform classical coevolution.
+
+\textbf{Keywords:} Hearthstone, game artificial intelligence, evolutionary algorithms, agent optimization.

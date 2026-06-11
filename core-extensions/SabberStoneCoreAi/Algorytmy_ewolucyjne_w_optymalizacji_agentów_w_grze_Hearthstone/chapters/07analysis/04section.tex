@@ -3,7 +3,7 @@
 
 Po turnieju głównym fazy II przeprowadzono walidację zewnętrzną. Sprawdzono, czy przewaga wariantu \textit{21 głębokościowego} nie jest jedynie efektem porównań między zaproponowanymi wariantami i czy utrzymuje się także w starciu z agentem spoza eksperymentu. Punktem odniesienia był agent referencyjny z konkursu \textit{Hearthstone AI Competition}~\cite{hearthstone_competition,hearthstoneai_botdownloads_2020}.
 
-Jako benchmark wybrano agenta Sebastiana Millera (\textit{2-Step Lookahead}), zwycięzcę edycji 2020. Agent Millera nie jest prostym agentem parametrycznym, lecz reprezentuje rodzinę metod przeszukujących sekwencje ruchów, co stawia go wyżej pod względem złożoności decyzyjnej.
+Do porównania wybrano agenta Sebastiana Millera (\textit{2-Step Lookahead}), zwycięzcę edycji 2020. Agent Millera nie jest prostym agentem parametrycznym, lecz reprezentuje rodzinę metod przeszukujących sekwencje ruchów, co stawia go wyżej pod względem złożoności decyzyjnej.
 
 \subsection{Protokół porównawczy}
 
@@ -24,8 +24,8 @@ Protokół pozostał identyczny jak w poprzednich fazach: \(9\) par talii, \(100
 \toprule
 Agent badany & Przeciwnik & Wygrane & Partie & Odsetek zwycięstw [\%] \\
 \midrule
-21 głębokościowy & Sebastian Miller & 8525 & 18000 & 47.36 \\
-Agent bazowy (wagi publikowane) & Sebastian Miller & 6249 & 18000 & 34.72 \\
+21 głębokościowy & Sebastian Miller & 8525 & 18000 & 47,36 \\
+Agent bazowy (wagi publikowane) & Sebastian Miller & 6249 & 18000 & 34,72 \\
 \bottomrule
 \end{tabular}
 \caption{Wyniki fazy III: porównanie wariantu głębokościowego i agenta bazowego względem agenta Sebastiana Millera.}

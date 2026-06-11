@@ -1,19 +1,19 @@
 \section{Zastosowanie algorytmu SHADE} \label{sec:shade_application}
 
-Każdy z pięciu wariantów agenta opisanych w sekcji~\ref{sec:modifications} był optymalizowany przy użyciu trzech podejść. Pierwsze to \textbf{koewolucja konkurencyjna} (ang.~\textit{competitive coevolution})~\cite{stanley2004} --- schemat przyjęty zgodnie z podejściem García-Sáncheza i in.~\cite{sanchez2020}, w którym osobniki są oceniane nawzajem w obrębie każdej generacji. Dwa kolejne podejścia oparto na \textbf{algorytmie SHADE}: wariancie koewolucyjnym oraz wariancie z mechanizmem Hall of Fame. Zestawienie tych trzech optymalizatorów na tych samych wariantach reprezentacji pozwala ocenić, czy adaptacyjna regulacja parametrów SHADE przekłada się na wyższy wskaźnik wygranych względem klasycznej koewolucji.
+Każdy z pięciu wariantów agenta opisanych w sekcji~\ref{sec:modifications} był optymalizowany przy użyciu trzech podejść. Pierwsze to \textbf{koewolucja konkurencyjna}~\cite{stanley2004}, w którym osobniki są oceniane nawzajem w obrębie każdej generacji. Dwa kolejne podejścia oparto na \textbf{algorytmie SHADE}: wariancie koewolucyjnym oraz wariancie z mechanizmem Hall of Fame. Zestawienie tych trzech optymalizatorów na tych samych wariantach reprezentacji pozwala ocenić, czy adaptacyjna regulacja parametrów SHADE przekłada się na wyższy wskaźnik wygranych względem klasycznej koewolucji.
 
 \subsection{Dobór rozmiaru populacji} \label{sec:popsize_tuning}
 
-Przed właściwymi eksperymentami przeprowadzono wstępny dobór rozmiaru populacji \texttt{POP\_SIZE} dla obu wariantów SHADE. Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla bazowego wariantu agenta (21 parametrów) --- łącznie 6 konfiguracji (po 2 zestawy wag dla każdej wartości). Agentów wytrenowanych w każdej konfiguracji poddano turniejowi w formacie round-robin, rozgrywając 270\,000 gier (2000 na każdą parę kombinacji talii) dla każdego wariantu SHADE osobno.
+Przed właściwymi eksperymentami przeprowadzono wstępny dobór rozmiaru populacji \texttt{POP\_SIZE} dla obu wariantów SHADE. Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla bazowego wariantu agenta (21 parametrów) --- łącznie 6 konfiguracji (po 2 zestawy wag dla każdej wartości). Agentów wytrenowanych w każdej konfiguracji poddano turniejowi w formacie każdy z każdym, rozgrywając 270\,000 gier (2000 na każdą parę kombinacji talii) dla każdego wariantu SHADE osobno.
 
 Wyniki turnieju zestawiono w tabeli~\ref{tab:popsize}. W obu wariantach agenci wytrenowani z $\texttt{POP\_SIZE} = 15$ uzyskali najwyższy wskaźnik wygranych --- odpowiednio 52,15\% i 51,65\% (wariant koewolucyjny) oraz 52,30\% i 51,20\% (wariant Hall of Fame), wyraźnie przewyższając konfiguracje z $\texttt{POP\_SIZE} = 5$, które osiągnęły ok.\ 48\%--50\%. Na podstawie tych wyników przyjęto $\texttt{POP\_SIZE} = 15$ jako wartość bazową dla dalszych eksperymentów z użyciem SHADE.
 
-\begin{table}[h]
+\begin{table}[!h]
 \centering
 \caption{Wyniki turnieju doboru rozmiaru populacji}  \label{tab:popsize}
 \begin{tabular}{llrrr}
 \toprule
-Wariant & Agent & Wygrane & Gry & Win\% \\
+Wariant & Agent & Wygrane & Gry & Zwycięstwa\% \\
 \midrule
 \multirow{6}{*}{Koewolucyjny}
     & POP\_SIZE = 5,  zestaw 1 & 43\,775 & 90\,000 & 48,64\% \\
@@ -35,12 +35,12 @@ Wariant & Agent & Wygrane & Gry & Win\% \\
 \end{table}
 \subsection{SHADE koewolucyjny} \label{sec:shade_coev}
 
-W wariancie koewolucyjnym mutanci i rodzice są oceniani łącznie w każdej generacji. Niech $P_t = \{\mathbf{w}_1, \ldots, \mathbf{w}_{NP}\}$ oznacza populację w generacji $t$, a $U_t = \{\mathbf{u}_1, \ldots, \mathbf{u}_{NP}\}$ --- populację mutantów wygenerowanych przez SHADE. Ocena obejmuje jednocześnie oba zbiory w ramach jednego turnieju round-robin:
+W wariancie koewolucyjnym mutanci i rodzice są oceniani łącznie w każdej generacji. Niech $P_t = \{\mathbf{w}_1, \ldots, \mathbf{w}_{NP}\}$ oznacza populację w generacji $t$, a $U_t = \{\mathbf{u}_1, \ldots, \mathbf{u}_{NP}\}$ --- populację mutantów wygenerowanych przez SHADE. Ocena obejmuje jednocześnie oba zbiory w ramach jednego turnieju w formacie każdy z każdym:
 \begin{equation}
     [f_1, \ldots, f_{NP},\; g_1, \ldots, g_{NP}]
     = \textsc{Eval}(P_t \cup U_t)
 \end{equation}
-gdzie $f_i$ to fitness rodzica $\mathbf{w}_i$, a $g_i$ --- mutanta $\mathbf{u}_i$, obliczone w tej samej puli rozgrywek. Fitness osobnika definiuje się jako łączną liczbę zwycięstw w starciach ze wszystkimi pozostałymi osobnikami w puli:
+gdzie $f_i$ to przystosowanie rodzica $\mathbf{w}_i$, a $g_i$ --- mutanta $\mathbf{u}_i$, obliczone w tej samej puli rozgrywek. Przystosowanie osobnika definiuje się jako łączną liczbę zwycięstw w starciach ze wszystkimi pozostałymi osobnikami w puli:
 
 \begin{equation}
     \phi(\mathbf{w}_i) = \sum_{\mathbf{w}_j \in P_t \cup U_t,\; j \neq i}
@@ -48,8 +48,7 @@ gdzie $f_i$ to fitness rodzica $\mathbf{w}_i$, a $g_i$ --- mutanta $\mathbf{u}_i
         \text{wygr}(\mathbf{w}_i,\; \mathbf{w}_j,\; d_1,\; d_2)
     \label{eq:fitness_coev}
 \end{equation}
-
-gdzie $\text{wygr}(\mathbf{w}_i, \mathbf{w}_j, d_1, d_2)$ oznacza liczbę partii z zakresu $0$ do $\texttt{NUM\_GAMES}$ wygranych przez agenta $\mathbf{w}_i$ w starciu z $\mathbf{w}_j$, gdy gracz pierwszy używa talii $d_1$, a gracz drugi --- $d_2$. Selekcja porównuje każdego mutanta z jego rodzicem na jednolitej skali, eliminując błąd wynikający ze stochastyczności środowiska:
+gdzie $\text{wygr}(\mathbf{w}_i, \mathbf{w}_j, d_1, d_2)$ oznacza liczbę partii z zakresu $0$ do $\texttt{NUM\_GAMES}$ wygranych przez agenta $\mathbf{w}_i$ w starciu z $\mathbf{w}_j$, gdy gracz pierwszy używa talii $d_1$, a gracz drugi --- $d_2$. Selekcja porównuje każdego mutanta z jego rodzicem na jednolitej skali, eliminując błąd wynikający z losowości środowiska:
 
 \begin{equation}
     \mathbf{w}_i^{(t+1)} =
@@ -59,7 +58,7 @@ gdzie $\text{wygr}(\mathbf{w}_i, \mathbf{w}_j, d_1, d_2)$ oznacza liczbę partii
     \end{cases}
 \end{equation}
 
-Niezależnie od wyniku selekcji, wartość fitness rodzica jest aktualizowana do wartości $f_i$ obliczonej w bieżącej generacji. Zapobiega to sytuacji, w której fitness rodziców i mutantów byłby obliczany w różnych pulach rozgrywek, co prowadziłoby do nieporównywalnych wartości i błędnych decyzji selekcyjnych.
+Niezależnie od wyniku selekcji, wartość przystosowania rodzica jest aktualizowana do wartości $f_i$ obliczonej w bieżącej generacji. Zapobiega to sytuacji, w której fitness rodziców i mutantów byłby obliczany w różnych pulach rozgrywek, co prowadziłoby do nieporównywalnych wartości i błędnych decyzji selekcyjnych.
 
 \subsection{SHADE z Hall of Fame} \label{sec:shade_hof}
 
@@ -81,7 +80,7 @@ Skład zbioru $\mathcal{R}$ dobierano osobno dla każdego wariantu agenta. Dla w
 \end{itemize}
 Dla wariantów z 28 i 63 parametrami przygotowano osobne zbiory referencyjne, złożone z 20 najlepszych osobników uzyskanych w odpowiadającym wariancie eksperymentów koewolucyjnych, przeprowadzonych przed badaniami wariantów SHADE, 3 agentów wytrenowanych na lokalnej maszynie przez autora niniejszej pracy oraz 6 agentów o losowo zainicjalizowanych wagach.
 
-Skład zbioru $\mathcal{R}$ dobrano tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, więc zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę fitness między obiema wersjami. Silni przeciwnicy — wytrenowani wcześniej agenci — zwiększają presję selekcyjną w kierunku skutecznych strategii i ograniczają zbieżność do optima lokalnego. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile daje algorytmowi wczesny sygnał do nauki, a osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. To porządkuje poszukiwania, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
+Skład zbioru $\mathcal{R}$ dobrano tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, więc zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę fitness między obiema wersjami. Silni przeciwnicy — wytrenowani wcześniej agenci — zwiększają presję selekcyjną w kierunku skutecznych strategii i ograniczają przedwczesną zbieżność w kierunku optimum lokalnego. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile daje algorytmowi wczesny sygnał do nauki, a osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. To porządkuje przeszukiwanie, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
 
 Co $K_{\text{HOF}} = 5$ generacji wykonywana jest aktualizacja zbioru $\mathcal{R}$. Zastępowany jest ten agent, przeciwko któremu bieżąca populacja zdobyła łącznie najwięcej zwycięstw --- jest on uznawany za najsłabszego i najmniej przydatnego przeciwnika:
 

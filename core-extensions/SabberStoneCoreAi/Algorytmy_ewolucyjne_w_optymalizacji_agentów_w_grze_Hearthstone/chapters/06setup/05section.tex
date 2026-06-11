@@ -6,11 +6,11 @@ W tym rozdziale opisano sprzęt, konfigurację parametrów oraz talie użyte we 
 
 Wszystkie eksperymenty przeprowadzono na serwerze wyposażonym w dwa procesory AMD EPYC 7601 (łącznie 64 rdzenie fizyczne, 128 wątków logicznych), skonfigurowanymi jako jedna jednostka obliczeniowa, z 256 GB pamięci RAM DDR4 (2400 MHz) oraz systemem operacyjnym Windows Server 2019. Rozgrywki symulowano w środowisku SabberStone \cite{sabberstone_github}, który został napisany w języku C\# na platformie .NET Core. Skrypty optymalizacyjne uruchamiano w środowisku Python 3.
 
-Rozgrywki nadają się do trywialnej równoległości (ang. \textit{embarrassingly parallel}) --- każda para agentów może być symulowana w osobnym wątku, co pozwala na wywoływanie walk jednocześnie na 128 wątkach procesora i w pełni obciążyć dostępne rdzenie. Pojedyncze uruchomienie eksperymentu trwało około 9,5 godziny. Wyjątek stanowi wariant z przeszukiwaniem głębokościowym \textit{lookahead}(sekcja~\ref{sec:agent21depth}), który wymagał około 3,5 razy dłuższego czasu, tj. około 33 godzin, z uwagi na wzrost przestrzeni akcji przy głębszym przeszukiwaniu. Z tego powodu uruchamiany był tylko raz, aby wyrównać nakład obliczeniowy w stosunku do innych propozycji.
+Rozgrywki nadają się do trywialnej równoległości (ang. \textit{embarrassingly parallel}) --- każda para agentów może być symulowana w osobnym wątku, co pozwala na wywoływanie walk jednocześnie na 128 wątkach procesora i pełne obciążenie dostępnych rdzeni. Pojedyncze uruchomienie eksperymentu trwało około 9,5 godziny. Wyjątek stanowi wariant z przeszukiwaniem głębokościowym \textit{lookahead}(sekcja~\ref{sec:agent21depth}), który wymagał około 3,5 razy dłuższego czasu, tj. około 33 godzin, z uwagi na wzrost przestrzeni akcji przy głębszym przeszukiwaniu. Z tego powodu uruchamiany był tylko raz, aby wyrównać nakład obliczeniowy w stosunku do innych propozycji.
 
-Łączny orientacyjny czas obliczeniowy wszystkich eksperymentów wyniósł około \textbf{572,81 godzin} ($\approx 23.87$ dni ciągłej pracy serwera). Zestawienie liczby uruchomień poszczególnych wariantów przedstawia tabela \ref{tab:runs}.
+Łączny orientacyjny czas obliczeniowy wszystkich eksperymentów wyniósł około \textbf{572,81 godzin} ($\approx 23,87$ dni ciągłej pracy serwera). Zestawienie liczby uruchomień poszczególnych wariantów przedstawia tabela \ref{tab:runs}.
 
-Dla większości wariantów wykonano po trzy niezależne przebiegi na każdy optymalizator. Liczba rzędu kilku powtórzeń jest typowa dla badań nad ewolucyjnym uczeniem funkcji oceny pozycji w grach, w których wysoki koszt obliczeniowy pojedynczego przebiegu wymusza ograniczenie liczby powtórzeń — przykładowo, Jaśkowski i Szubert w analogicznym zadaniu uczenia wag funkcji oceny dla gry Othello powtarzali każdą konfigurację pięciokrotnie \cite{jaskowski2016}. Przyjęte tu trzy powtórzenia dla większości konfiguracji mieszczą się zatem w praktyce tego typu eksperymentów.
+Dla większości wariantów wykonano po trzy niezależne przebiegi na każdy optymalizator. Liczba rzędu kilku powtórzeń jest typowa dla badań nad ewolucyjnym uczeniem funkcji oceny pozycji w grach, w których wysoki koszt obliczeniowy pojedynczego przebiegu wymusza ograniczenie liczby powtórzeń — przykładowo, Jaśkowski i Szubert w analogicznym zadaniu uczenia wag funkcji oceny dla gry Othello powtarzali każdą konfigurację pięciokrotnie \cite{jaskowski2016}. Przyjęte w niniejszej pracy trzy powtórzenia dla większości konfiguracji mieszczą się zatem w praktyce tego typu eksperymentów.
 
 \begin{table}[p]
 \centering
@@ -80,7 +80,7 @@ $D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 \end{tabular}
 \end{table}
 
-Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybranej podczas tuningu (sekcja~\ref{sec:popsize_tuning}). Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, a wynika to z tego, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
+Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybranej podczas procesu dostrajania parametrów (sekcja~\ref{sec:popsize_tuning}). Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, a wynika to z tego, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
 
 \begin{table}[ht]
 \centering
@@ -91,7 +91,7 @@ Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybrane
 Parametr & Wartość & Opis \\
 \midrule
 \texttt{NUM\_GAMES}       & 20           & Liczba partii na parę / na kombinację talii \\
-\texttt{POP\_SIZE}        & 15           & Rozmiar populacji (po tuningu) \\
+\texttt{POP\_SIZE}        & 15           & Rozmiar populacji (po procesie dostrajania) \\
 \texttt{MAX\_EVALUATIONS} & 645          & Maksymalna liczba ewaluacji osobników \\
 \texttt{NUM\_THREADS}     & 128          & Liczba równoległych wątków symulacji \\
 $H$                       & 100          & Maksymalne okno historii parametrów SHADE \\
@@ -109,7 +109,7 @@ $D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 Parametr & Wartość & Opis \\
 \midrule
 \texttt{NUM\_GAMES}          & 20           & Liczba partii na parę / na kombinację talii \\
-\texttt{POP\_SIZE}           & 15           & Rozmiar populacji (po tuningu) \\
+\texttt{POP\_SIZE}           & 15           & Rozmiar populacji (po procesie dostrajania) \\
 \texttt{MAX\_EVALUATIONS}    & 525          & Maksymalna liczba ewaluacji osobników \\
 \texttt{NUM\_THREADS}        & 128          & Liczba równoległych wątków symulacji \\
 $H$                          & 100          & Maksymalne okno historii parametrów SHADE \\

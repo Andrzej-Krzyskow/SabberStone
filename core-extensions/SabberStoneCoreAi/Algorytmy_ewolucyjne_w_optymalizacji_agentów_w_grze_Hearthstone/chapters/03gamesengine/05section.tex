@@ -1,21 +1,7 @@
-\section{Interfejs agenta i organizacja eksperymentów}
+\section{Ścieżki eksperymentalne}
 
-Platforma SabberStone dostarcza abstrakcyjny interfejs agenta, który każdy badacz musi zaimplementować, a składa się on z pięciu metod odpowiadających kolejnym etapom z cyklu życia agenta:
+W ramach Hearthstone AI Competition silnik obsługuje dwie niezależne ścieżki eksperymentalne, stawiając przed agentami odmienne wyzwania \cite{hearthstone_competition}.
 
-\begin{enumerate}
-    \item inicjalizacja przed sesją eksperymentalną
-    \item inicjalizacja przed każdą grą
-    \item podjęcie decyzji w trakcie tury
-    \item finalizacja po grze
-    \item finalizacja po zakończeniu całej sesji
-\end{enumerate}
+Pierwsza ścieżka, czyli Kategoria Przygotowanych Talii (ang. \textit{Premade Deck Playing Track}), polega na graniu z góry określonymi taliami, których składy są także wcześniej znane --- agent zna listę kart swojej talii i talii przeciwnika. Nie oznacza to jednak pełnej obserwowalności przebiegu partii, ponieważ podczas gry agent nadal nie zna bieżącej ręki przeciwnika ani kolejności kart pozostałych w obu taliach. Zadaniem algorytmu jest wypracowanie jak najlepszej strategii rozgrywania akcji przy ustalonej puli kart.
 
-Podział ten wyraźnie oddziela kosztowne operacje, jak np. wczytywanie modeli uczenia maszynowego, od tych, które muszą być powtarzane przed każdą rozgrywką.
-
-W każdej turze agent otrzymuje aktualny stan gry i musi zwrócić jedną wybraną akcję. Silnik w każdej chwili udostępnia listę wszystkich legalnych ruchów, uwzględniając wszystkie ograniczenia wynikające z reguł gry i z tego powodu agent nie musi samodzielnie weryfikować poprawności swoich decyzji. Lista ta zawsze zawiera co najmniej jedną akcję --- akcję zakończenia tury. Razem z platformą dostarczane są gotowe agenty referencyjne:
-\begin{itemize}
-    \item agent losowy (ang. \textit{random agent}) --- wybiera kolejne akcje losowo spośród wszystkich dostępnych w danej turze, stanowiąc dolną granicę skuteczności.
-    \item agent zachłanny (ang. \textit{greedy agent}) --- w każdej turze symuluje wszystkie legalne akcje i wybiera tę, która prowadzi do stanu planszy o najwyższej wartości według funkcji celu. Funkcja ta uwzględnia między innymi zdrowie obu bohaterów, liczbę oraz statystyki jednostek na planszy oraz dostępne zasoby.
-\end{itemize}
-
-Silnik umożliwia również organizowanie turniejów w formacie \textit{round-robin}, w którym każdy zarejestrowany agent mierzy się z każdym innym, a dla każdej pary agentów symuluje się określoną liczbę gier, co pozwala statystycznie uśrednić wpływ losowości na wyniki. Miarą oceny jakości agenta jest wskaźnik wygranych (ang. \textit{win-rate}). Podejście to zostało przyjęte jako oficjalny sposób ewaluacji w Hearthstone AI Competition \cite{hearthstone_competition}.
+Druga ścieżka, czyli Kategoria Talii Stworzonych Przez Użytkowników (ang. \textit{User Created Deck Playing Track}), przyznaje agentowi pełną swobodę w doborze talii. Talia może być zarówno przygotowana ręcznie przez uczestników konkursu, jak i wypracowana automatycznie przez dowolny algorytm. Optymalizacja składu talii staje się tu integralną częścią problemu i jest równie istotna jak strategia samej rozgrywki, co czyni tę ścieżkę szczególnie interesującą.

@@ -1,10 +1,10 @@
 \section{Protokół wyrównania budżetu obliczeniowego} \label{sec:budget}
 
-Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą round-robin, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie tylko po liczbie wywołań fitness prowadziłoby więc do przydzielenia bardzo różnych ilości rzeczywistych obliczeń poszczególnym konfiguracjom.
+Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą każdy z każdym, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie tylko po liczbie wywołań fitness prowadziłoby więc do przydzielenia bardzo różnej mocy obliczeniowej poszczególnym konfiguracjom.
 
 \subsection{Jednostka budżetowa}
 
-Podstawową jednostką obliczeniową jest jedno wywołanie symulatora SabberStone, czyli pojedyncze uruchomienie \texttt{dotnet run} rozgrywające \texttt{NUM\_GAMES = 20} partii między dwoma wektorami wag w ramach jednej kombinacji talii. Liczba wywołań symulatora zależy wyłącznie od struktury algorytmu --- rozmiaru populacji, schematu ewaluacji i liczby przeciwników --- i jest niezależna od wartości \texttt{NUM\_GAMES}.
+Podstawową jednostką obliczeniową jest jedno wywołanie symulatora SabberStone, czyli pojedyncze uruchomienie symulatora rozgrywające \texttt{NUM\_GAMES = 20} partii między dwoma wektorami wag w ramach jednej kombinacji talii. Liczba wywołań symulatora zależy wyłącznie od struktury algorytmu --- rozmiaru populacji, schematu ewaluacji i liczby przeciwników --- i jest niezależna od wartości \texttt{NUM\_GAMES}.
 
 \subsection{Liczba przeciwników w SHADE z Hall of Fame}
 
@@ -49,7 +49,7 @@ Całkowita liczba wywołań symulatora:
 
 \paragraph{SHADE z Hall of Fame.}
 
-Każdy osobnik oceniany jest względem $N_{\text{opp}}$ stałych przeciwników we wszystkich kombinacjach talii. Co $I_{\text{HOF}} = 5$ generacji mechanizm Hall of Fame ponownie ewaluuje $\mu$ rodziców, a koszt tej reewaluacji nie jest wliczany do licznika \texttt{check\_evals}. Łączna liczba wywołań funkcji fitness wynosi:
+Każdy osobnik oceniany jest względem $N_{\text{opp}}$ stałych przeciwników we wszystkich kombinacjach talii. Co $K_{\text{HOF}} = 5$ generacji mechanizm Hall of Fame ponownie ewaluuje $\mu$ rodziców, a koszt tej reewaluacji nie jest wliczany do licznika \texttt{check\_evals}. Łączna liczba wywołań funkcji fitness wynosi:
 \begin{equation}
     F_{\text{total}} = \mu + \texttt{check\_evals}
     + \left\lfloor \frac{\texttt{check\_evals}}
@@ -68,11 +68,11 @@ Punkt odniesienia stanowi eksperyment García-Sáncheza~\cite{sanchez2020} przy 
 \begin{equation}
     B^* = \frac{10 \cdot 9}{2} \times 9
         + 99 \times 10 \times 19 \times 9
-    = 405 + 169{,}290
-    = \mathbf{169{,}695 \text{ wywołań symulatora}}
+    = 405 + 169 290
+    = \mathbf{169 695 \text{ wywołań symulatora}}
     \label{eq:bstar}
 \end{equation}
-co odpowiada $3\,393\,900$ rozegranych partii Hearthstone ($B^* \times 20$).
+co odpowiada $3 393 900$ rozegranych partii Hearthstone ($B^* \times 20$).
 
 \subsection{Wyznaczanie wartości \texttt{check\_evals}}
 
@@ -88,7 +88,7 @@ Dla SHADE z Hall of Fame wartość wyznaczana jest iteracyjnie jako największa 
 
 Tabele~\ref{tab:budget_coev} i~\ref{tab:budget_hof} zestawiają wyznaczone wartości \texttt{check\_evals} wraz z uzyskanymi budżetami i odchyleniami od $B^*$. Wszystkie konfiguracje mieszczą się w granicach $0{,}80\%$ budżetu docelowego, a odchylenia są zawsze ujemne lub zerowe --- budżet nigdy nie jest przekraczany. Wynikają one ze skokowego charakteru kosztu generacji --- przy dużym $\mu$ żadna całkowita liczba generacji nie daje dokładnie wartości $B^*$.
 
-\begin{table}[h]
+\begin{table}[!h]
 \centering
 \caption{Wyrównanie budżetu dla SHADE koewolucyjnego.}
 \label{tab:budget_coev}
@@ -97,9 +97,9 @@ Tabele~\ref{tab:budget_coev} i~\ref{tab:budget_hof} zestawiają wyznaczone warto
 $\mu$ & \texttt{check\_evals} & $G_{\text{evo}}$ & $B_0$ &
 $B_{\text{evo}}$/gen & Łącznie $B$ \\
 \midrule
-5  & 2090 & 418 & 90    & 405     & 169{,}380 \\
-10 & 990  & 99  & 405   & 1{,}710 & 169{,}695 \\
-15 & 645  & 43  & 945   & 3{,}915 & 169{,}290 \\
+5  & 2090 & 418 & 90    & 405     & 169 380 \\
+10 & 990  & 99  & 405   & 1 710 & 169 695 \\
+15 & 645  & 43  & 945   & 3 915 & 169 290 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -114,11 +114,11 @@ $\mu$ & $N_{\text{opp}}$ & \texttt{check\_evals} &
 Aktualizacje HoF & $F_{\text{total}}$ & Łącznie $B$ &
 $\Delta$ od $B^*$ \\
 \midrule
-5  & 9  & 1745 & 69 & 2{,}095 & 169{,}695 & $0$        \\
-10 & 19 & 820  & 16 & 990     & 169{,}290 & $-405$     \\
-15 & 29 & 525  & 7  & 645     & 168{,}345 & $-1{,}350$ \\
+5  & 9  & 1745 & 69 & 2 095 & 169 695 & $0$        \\
+10 & 19 & 820  & 16 & 990     & 169 290 & $-405$     \\
+15 & 29 & 525  & 7  & 645     & 168 345 & $-1 350$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Odchylenia są nieistotne z punktu widzenia analizy porównawczej --- margines $0{,}80\%$ jest pomijalny wobec wariancji wynikającej z losowości przebiegu partii Hearthstone przy skończonej próbce \texttt{NUM\_GAMES = 20}.
+Odchylenia są nieistotne z punktu widzenia analizy porównawczej --- margines $0{,}80\%$ jest pomijalny wobec wariancji wynikającej z losowości przebiegu partii Hearthstone przy skończonej próbie \texttt{NUM\_GAMES = 20}.

@@ -4,11 +4,11 @@ Algorytmy \textit{lookahead} są prostszą alternatywą dla MCTS. Zamiast budowa
 
 \subsection{Greedy: 1-Step Lookahead}
 
-Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej legalnej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Boty tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany bot zachłanny zajął 7. miejsce (win-rate 0{,}570 w UCDT)~\cite{hearthstone_competition}.
+Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej dozwolonej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Agenci tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany agent zachłanny zajął 7. miejsce (win-rate 0{,}570 w UCDT)~\cite{hearthstone_competition}.
 
 \subsection{N-Step Lookahead}
 
-Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów, gdzie agent symuluje wszystkie dostępne sekwencje akcji do głębokości $N$ i ocenia liście drzewa funkcją heurystyczną. W edycji 2019 pierwsze miejsce w ścieżce \textit{Premade Deck Playing Track} zajął bot \textbf{Heimbrodta} oparty na Dynamic Lookahead, a trzecie --- bot Öfelego i Mendeza Ruiza z Greedy Lookahead~\cite{hearthstone_competition}. W edycji 2020 algorytmy lookahead wyraźnie zdominowały konkurencję, zajmując 7 z 10 pierwszych miejsc:
+Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów, gdzie agent symuluje wszystkie dostępne sekwencje akcji do głębokości $N$ i ocenia liście drzewa funkcją heurystyczną. W edycji 2019 pierwsze miejsce w ścieżce \textit{Premade Deck Playing Track} zajął agent \textbf{Heimbrodta} oparty na Dynamic Lookahead, a trzecie --- bot Öfelego i Mendeza Ruiza z Greedy Lookahead~\cite{hearthstone_competition}. W edycji 2020 algorytmy lookahead wyraźnie zdominowały konkurencję, zajmując 7 z 10 pierwszych miejsc:
 \begin{itemize}
 \item 1.\ miejsce: Sebastian Miller, \textit{2-Step Lookahead}, win-rate 0{,}723,
 \item 2.\ miejsce: Bohnhof, Graeffe, \textit{Dynamic Lookahead}, win-rate 0{,}709,
@@ -25,7 +25,7 @@ Wariantem adaptacyjnym jest \textbf{Dynamic Lookahead}, w którym głębokość 
 
 \subsection{Lookahead z modelowaniem przeciwnika}
 
-Uzupełnieniem algorytmów lookahead jest modelowanie ruchów przeciwnika, opisane przez Dockhorna i in.~\cite{dockhorn2018} --- zamiast oceniać jedynie własne akcje, agent symuluje równocześnie odpowiedź przeciwnika w kolejnej turze i ocenia stan gry po obu ruchach. Dzięki temu agent unika ruchów, które wyglądają korzystnie jedynie bez uwzględniania możliwości przeciwnika. Bot autorstwa Dockhorna wygrał ścieżkę \textit{Premade Deck Playing Track} w 2018 roku właśnie z zastosowaniem tej techniki~\cite{dockhorn2018, hearthstone_competition}.
+Uzupełnieniem algorytmów lookahead jest modelowanie ruchów przeciwnika, opisane przez Dockhorna i in.~\cite{dockhorn2018} --- zamiast oceniać jedynie własne akcje, agent symuluje równocześnie odpowiedź przeciwnika w kolejnej turze i ocenia stan gry po obu ruchach. Dzięki temu agent unika ruchów, które wyglądają korzystnie jedynie gdy nie uwzględnimy odpowiedzi przeciwnika. Agent autorstwa Dockhorna wygrał ścieżkę \textit{Premade Deck Playing Track} w 2018 roku właśnie z zastosowaniem tej techniki~\cite{dockhorn2018, hearthstone_competition}.
 
 \subsection{Lookahead a MCTS}
 

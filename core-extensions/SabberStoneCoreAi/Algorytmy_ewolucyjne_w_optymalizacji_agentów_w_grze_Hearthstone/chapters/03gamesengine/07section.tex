@@ -1,19 +1,36 @@
-\section{Dodatkowe narzędzia}
+\section{Podsumowanie możliwości silnika}
 
-Poza głównym silnikiem symulacyjnym projekt oferuje kilka dodatkowych narzędzi, a jednym z nich jest moduł uproszczonego interfejsu graficznego użytkownika. Interfejs jest podzielony na dwie części --- podgląd przebiegu rozgrywki między dwoma agentami sterowanymi przez funkcje oceny oraz prosty kreator talii \cite{sabberstone_gui_wiki}. Mimo ograniczonej funkcjonalności jest to użyteczne narzędzie diagnostyczne i demonstracyjne. Moduł został jednak oznaczony jako przestarzały i zastąpiony klientem opartym na silniku Unity3D --- nowy interfejs oferuje wizualizację rozgrywki w czasie rzeczywistym poprzez komunikację z serwerem gry \cite{sabberstone_github}.
+SabberStone jest wszechstronnym środowiskiem badawczym, które pokrywa potrzeby eksperymentalne na wielu poziomach --- od szybkiego prototypowania algorytmów po organizację formalnych turniejów i integrację z zewnętrznymi systemami uczenia maszynowego. Tabela~\ref{tab:sabber_summary} zestawia kluczowe możliwości silnika.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.95\textwidth]{images/simpleui.PNG}
-    \caption{Interfejs graficzny \texttt{SabberStoneGui} --- widok rozgrywki w reprezentacji tekstowej (lewa strona) z aktualnym stanem planszy obu graczy oraz panel konfiguracji (prawa strona) umożliwiający wybór talii, strategii i parametrów przeszukiwania. Źródło:~\cite{sabberstone_gui_wiki}.}
-    \label{fig:sabberstone_gui}
-\end{figure}
+\begin{table}[ht]
+\centering
+\caption{Zestawienie kluczowych możliwości silnika SabberStone}
+\label{tab:sabber_summary}
+\begin{tabular}{p{5.2cm}p{8.3cm}}
+\toprule
+\textbf{Możliwość} & \textbf{Opis} \\
+\midrule
+Wysokie pokrycie kart
+  & Ponad 98\% kart formatu standardowego (rok 2019), z testami jednostkowymi dla każdej implementacji. \\[4pt]
+Częściowa obserwowalność
+  & Karty przeciwnika na ręce i w talii są ukryte, co odpowiada warunkom rzeczywistej rozgrywki. \\[4pt]
+Model przejść
+  & Symulacja przyszłego stanu gry bez modyfikowania bieżącego stanu, co jest podstawą algorytmów przeszukiwania. \\[4pt]
+Klonowanie stanu gry
+  & Tworzenie niezależnej kopii stanu gry umożliwiającej równoległe eksplorowanie gałęzi drzewa stanów. \\[4pt]
+Lista dostępnych akcji
+  & Silnik automatycznie udostępniania wszystkie dopuszczalne ruchy z pełnym uwzględnieniem reguł gry. \\[4pt]
+Interfejs agenta
+  & Abstrakcyjny, pięcioetapowy cykl życia agenta z wyraźnym podziałem na inicjalizację, decyzję i finalizację. \\[4pt]
+Organizacja turniejów
+  & Format round-robin z konfigurowalną liczbą gier na parę agentów i automatyczną agregacją wyników. \\[4pt]
+Dwie ścieżki eksperymentalne
+  & Gra gotowymi taliami lub samodzielny dobór talii jako część problemu optymalizacji. \\[4pt]
+Integracja gRPC
+  & Możliwość implementacji agentów w dowolnym języku programowania, którzy mogą komunikować się z silnikiem przez sieć. \\[4pt]
+Klient Unity3D
+  & Graficzna wizualizacja rozgrywki w czasie rzeczywistym. \\[4pt]
 
-Kolejnym rozszerzeniem projektu jest architektura klient-serwer oparta na protokole gRPC --- moduł ten umożliwia implementację agentów w dowolnym języku programowania, a nie tylko w C\# \cite{sabberstone_github}. Oznacza to możliwość bezpośredniego zastosowania bibliotek uczenia maszynowego dostępnych np. w ekosystemie Pythona, takich jak PyTorch czy TensorFlow, bez konieczności przepisywania kodu do C\#. Silnik działa wówczas jako autonomiczny serwer, a komunikacja z agentami odbywa się przez sieć lokalną lub zdalną.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.95\textwidth]{images/clientserver.png}
-    \caption{Klient Unity3D (\texttt{SabberStoneUnityClient}) wizualizujący rozgrywkę w czasie rzeczywistym. Widoczne są dwa równoległe okna klientów komunikujących się z serwerem SabberStone przez protokół gRPC, wraz z logiem serwera w dolnej części ekranu. Źródło:~\cite{sabberstone_github}.}
-    \label{fig:sabberstone_unity}
-\end{figure}
+\bottomrule
+\end{tabular}
+\end{table}

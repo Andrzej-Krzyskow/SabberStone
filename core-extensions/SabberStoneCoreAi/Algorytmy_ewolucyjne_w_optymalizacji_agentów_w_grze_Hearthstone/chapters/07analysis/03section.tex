@@ -1,11 +1,11 @@
 \section{Faza II — turniej główny}
 \label{sec:phase2}
 
-W fazie II sześciu reprezentantów wyłonionych w fazie I rywalizowało między sobą w pełnym turnieju round-robin. Celem było sprawdzenie, które warianty agenta są najskuteczniejsze i w jakim stopniu.
+W fazie II sześciu reprezentantów wyłonionych w fazie I rywalizowało między sobą w pełnym turnieju każdy z każdym. Celem było sprawdzenie, które warianty agenta są najskuteczniejsze i w jakim stopniu.
 
 \subsection{Wyniki ogólne}
 
-Faza II sprawdza, które z zaproponowanych modyfikacji rzeczywiście poprawiają skuteczność agenta i o ile. Tabela~\ref{tab:phase2-aggregate-results} zestawia wyniki zbiorcze wszystkich sześciu reprezentantów w turnieju round-robin (\(90\,000\) partii na agenta). Najwyższą skuteczność osiągnął wariant \textit{21 głębokościowy} (\(61{,}03\%\) zwycięstw), drugie miejsce zajął wariant \textit{28 parametrów} (\(50{,}55\%\)). Pozostałe konfiguracje mieszczą się w przedziale \(46\%\)--\(48\%\), co oznacza, że różnice między nimi są wyraźnie mniejsze niż dystans do zwycięzcy.
+Faza II sprawdza, które z zaproponowanych modyfikacji rzeczywiście poprawiają skuteczność agenta i o ile. Tabela~\ref{tab:phase2-aggregate-results} zestawia wyniki zbiorcze wszystkich sześciu reprezentantów w turnieju każdy z każdym (\(90 000\) partii na agenta). Najwyższą skuteczność osiągnął wariant \textit{21 głębokościowy} (\(61{,}03\%\) zwycięstw), drugie miejsce zajął wariant \textit{28 parametrów} (\(50{,}55\%\)). Pozostałe konfiguracje mieszczą się w przedziale \(46\%\)--\(48\%\), co oznacza, że różnice między nimi są wyraźnie mniejsze niż dystans do zwycięzcy.
 
 \input{chapters/07analysis/generated/phase2-aggregate-results}
 
@@ -15,11 +15,11 @@ Tabela~\ref{tab:phase2-agent-vs-agent-heatmap} potwierdza i uzupełnia wyniki zb
 
 Z tej części pracy wynika, że największą poprawę jakości daje zmiana procesu podejmowania decyzji, a nie dalsze zwiększanie liczby współczynników --- przy danym budżecie obliczeniowym większy zysk daje lepsze planowanie akcji niż dodawanie kolejnych cech oceny.
 
-Faza II potwierdza też praktyczny sukces całego podejścia badawczego --- zaproponowane modyfikacje (poza wariantem \textit{63 parametry}) przewyższają wariant bazowy, a najlepszy wariant ma przewagę nad każdym rywalem. Nie są to więc wyłącznie teoretyczne i formalne zmiany.
+Faza II potwierdza też praktyczny sukces całego podejścia badawczego --- zaproponowane modyfikacje (poza wariantem \textit{63 parametry}) przewyższają wariant bazowy, a najlepszy wariant ma przewagę nad każdym rywalem. Nie są to więc wyłącznie teoretyczne przypuszczenia.
 
 \subsection{Wpływ normalizacji (28 vs 28 znormalizowany)}
 
-Bezpośrednie porównanie \(28\) vs \(28\) znormalizowany wskazuje na przewagę wariantu bez normalizacji (\(\approx 52{,}6\%\) w bezpośrednim starciu). Oba warianty mają podobny poziom względem części pozostałych agentów, co sugeruje, że normalizacja nie powoduje zasadniczej zmiany w sposobie gry agenta, ale jedynie obniża jego skuteczność.
+Bezpośrednie porównanie \(28\) vs \(28\) znormalizowany wskazuje na przewagę wariantu bez normalizacji (\(\approx 52{,}6\%\) w bezpośrednim starciu). Oba warianty mają podobny poziom względem części pozostałych agentów, co sugeruje, że normalizacja nie powoduje zasadniczej zmiany w sposobie gry agenta, a jedynie obniża jego skuteczność.
 
 \input{chapters/07analysis/generated/28figures-input}
 
@@ -36,7 +36,7 @@ Mniejsza rola \textit{Prz} i \textit{Pir} wynika z sytuacyjności tych cech --- 
 Bardzo mała rola \textit{Ręka} jest spójna z praktyką gry --- w tym zbiorze talii i przy tym stylu oceny większy wpływ ma bieżący stan stołu, tempo rozgrywki i aktywne synergie niż sama liczba kart na ręce. Model premiuje dobrą sytuację na planszy bardziej niż zapas kart, dlatego waga \textit{Ręka} spada blisko zera.
 
 \paragraph{Wniosek z porównania agentów z 28 parametrami}
-Przejście z 21 do 28 cech poprawia skuteczność agenta w obu wersjach: wariant \textit{28 parametrów} wygrał z agentem bazowym w bezpośrednim starciu wynikiem \(53{,}5\%\), a \textit{28 znormalizowany} --- \(51{,}0\%\). Wybór sposobu skalowania cech ma jednak znaczenie. Wariant bez normalizacji wyprzedza agenta znormalizowanego o \(\approx 2{,}5\)p.p. w rywalizacji przeciw agentowi bazowemu, a w bezpośrednim starciu uzyskał \(52{,}6\%\) odsetka zwycięstw. Odpowiedź na pytanie badawcze nr 1 (RQ1) jest więc pozytywna --- rozszerzenie przestrzeni cech z 21 do 28 poprawia jakość agenta, ale pełny potencjał tej modyfikacji ujawnia się tylko bez nadmiernego wygładzania wartości cech.
+Przejście z 21 do 28 cech poprawia skuteczność agenta w obu wersjach: wariant \textit{28 parametrów} wygrał z agentem bazowym w bezpośrednim starciu wynikiem \(53{,}5\%\), a \textit{28 znormalizowany} --- \(51{,}0\%\). Wybór sposobu skalowania cech ma jednak znaczenie. Wariant bez normalizacji wyprzedza agenta znormalizowanego o około \(2{,}5\)p.p. w rywalizacji przeciw agentowi bazowemu, a w bezpośrednim starciu uzyskał \(52{,}6\%\) odsetka zwycięstw. Odpowiedź na pytanie badawcze nr 1 (RQ1) jest więc pozytywna --- rozszerzenie przestrzeni cech z 21 do 28 poprawia jakość agenta, ale pełny potencjał tej modyfikacji ujawnia się tylko bez nadmiernego wygładzania wartości cech.
 
 \subsection{Wpływ podziału fazowego (63 vs 63 płynny)}
 
@@ -57,7 +57,7 @@ Największy efekt w całej fazie II widać w porównaniu \textit{bazowy 21} vs \
 
 \input{chapters/07analysis/generated/21figures-input}
 
-Porównanie rysunków~\ref{fig:weights-base21} i~\ref{fig:weights-v21depth} pokazuje, że sama zmiana wag nie wyjaśnia całkowicie różnicy w jakości. Wariant głębokościowy zmienia przede wszystkim kontekst, w którym wagi są używane. Ocena stanu planszy jest osadzona w procesie planowania sekwencji akcji, a nie jedynie w podejmowaniu najlepszej decyzji tu i teraz. Dzięki temu agent częściej wybiera ruchy korzystne w perspektywie kilku kroków, nawet jeśli pojedynczo nie wydają się optymalne.
+Porównanie rysunków~\ref{fig:weights-base21} i~\ref{fig:weights-v21depth} pokazuje, że sama zmiana wag nie wyjaśnia całkowicie różnicy w jakości. Wariant głębokościowy zmienia przede wszystkim kontekst, w którym wagi są używane. Ocena stanu planszy jest osadzona w procesie planowania sekwencji akcji, a nie jedynie w podejmowaniu lokalnie najlepszej decyzji. Dzięki temu agent częściej wybiera ruchy korzystne w perspektywie kilku kroków, nawet jeśli pojedynczo nie wydają się optymalne.
 
 W praktyce oznacza to wyraźną przewagę w sytuacjach, gdzie korzyść natychmiastowa kłóci się z przygotowaniem pod kolejne zagrania. Wariant bazowy częściej wybiera ruch lokalnie dobry, natomiast wariant głębokościowy częściej wybiera sekwencję prowadzącą do lepszej pozycji końcowej.
 

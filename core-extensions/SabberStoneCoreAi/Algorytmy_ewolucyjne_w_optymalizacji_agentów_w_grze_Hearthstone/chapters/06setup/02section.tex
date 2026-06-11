@@ -68,7 +68,7 @@ Wiele kart klas Maga, Kapłana i Wojownika z ekspansji \textit{Whispers of the O
         w_{\text{smok}} \cdot
         \bigl(\text{smoki}(p) - \text{smoki}(p')\bigr)
 \end{equation}
-gdzie $\text{smoki}(p)$ to liczba kart rasy smok w ręce gracza.
+gdzie $\text{smoki}(p)$ to liczba kart rasy smok w ręce gracza $(p)$.
 
 \paragraph{Postęp Jade Golem $\Delta \text{Jade}$.}
 
@@ -121,9 +121,9 @@ Drugi wariant jest identyczny z wariantem 28 parametrów pod względem struktury
 
 Bez normalizacji poszczególne cechy mają bardzo różne zakresy wartości --- przykładowo agregowana wartość stronnika $\nu(m)$ może wynosić nawet kilkaset punktów, podczas gdy zmiana licznika Jade Golem zwykle wynosi co najwyżej 2. To powoduje, że wagi cech o dużych wartościach bezwzględnych dominują w procesie optymalizacji i utrudniają poprawne oszacowanie względnej ważności cech. Normalizacja wyrównuje skale tak, że każda waga $w_k$ wyraża bezpośrednio \emph{ważność} cechy, niezależnie od jej naturalnej skali liczbowej.
 
-Normalizacja obejmuje 28 cech obliczanych ze zmian stanu gry (różnic między stanami \textit{before}/\textit{after}), natomiast funkcja wartości stronnika $\nu(m, \mathbf{w})$~\eqref{eq:minion_value} pozostaje niezmieniona --- jej składniki (zdrowie, atak, zdolności) nie są normalizowane wewnętrznie, ponieważ $\nu(m, \mathbf{w})$ pełni rolę wagi agregującej, a nie bezpośredniej cechy stanu.
+Normalizacja obejmuje 28 cech obliczanych ze zmian stanu gry (różnic między stanami przed i po wykonaniu akcji), natomiast funkcja wartości stronnika $\nu(m, \mathbf{w})$~\eqref{eq:minion_value} pozostaje niezmieniona --- jej składniki (zdrowie, atak, zdolności) nie są normalizowane wewnętrznie, ponieważ $\nu(m, \mathbf{w})$ pełni rolę wagi agregującej, a nie bezpośredniej cechy stanu.
 
-Pułap normalizacyjny $C_k$ dla każdej cechy wyznaczono empirycznie. Przeprowadzono turniej między dwoma agentami bazowymi, rozgrywając $\approx1.08$ milion gier, w których zbierano wartości bezwzględne każdej cechy. Jako $C_k$ przyjęto obserwowane maksimum bezwzględne. Dzięki temu w typowych sytuacjach rozgrywki wartość znormalizowana mieści się w $[-1, 1]$, a wartości ekstremalnie duże (rzadkie) są obcinane do $\pm 1$, nie zaburzając skali.
+Pułap normalizacyjny $C_k$ dla każdej cechy wyznaczono empirycznie. Przeprowadzono turniej między dwoma agentami bazowymi, rozgrywając $\approx1,08$ miliona gier, w których zbierano wartości bezwzględne każdej cechy. Jako $C_k$ przyjęto obserwowane maksimum bezwzględne. Dzięki temu w typowych sytuacjach rozgrywki wartość znormalizowana mieści się w $[-1, 1]$, a wartości ekstremalnie duże (rzadkie) są obcinane do $\pm 1$, nie zaburzając skali.
 
 Niech $\hat{x}_k$ oznacza surową wartość cechy $k$. Normalizacja przyjmuje postać:
 \begin{equation}
@@ -133,7 +133,7 @@ Niech $\hat{x}_k$ oznacza surową wartość cechy $k$. Normalizacja przyjmuje po
 gdzie $C_k > 0$ to empiryczny pułap normalizacyjny, a $\tilde{x}_k \in [-1, 1]$. Wartości $C_k$ dla wszystkich 28 cech zestawiono w tabeli~\ref{tab:weights28norm}.
 
 
-\begin{table}[h]
+\begin{table}[!h]
 \centering
 \caption{Parametry wariantu 28 z normalizacją: wszystkie cechy z pułapami normalizacyjnymi $C_k$.}
 \label{tab:weights28norm}
@@ -197,7 +197,7 @@ Wariant ten wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiow
 \subsection{Wariant 63 parametrów z płynnym przejściem}
 \label{sec:agent63smooth}
 
-Niezależna reprezentacja wag faz w wariancie~\ref{sec:agent63} może prowadzić do niespójności na granicach tur --- skoki wartości wag skutkowałyby niestabilną strategią agenta. Przykładowo, jeśli waga prowokacji w fazie~1 wynosi 0,9, a w fazie~2 wynosi 0,1, to po przekroczeniu tury~3 agent nagle przestaje cenić stronniki z prowokacją, co jest nienaturalne z punktu widzenia spójnej strategii.
+Niezależna reprezentacja wag faz w wariancie~\ref{sec:agent63} może prowadzić do niespójności na granicach tur --- skoki wartości wag skutkowałyby niestabilną strategią agenta. Przykładowo, jeśli waga prowokacji w fazie~1 wynosi 0,9, a w fazie~2 wynosi 0,1, to po przekroczeniu tury~3 agent nagle przestaje cenić Stronników z prowokacją, co jest nienaturalne z punktu widzenia spójnej strategii.
 
 Ten wariant koduje wagi faz~2 i~3 jako \textbf{deltę względem fazy poprzedniej}, ograniczając wielkość możliwej zmiany do $\pm 0{,}1$ na każdy parametr między kolejnymi fazami. Zamiast optymalizować bezpośrednio wartości wag faz~2 i~3, algorytm ewolucyjny optymalizuje \emph{wielkość zmiany} względem fazy poprzedniej.
 
@@ -216,12 +216,12 @@ Niech $g^{(i)}_k \in [0,1]$ oznacza $k$-ty gen w $i$-tej fazie, a $\mathbf{g} \i
         \; 0,\; 1\right)
     \label{eq:smooth3}
 \end{align}
-gdzie $\delta_{\min} = -0{,}1$, $\delta_{\max} = 0{,}1$, a $\text{clip}(x, 0, 1) = \max(0, \min(1, x))$. Wagi każdej fazy mogą różnić się od wag fazy poprzedniej o co najwyżej $|\Delta w^{(i)}_k| \leq 0{,}1$, co wymusza ciągłość strategii i zawęża przestrzeń poszukiwań.
+gdzie $\delta_{\min} = -0{,}1$, $\delta_{\max} = 0{,}1$, a $\text{clip}(x, 0, 1) = \max(0, \min(1, x))$. Wagi każdej fazy mogą różnić się od wag fazy poprzedniej o co najwyżej $|\Delta w^{(i)}_k| \leq 0{,}1$, co wymusza ciągłość strategii i zawęża przestrzeń przeszukiwań.
 
 \subsection{Wariant 21 parametrów z przeszukiwaniem głębokościowym}
 \label{sec:agent21depth}
 
-Agent bazowy stosuje strategię zachłanną z horyzontem 1 --- ocenia akcje wyłącznie na podstawie natychmiastowej zmiany stanu gry, ignorując przyszłe konsekwencje w obrębie bieżącej tury. Tymczasem w Hearthstone wiele silnych kombinacji (ang. \textit{combo}) wymaga wykonania sekwencji akcji, gdzie pierwsza akcja sama w sobie ma niską wartość, ale otwiera możliwość wykonania kolejnej o dużej wartości. Strategia zachłanna jest zatem ślepa na takie kombinacje --- przykładowo, zagranie taniej karty wzmacniającej (ang. \textit{buff}) przed atakiem stronnika przynosi łącznie wyższy zysk niż sama ocena zagrania wzmocnienia, która bez kontekstu kolejnej akcji wydaje się przeciętna.
+Agent bazowy stosuje strategię zachłanną z horyzontem 1 --- ocenia akcje wyłącznie na podstawie natychmiastowej zmiany stanu gry, ignorując przyszłe konsekwencje w obrębie bieżącej tury. Tymczasem w Hearthstone wiele silnych kombinacji (ang. \textit{combo}) wymaga wykonania sekwencji akcji, gdzie pierwsza akcja sama w sobie ma niską wartość, ale otwiera możliwość wykonania kolejnej o dużej wartości. Strategia zachłanna nie uwzględnia zatem takich kombinacji --- przykładowo, zagranie taniej karty wzmacniającej (ang. \textit{buff}) przed atakiem stronnika przynosi łącznie wyższy zysk niż sama ocena zagrania wzmocnienia, która bez kontekstu kolejnej akcji wydaje się przeciętna.
 
 Piąty wariant zachowuje bazowy zestaw 21 parametrów, lecz zmienia \textbf{strategię decyzyjną} z zachłannej \eqref{eq:greedy} na przeszukiwanie z wyprzedzeniem (ang. \textit{lookahead}) o stałej głębokości $d = 2$ w obrębie tej samej tury. Wartość akcji $a$ wyznaczana jest rekurencyjnie:
 \begin{equation}
@@ -239,4 +239,4 @@ gdzie $s' = T(s, a)$, a warunek \emph{końca tury} zachodzi, gdy akcja $a$ jest 
 
 Głębokość $d = 2$ oznacza, że agent ocenia bezpośredni efekt akcji oraz najlepszą możliwą kontynuację w tej samej turze. Złożoność obliczeniowa wynosi $O(|\mathcal{A}(s)|^2)$ na każdą turę, co przy typowej liczbie dostępnych akcji $|\mathcal{A}(s)| \approx 10$--$20$ daje od 100 do 400 wywołań symulatora --- akceptowalny koszt w porównaniu z wariantem głębokości~3, gdzie liczba wywołań wzrasta do~$10^3$--$8\,000$.
 
-Wariant ten nie wprowadza nowych parametrów --- wagi $\mathbf{w}$ pozostają identyczne jak w agencie bazowym. Zmiana dotyczy wyłącznie sposobu ich wykorzystania --- zamiast oceniać każdą akcję w izolacji, agent przeszukuje sekwencje dwóch kolejnych akcji i wybiera tę pierwszą, która prowadzi do najwyższej sumy ocen. Dzięki temu możliwe jest wykrycie kombinacji niewidocznych dla strategii zachłannej, bez zwiększania liczby optymalizowanych parametrów.
+Wariant ten nie wprowadza nowych parametrów --- wagi $\mathbf{w}$ pozostają identyczne jak w agencie bazowym. Zmiana dotyczy wyłącznie sposobu ich wykorzystania --- zamiast oceniać każdą akcję w izolacji, agent przeszukuje sekwencje dwóch kolejnych akcji i wybiera taką pierwszą akcję, która prowadzi do najwyższej sumy ocen. Dzięki temu możliwe jest wykrycie kombinacji niewidocznych dla strategii zachłannej, bez zwiększania liczby optymalizowanych parametrów.
