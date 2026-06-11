@@ -10,22 +10,25 @@ M_{CR} = [M_{CR,1}, \ldots, M_{CR,H}], \quad M_F = [M_{F,1}, \ldots, M_{F,H}]
 \]
 Parametry sterujące dla $i$-tego osobnika generowane są jako:
 \[
-CR_i = \mathcal{N}(M_{CR, r_i}, 0{,}1), \quad F_i = \mathcal{C}(M_{F, r_i}, 0{,}1)
+CR_i \sim \mathcal{N}(M_{CR, r_i},\, 0{,}1), \quad F_i \sim \mathcal{C}(M_{F, r_i},\, 0{,}1)
 \]
-gdzie $r_i$ jest losowym indeksem z $\{1, \ldots, H\}$, $\mathcal{N}$ oznacza rozkład normalny, a $\mathcal{C}$ --- rozkład Cauchy'ego z obcięciem do $(0, 1]$ \cite{Tanabe2013SHADE}.
-Po każdym pokoleniu do tablic wpisywana jest ważona średnia Lehmera wartości parametrów z osobników, które wygenerowały lepsze potomstwo:
+gdzie $r_i$ jest losowym indeksem z $\{1, \ldots, H\}$, zapis $\mathcal{N}(\mu, \sigma^2)$ oznacza rozkład normalny o wartości oczekiwanej $\mu$ i wariancji $\sigma^2$, natomiast $\mathcal{C}(\gamma, \beta)$ --- rozkład Cauchy'ego o położeniu $\gamma$ i skali $\beta$, z obcięciem do $(0, 1]$ w przypadku $F_i$ \cite{Tanabe2013SHADE}.
+Po każdym pokoleniu do tablic wpisywana jest średnia ważona Lehmera wartości parametrów z osobników, które wygenerowały lepsze potomstwo:
 \[
-M_{CR,k} \leftarrow \mathrm{mean}_\mathrm{WL}(S_{CR}), \quad M_{F,k} \leftarrow \mathrm{mean}_\mathrm{WL}(S_F)
+M_{CR,k} \leftarrow \text{średnia}_{\mathrm{WL}}(S_{CR}), \quad M_{F,k} \leftarrow \text{średnia}_{\mathrm{WL}}(S_F)
 \]
-gdzie wagi proporcjonalne są do poprawy wartości funkcji celu \cite{Tanabe2013SHADE}. Indeks $k$ jest aktualizowany cyklicznie po każdym pokoleniu, od $1$ do $H$. Przechowywanie $H$ niezależnych wartości historycznych, zamiast jednej aktualizowanej średniej, jak w JADE, sprawia, że SHADE jest odporniejszy na przedwczesną zbieżność parametrów, szczególnie w przestrzeniach wielomodalnych \cite{Tanabe2013SHADE}.
+gdzie $S_{CR}$ i $S_F$ to zbiory wartości odpowiednio $CR$ i $F$ tych osobników, których wektory próbne poprawiły wartość funkcji celu, a wagi w $\mathrm{średnia}_\mathrm{WL}(\cdot)$ są proporcjonalne do uzyskanej poprawy \cite{Tanabe2013SHADE}. Indeks $k$ jest aktualizowany cyklicznie po każdym pokoleniu, od $1$ do $H$. Przechowywanie $H$ niezależnych wartości historycznych, zamiast jednej aktualizowanej średniej, jak w JADE, sprawia, że SHADE jest odporniejszy na przedwczesną zbieżność parametrów, szczególnie w przestrzeniach wielomodalnych \cite{Tanabe2013SHADE}.
 
 \subsection{L-SHADE --- SHADE z liniową redukcją populacji}
 W 2014 roku Tanabe i Fukunaga zaproponowali rozszerzenie SHADE o mechanizm \textbf{liniowej redukcji liczebności populacji} (ang. \textit{Linear Population Size Reduction}, LPSR), tworząc wariant L-SHADE \cite{Tanabe2014LSHADE}. Liczebność populacji jest zmniejszana liniowo od wartości początkowej $NP_{\mathrm{init}}$ do minimalnej $NP_{\mathrm{min}}$ w miarę wyczerpywania budżetu ewaluacji:
 \[
 NP_G = \mathrm{round}\!\left[ \frac{NP_{\mathrm{min}} - NP_{\mathrm{init}}}{MaxFES} \cdot FES + NP_{\mathrm{init}} \right]
 \]
+gdzie $FES$ (ang. \textit{function evaluations}) oznacza liczbę dotychczas wykonanych ewaluacji funkcji celu, $MaxFES$ --- maksymalny dopuszczalny budżet takich ewaluacji, a $\mathrm{round}(\cdot)$ zaokrągla wynik do najbliższej liczby całkowitej.
 
-Mechanizm ten pozwala na szeroką eksplorację przy dużej populacji na początku przeszukiwań i skupienie wysiłku obliczeniowego na eksploatacji pod koniec przebiegu\cite{Tanabe2014LSHADE}. L-SHADE zajął pierwsze miejsce w konkursie CEC2014, tym samym wzmacniając pozycję tej klasy algorytmów wśród metod optymalizacji numerycznej. Mimo upływu lat badania nad ewolucją różnicową są nadal aktywnym obszarem --- współczesne kierunki rozwoju tej metaheurystyki obejmują m.in. architektury wielopopulacyjne oraz mechanizmy regeneracji elit (ang. \textit{multi-population and elites regeneration}). Cao i Luan wykazali w 2024 roku, że takie podejście pozwala skuteczniej zapobiegać przedwczesnej zbieżności oraz lepiej równoważyć procesy eksploracji i eksploatacji w globalnej optymalizacji \cite{Cao2024}.
+Mechanizm ten pozwala na szeroką eksplorację przy dużej populacji na początku przeszukiwań i skupienie wysiłku obliczeniowego na eksploatacji pod koniec przebiegu \cite{Tanabe2014LSHADE}. L-SHADE zajął pierwsze miejsce w konkursie CEC2014, tym samym wzmacniając pozycję tej klasy algorytmów wśród metod optymalizacji numerycznej. Mimo upływu lat badania nad ewolucją różnicową są nadal aktywnym obszarem --- współczesne kierunki rozwoju tej metaheurystyki obejmują m.in. architektury wielopopulacyjne oraz mechanizmy regeneracji elit (ang. \textit{multi-population and elites regeneration}). Cao i Luan wykazali w 2024 roku, że takie podejście pozwala skuteczniej zapobiegać przedwczesnej zbieżności oraz lepiej równoważyć procesy eksploracji i eksploatacji w globalnej optymalizacji \cite{Cao2024}.
 
 \subsection{SHADE w kontekście optymalizacji agentów}
 Opisane właściwości algorytmu SHADE czynią go dobrym narzędziem do optymalizacji wag funkcji oceny agentów gier karcianych --- automatyczna adaptacja parametrów $F$ i $CR$ eliminuje konieczność ręcznego strojenia, które w środowiskach o szumnej funkcji przystosowania jest trudne. García-Sánchez i in. \cite{sanchez2020} wykazali, że algorytmy ewolucyjne z adaptacyjnymi parametrami osiągają wyniki konkurencyjne względem algorytmów przeszukiwania drzewa gry, takich jak MCTS \cite{Swiechowski2022, Browne2012}, przy mniejszym koszcie obliczeniowym na jedną decyzję. Historyczna pamięć o długości $H$ pozwala dodatkowo zachować różnorodność parametrów przez cały przebieg eksperymentu, co ma znaczenie przy szumnych ocenach wynikających z losowości efektów gry Hearthstone \cite{hoover2020}.
+
+W niniejszej pracy zastosowano wariant SHADE bez liniowej redukcji populacji (L-SHADE). Mechanizm LPSR zakłada dużą populację początkową i jej stopniowe zmniejszanie wraz z wyczerpywaniem budżetu ewaluacji, co dobrze pasuje do klasycznych testów wydajności optymalizacji numerycznej. W koewolucyjnym treningu agentów liczebność populacji jest jednak ściśle powiązana z liczbą rywali w ewaluacji, a utrzymanie różnorodności przeciwników przez cały przebieg ma kluczowe znaczenie. Przy niewielkich populacjach stosowanych w eksperymentach ($NP \in \{10, 15\}$) dodatkowe zmniejszanie $NP$ osłabiłoby presję selekcyjną i różnorodność puli agentów, zamiast ją wspierać.

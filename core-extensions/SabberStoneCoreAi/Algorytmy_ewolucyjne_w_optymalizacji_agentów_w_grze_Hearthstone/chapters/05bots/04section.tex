@@ -6,9 +6,9 @@ Poza podejściem ewolucyjnym i metodami przeszukiwania drzewa gry, uczestnicy ko
 
 Klasyczne podejście z teorii gier --- przeszukiwanie Minimax z przycinaniem Alfa-Beta --- zostało zaadaptowane do Hearthstone przez Wulfmeyera, który zajął 5. miejsce w edycji 2018 \cite{hearthstone_competition}. Wyzwaniem jest tu losowość mechanik gry: Minimax zakłada deterministyczność, więc losowe efekty kart wymagają uśredniania (ang. \textit{expectimax}) lub przybliżenia deterministycznego. W edycji 2019 Sparks i Djartov posłużyli się agentem opartym na Min-Max, a w 2020 agent Lamprechta Mini-Max Search zajął 12. miejsce \cite{hearthstone_competition}.
 
-\subsection{Beam Search i BFS}
+\subsection{Przeszukiwanie wiązkowe i przeszukiwanie wszerz}
 
-Beam Search --- uproszczenie przeszukiwania wszerz, zachowujące tylko $k$ najbardziej obiecujących ścieżek --- pojawił się w edycji 2019 w agencie Bokelmanna i Unkringa oraz w edycji 2020 w agencie Ortlama. Pokrewnym podejściem jest BFS stosowane przez Heberta i Hecka w edycji 2019. Podejścia te redukują złożoność pamięciową przeszukiwania kosztem utraty gwarancji optymalności~\cite{hearthstone_competition}.
+Przeszukiwanie wiązkowe (ang.~\textit{beam search}) --- uproszczenie pełnego przeszukiwania wszerz, zachowujące tylko $k$ najbardziej obiecujących ścieżek --- pojawiło się w edycji 2019 w agencie Bokelmanna i Unkringa oraz w edycji 2020 w agencie Ortlama. Pokrewnym podejściem jest pełne przeszukiwanie wszerz (ang.~\textit{breadth-first search}, BFS) stosowane przez Heberta i Hecka w edycji 2019. Podejścia te redukują złożoność pamięciową przeszukiwania kosztem utraty gwarancji optymalności~\cite{hearthstone_competition}.
 
 \subsection{Sieci neuronowe i uczenie maszynowe}
 
@@ -20,4 +20,4 @@ Stiegler i in.~\cite{Stiegler2018} zaproponowali agenta opartego na wnioskowaniu
 
 \subsection{Rolling Horizon Evolutionary Algorithm}
 
-W edycji 2018 Weimer (15. miejsce, kat. \textit{premade deck playing track}) zastosował podejście Rolling Horizon Evolutionary Algorithm (RHEA). W tej metodzie, opisanej przez Gainę i in.~\cite{gaina2020}, algorytm ewolucyjny optymalizuje sekwencję akcji na bieżącą turę w czasie podejmowania decyzji --- bez wstępnego trenowania. W każdej chwili decyzji uruchamiana jest krótka sesja ewolucyjna, która wyznacza najlepszą sekwencję ruchów w ramach dostępnego czasu. Podejście to stanowi interesującą hybrydę między algorytmami \textit{online}, jak MCTS, a ewolucyjnymi, jednak w edycji 2018 nie dało wyników porównywalnych z czołowymi agentami~\cite{hearthstone_competition}.
+W edycji 2018 Weimer (15. miejsce, kategoria \textit{premade deck playing track}) zastosował podejście Rolling Horizon Evolutionary Algorithm (RHEA). W tej metodzie, opisanej przez Gainę i in.~\cite{gaina2020}, algorytm ewolucyjny optymalizuje sekwencję akcji na bieżącą turę w czasie podejmowania decyzji --- bez wstępnego trenowania. W każdej chwili decyzji uruchamiana jest krótka sesja ewolucyjna, która wyznacza najlepszą sekwencję ruchów w ramach dostępnego czasu. Podejście to stanowi interesującą hybrydę między algorytmami \textit{online}, jak MCTS, a ewolucyjnymi, jednak w edycji 2018 nie osiągnęło wyników porównywalnych z czołowymi agentami, w tym z agentem García-Sáncheza i in., który osiągnął 2. miejsce \cite{hearthstone_competition, sanchez2020}.

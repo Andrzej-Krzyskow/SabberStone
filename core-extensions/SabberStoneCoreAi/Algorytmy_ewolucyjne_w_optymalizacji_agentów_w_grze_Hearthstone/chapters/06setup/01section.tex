@@ -7,25 +7,37 @@ Sekcja zawiera formalny opis agenta parametrycznego, będącego podstawą wszyst
 W poniższych wzorach indeks górny $(\cdot)^{\text{wł}}$ odnosi się do gracza, a $(\cdot)^{\text{prz}}$ --- do przeciwnika. Agent przechowuje wektor wag $\mathbf{w} \in [0,1]^D$, gdzie $D$ jest liczbą parametrów danego wariantu. W każdej turze, dla każdej legalnej akcji $a$ dostępnej w stanie $s$, agent symuluje stan wynikowy $s' = T(s, a)$ i oblicza wartość akcji:
 
 \begin{equation}
-    f(s, a, \mathbf{w}) =
-        \Delta H^{\text{prz}} - \Delta H^{\text{wł}}
-        + \Delta M^{\text{prz}} - \Delta M^{\text{wł}}
-        + \Delta S^{\text{prz}} - \Delta S^{\text{wł}}
-        - \Delta \text{mana}
+\begin{split}
+    f(s, a, \mathbf{w}) =\;
+        & \Delta H^{\text{prz}}(s, a, \mathbf{w}) - \Delta H^{\text{wł}}(s, a, \mathbf{w}) \\
+        & + \Delta M^{\text{prz}}(s, a, \mathbf{w}) - \Delta M^{\text{wł}}(s, a, \mathbf{w}) \\
+        & + \Delta S^{\text{prz}}(s, a, \mathbf{w}) - \Delta S^{\text{wł}}(s, a, \mathbf{w}) \\
+        & - \Delta \text{mana}(s, a, \mathbf{w})
+\end{split}
     \label{eq:score}
 \end{equation}
+
 
 Następnie agent wybiera akcję o najwyższej wartości:
 \begin{equation}
     a^* = \arg\max_{a \in \mathcal{A}(s)}\; f(s, a, \mathbf{w})
     \label{eq:greedy}
 \end{equation}
-gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich dostępnych akcji dostępnych
-w stanie $s$ --- jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
+gdzie $\mathcal{A}(s)$ oznacza zbiór wszystkich dostępnych akcji w stanie $s$ --- jest to strategia zachłanna z horyzontem 1. Wyjątkiem od równania \eqref{eq:greedy} są stany terminalne: akcja prowadząca do wygranej (punkty zdrowia bohatera przeciwnika $\leq 0$) otrzymuje wartość $+\infty$, a prowadząca do przegranej (własne punkty zdrowia $\leq 0$) --- wartość $-\infty$.
 
 \subsection{Składniki funkcji oceny}
 
-Każdy składnik równania~\eqref{eq:score} opisuje \textbf{różnicę} pewnej cechy między stanem przed akcją ($s$) a po akcji ($s'$), zawsze z perspektywy gracza, którego cecha ta dotyczy. Wartości dodatnie są korzystne z punktu widzenia gracza wykonującego akcję (tj. wzrost $\Delta H^{\text{prz}}$ oznacza, że przeciwnik utracił punkty zdrowia, co jest pożądane).
+Każdy składnik równania~\eqref{eq:score} opisuje \textbf{różnicę} pewnej cechy między stanem przed akcją ($s$) a po akcji ($s' = T(s,a)$), zawsze z perspektywy gracza, którego cecha ta dotyczy. Indeksy $\text{wł}$ i $\text{prz}$ oznaczają odpowiednio gracza wykonującego akcję i jego przeciwnika --- $p^{\text{wł}}$ i $p^{\text{prz}}$ to stany bohaterów w $s$, a $p'^{\text{wł}}$ i $p'^{\text{prz}}$ w $s'$. Składniki z argumentami $(s,a,\mathbf{w})$ wiążemy ze szczegółowymi wzorami poniżej następująco:
+\begin{align}
+    \Delta H^{\text{wł}}(s,a,\mathbf{w}) &:= \Delta H(p^{\text{wł}}, p'^{\text{wł}}, \mathbf{w}), \\
+    \Delta H^{\text{prz}}(s,a,\mathbf{w}) &:= \Delta H(p^{\text{prz}}, p'^{\text{prz}}, \mathbf{w}), \\
+    \Delta M^{\text{wł}}(s,a,\mathbf{w}) &:= \Delta M(B^{\text{wł}}, B'^{\text{wł}}, \mathbf{w}), \\
+    \Delta M^{\text{prz}}(s,a,\mathbf{w}) &:= \Delta M(B^{\text{prz}}, B'^{\text{prz}}, \mathbf{w}), \\
+    \Delta S^{\text{wł}}(s,a,\mathbf{w}) &:= \Delta S(p^{\text{wł}}, p'^{\text{wł}}, \mathbf{w}), \\
+    \Delta S^{\text{prz}}(s,a,\mathbf{w}) &:= \Delta S(p^{\text{prz}}, p'^{\text{prz}}, \mathbf{w}), \\
+    \Delta\text{mana}(s,a,\mathbf{w}) &:= \Delta\text{mana}(p^{\text{wł}}, p'^{\text{wł}}, \mathbf{w}).
+\end{align}
+Wartości dodatnie są korzystne z punktu widzenia gracza wykonującego akcję (tj.\ wzrost $\Delta H^{\text{prz}}(s,a,\mathbf{w})$ oznacza, że przeciwnik utracił punkty zdrowia, co jest pożądane).
 
 \paragraph{Zmiana stanu bohatera $\Delta H$.}
 
@@ -108,16 +120,16 @@ gdzie $|Z^{\text{sek}}_p|$ oznacza liczbę aktywnych sekretów gracza $p$.
 \paragraph{Koszt many $\Delta\text{mana}$.}
 
 \begin{equation}
-    \Delta\text{mana}(s, s', \mathbf{w}) =
+    \Delta\text{mana}(p, p', \mathbf{w}) =
         w_{\text{mana}} \cdot
-        \bigl(\text{mana}^{\text{rem}}_s - \text{mana}^{\text{rem}}_{s'}\bigr)
+        \bigl(\text{mana}^{\text{rem}}_p - \text{mana}^{\text{rem}}_{p'}\bigr)
     \label{eq:delta_mana}
 \end{equation}
-gdzie $\text{mana}^{\text{rem}}$ oznacza pozostałą ilość many gracza. Składnik ten jest \emph{odejmowany} w równaniu~\eqref{eq:score}, karząc akcje o wysokim koszcie many.
+gdzie $\text{mana}^{\text{rem}}_p$ oznacza pozostałą ilość many gracza $p$. Składnik ten jest \emph{odejmowany} w równaniu \eqref{eq:score}, karząc akcje o wysokim koszcie many.
 
 \subsection{Wektor wag i genom}
 
-Bazowy agent posiada $D = 21$ parametrów. Pełny wektor wag $\mathbf{w} \in [0,1]^{21}$ zestawiono w tabeli~\ref{tab:weights21}. Wektor $\mathbf{w}$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym. Przestrzeń przeszukiwań to $[0,1]^D$, która jest wyznaczana przez każdego agenta.
+Bazowy agent ma $D = 21$ parametrów. Pełny wektor wag $\mathbf{w} \in [0,1]^{21}$ zestawiono w tabeli~\ref{tab:weights21}. Wektor $\mathbf{w}$ stanowi \textbf{genom} osobnika w algorytmie ewolucyjnym --- algorytm szuka optymalnych wartości wag w przestrzeni $[0,1]^D$.
 
 \begin{table}[h]
 \centering

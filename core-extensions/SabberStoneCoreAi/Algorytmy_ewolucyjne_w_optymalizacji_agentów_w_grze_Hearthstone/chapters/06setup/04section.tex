@@ -1,6 +1,6 @@
 \section{Protokół wyrównania budżetu obliczeniowego} \label{sec:budget}
 
-Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą każdy z każdym, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie tylko po liczbie wywołań fitness prowadziłoby więc do przydzielenia bardzo różnej mocy obliczeniowej poszczególnym konfiguracjom.
+Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą każdy z każdym, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie tylko po liczbie wywołań funkcji przystosowania prowadziłoby do przydzielenia bardzo różnej mocy obliczeniowej poszczególnym konfiguracjom.
 
 \subsection{Jednostka budżetowa}
 

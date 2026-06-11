@@ -1,10 +1,23 @@
 \section{Podsumowanie}
 
-Celem pracy było zaprojektowanie i sprawdzenie modyfikacji agenta parametrycznego dla gry Hearthstone oraz ocena, który z trzech schematów optymalizacji --- koewolucja, SHADE koewolucyjny czy SHADE z Hall of Fame --- daje najsilniejszych agentów przy równoważnym budżecie obliczeniowym. Metodologia obejmowała trzy fazy: selekcję reprezentantów (faza I), turniej główny (faza II) i walidację zewnętrzną względem silnego agenta konkursowego (faza III).
+Celem pracy było zaproponowanie i sprawdzenie modyfikacji strategii agenta parametrycznego dla gry Hearthstone oraz ocena, w jaki sposób zmiana reprezentacji i sposobu optymalizacji wpływa na skuteczność mierzoną liczbą zwycięstw w porównaniu z punktem odniesienia z literatury~\cite{sanchez2020}. W ramach badań porównano trzy schematy optymalizacji wag --- strategię ewolucyjną w koewolucji konkurencyjnej, SHADE koewolucyjny oraz SHADE z Hall of Fame --- przy wyrównanym budżecie obliczeniowym.
 
-Najważniejszy wynik jest jednoznaczny --- wariant \textit{21 głębokościowy} uzyskał najwyższą skuteczność w fazie II i utrzymał przewagę nad agentem bazowym także w fazie III. Z tego wynika, że zaproponowane modyfikacje nie są tylko formalnym rozszerzeniem modelu --- przekładają się na lepsze decyzje turniejowe.
+Względem agenta bazowego zaproponowano \textbf{pięć modyfikacji}:
+\begin{enumerate}
+    \item \textit{28 parametrów} --- rozszerzenie funkcji oceny o siedem cech kontekstowych (m.in.\ trwałość broni, synergia piratów, postęp Jade Golem),
+    \item \textit{28 znormalizowany} --- ten sam zestaw 28 cech z normalizacją wartości do przedziału $[-1, 1]$,
+    \item \textit{63 parametry} --- niezależne wektory wag dla trzech faz rozgrywki (wczesna, środkowa, późna),
+    \item \textit{63 płynny} --- reprezentacja fazowa z ograniczonymi przesunięciami wag między fazami ($\pm 0{,}1$),
+    \item \textit{21 głębokościowy} --- przeszukiwanie głębokościowe o głębokości $d = 2$ przy niezmienionym wektorze 21 wag.
+\end{enumerate}
 
-Wyniki wskazują, że połączenie adaptacyjnej optymalizacji ewolucyjnej z komponentem planowania głębokościowego dobrze sprawdza się w rozwoju agentów dla gier karcianych o niepełnej informacji. Otrzymano praktyczne rozwiązanie i solidną bazę do dalszych badań nad modelami hybrydowymi.
+Standardowy algorytm SHADE zaprojektowano do optymalizacji z ustaloną funkcją celu; w niniejszej pracy dostosowano go do koewolucyjnej ewaluacji agentów w SabberStone w \textbf{dwóch wariantach}. W \textbf{SHADE koewolucyjnym} rodzice i mutanci są oceniani łącznie w jednej puli $P_t \cup U_t$, a przystosowanie liczone jest jako liczba zwycięstw w turnieju każdy z każdym wewnątrz tej puli --- dzięki temu selekcja $(\mu,\lambda)$ porównuje osobniki na jednolitej skali. W \textbf{SHADE z Hall of Fame} fitness wyznacza się względem stałego zbioru referencyjnego $\mathcal{R}$ silnych przeciwników, a co $K_{\text{HOF}}$ generacji najsłabszy agent w $\mathcal{R}$ zastępowany jest najlepszym osobnikiem z bieżącej populacji, po czym następuje ponowna ewaluacja rodziców.
+
+Metodologia obejmowała trzy fazy: selekcję reprezentantów optymalizatorów (faza~I), turniej główny sześciu wariantów (faza~II) oraz walidację zewnętrzną względem agenta konkursowego Sebastiana Millera (faza~III).
+
+Najważniejszy wynik jest jednoznaczny --- wariant \textit{21 głębokościowy} uzyskał najwyższą skuteczność w fazie II (\(61{,}03\%\) zwycięstw) i utrzymał wyraźną przewagę nad agentem bazowym także w fazie III. Wariant \textit{28 parametrów} zajął drugie miejsce w turnieju, a w fazie I we wszystkich wariantach reprezentantami okazały się agenci wytrenowani wariantami SHADE, nie strategią ewolucyjną. Zaproponowane modyfikacje przekładają się więc na lepsze decyzje turniejowe, a nie stanowią wyłącznie formalnego rozszerzenia modelu.
+
+Wykonane projektowanie pięciu wariantów agenta, adaptacja SHADE do koewolucyjnej ewaluacji w Hearthstone, przeprowadzenie eksperymentów trójfazowych oraz uzyskane wyniki potwierdzają, że \textbf{cel pracy został osiągnięty}.
 
 \subsection{Synteza odpowiedzi na pytania badawcze}
 
@@ -14,7 +27,7 @@ Dla RQ1 wynik jest pozytywny. Wariant \textit{28 parametrów} uzyskał drugi wyn
 \paragraph{RQ2: Czy podział oceny na trzy fazy gry i rozszerzenie reprezentacji do 63 parametrów poprawia skuteczność agenta?}
 Dla RQ2 wynik jest warunkowo pozytywny. Sama rozbudowa przestrzeni przeszukiwań do 63 parametrów nie gwarantuje poprawy --- wariant \textit{63 parametry} bez mechanizmu łagodzenia przejść był minimalnie słabszy od agenta bazowego i wyraźnie słabszy od pozostałych wariantów. Wariant \textit{63 płynny} pokazuje natomiast, że reprezentacja fazowa jest użyteczna, gdy łączy się ją ze stabilizacją przejść między etapami gry.
 
-\paragraph{RQ3: Czy strategia przeszukiwania głębokościowego (\textit{lookahead}) poprawia skuteczność w porównaniu do wariantu bazowego?}
+\paragraph{RQ3: Czy strategia przeszukiwania głębokościowego (ang. \textit{lookahead}) poprawia skuteczność w porównaniu do wariantu bazowego?}
 Dla RQ3 wynik jest pozytywny i to najsilniejszy efekt w całej pracy. Wariant \textit{21 głębokościowy} uzyskał najwyższy wynik turniejowy w fazie II, mimo że optymalizował ten sam zestaw 21 wag co agent bazowy. W fazie III osiągnął też wyraźnie lepszy rezultat przeciwko agentowi Sebastiana Millera niż wariant bazowy. Największy zysk jakościowy wynika więc ze zmiany horyzontu decyzyjnego, a nie ze zwiększania liczby parametrów funkcji oceny.
 
 \paragraph{RQ4: Który optymalizator --- koewolucja, SHADE koewolucyjny czy SHADE z Hall of Fame --- wytrenuje najskuteczniejszych agentów przy równoważnym budżecie obliczeniowym?}

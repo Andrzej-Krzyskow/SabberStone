@@ -12,17 +12,17 @@ Rozszerzona funkcja oceny przyjmuje postać:
 \begin{split}
     f_{28}(s, a, \mathbf{w}) =\;&
         f(s, a, \mathbf{w}) \\
-        +\;& \Delta \text{Br}^{\text{prz}} - \Delta \text{Br}^{\text{wł}}
-        + \Delta \text{Ręka}^{\text{prz}} - \Delta \text{Ręka}^{\text{wł}} \\
-        +\;& \Delta \text{Zak}^{\text{prz}} - \Delta \text{Zak}^{\text{wł}}
-        - \Delta \text{Prz}^{\text{wł}} \\
-        +\;& \Delta \text{Smok}^{\text{prz}} - \Delta \text{Smok}^{\text{wł}}
-        + \Delta \text{Jade}^{\text{prz}} - \Delta \text{Jade}^{\text{wł}} \\
-        +\;& \Delta \text{Pir}^{\text{prz}} - \Delta \text{Pir}^{\text{wł}}
+        +\;& \Delta \text{Br}^{\text{prz}}(s,a,\mathbf{w}) - \Delta \text{Br}^{\text{wł}}(s,a,\mathbf{w})
+        + \Delta \text{Ręka}^{\text{prz}}(s,a,\mathbf{w}) - \Delta \text{Ręka}^{\text{wł}}(s,a,\mathbf{w}) \\
+        +\;& \Delta \text{Zak}^{\text{prz}}(s,a,\mathbf{w}) - \Delta \text{Zak}^{\text{wł}}(s,a,\mathbf{w})
+        - \Delta \text{Prz}^{\text{wł}}(s,a,\mathbf{w}) \\
+        +\;& \Delta \text{Smok}^{\text{prz}}(s,a,\mathbf{w}) - \Delta \text{Smok}^{\text{wł}}(s,a,\mathbf{w})
+        + \Delta \text{Jade}^{\text{prz}}(s,a,\mathbf{w}) - \Delta \text{Jade}^{\text{wł}}(s,a,\mathbf{w}) \\
+        +\;& \Delta \text{Pir}^{\text{prz}}(s,a,\mathbf{w}) - \Delta \text{Pir}^{\text{wł}}(s,a,\mathbf{w})
 \end{split}
     \label{eq:score28}
 \end{equation}
-gdzie $f(s, a, \mathbf{w})$ jest funkcją bazową \eqref{eq:score}, a nowe składniki zdefiniowane są następująco.
+gdzie $f(s, a, \mathbf{w})$ jest funkcją bazową \eqref{eq:score}. Argumenty $(s,a,\mathbf{w})$ nowych składników wiążemy ze stanami graczy $p^{\text{wł}}$, $p^{\text{prz}}$ w $s$ oraz $p'^{\text{wł}}$, $p'^{\text{prz}}$ w $s'=T(s,a)$ tak jak w sekcji~\ref{sec:formalization} --- np.\ $\Delta\text{Br}^{\text{wł}}(s,a,\mathbf{w}) := \Delta\text{Br}(p^{\text{wł}}, p'^{\text{wł}}, \mathbf{w})$. To samo dotyczy pozostałych cech, z wyjątkiem przeciążenia many, które występuje wyłącznie po stronie własnego gracza. Szczegółowe wzory podano poniżej.
 
 \paragraph{Trwałość broni $\Delta \text{Br}$.}
 
@@ -130,7 +130,8 @@ Niech $\hat{x}_k$ oznacza surową wartość cechy $k$. Normalizacja przyjmuje po
     \tilde{x}_k = \text{sgn}(\hat{x}_k) \cdot \min\!\left(\frac{|\hat{x}_k|}{C_k},\; 1\right)
     \label{eq:normalize}
 \end{equation}
-gdzie $C_k > 0$ to empiryczny pułap normalizacyjny, a $\tilde{x}_k \in [-1, 1]$. Wartości $C_k$ dla wszystkich 28 cech zestawiono w tabeli~\ref{tab:weights28norm}.
+gdzie $\text{sgn}(\cdot)$ to funkcja signum (znak argumentu: $-1$, $0$ lub $1$), $C_k > 0$ to empiryczny pułap normalizacyjny, a $\tilde{x}_k \in [-1, 1]$. Wartości $C_k$ dla wszystkich 28 cech zestawiono w tabeli~\ref{tab:weights28norm}.
+
 
 
 \begin{table}[!h]
@@ -176,7 +177,7 @@ Indeks & Cecha & $C_k$ \\
 \subsection{Wariant 63 parametrów --- trójfazowy agent}
 \label{sec:agent63}
 
-Rozgrywka w Hearthstone przebiega przez trzy strategicznie różne etapy. We wczesnej fazie (tury 1--3) obaj gracze dysponują ograniczoną maną i zagrywają tanie karty, walcząc o kontrolę planszy. Faza środkowa (tury 4--6) charakteryzuje się eskalacją siły stronników i aktywacją kluczowych synergii. W późnej fazie (od tury 7) gracze grają najdroższe, decydujące karty. Agent bazowy stosuje ten sam wektor wag przez całą grę, nie uwzględniając tych strategicznie różnych kontekstów decyzyjnych.
+Rozgrywka w Hearthstone przebiega przez trzy strategicznie różne etapy. We wczesnej fazie (tury 1--3) obaj gracze dysponują ograniczoną maną i zagrywają tanie karty, walcząc o kontrolę planszy. Faza środkowa (tury 4--6) charakteryzuje się eskalacją siły stronników i aktywacją kluczowych synergii. Synergia to połączenie kart i mechanik w taki sposób, że wzajemnie się wzmacniają, np. poprzez zmniejszenie kosztu zaklęcia lub zwiększenie ataku lub zdrowia stronnika dzięki innym, już zagranym kartom. W późnej fazie (od tury 7) gracze grają najdroższe, decydujące karty. Agent bazowy stosuje ten sam wektor wag przez całą grę, nie uwzględniając tych strategicznie różnych kontekstów decyzyjnych.
 
 Wariant ten wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiowanej na podstawie numeru tury:
 \begin{equation}
@@ -237,6 +238,6 @@ Piąty wariant zachowuje bazowy zestaw 21 parametrów, lecz zmienia \textbf{stra
 \end{equation}
 gdzie $s' = T(s, a)$, a warunek \emph{końca tury} zachodzi, gdy akcja $a$ jest akcją zakończenia tury lub gdy po jej wykonaniu tura przechodzi do przeciwnika.
 
-Głębokość $d = 2$ oznacza, że agent ocenia bezpośredni efekt akcji oraz najlepszą możliwą kontynuację w tej samej turze. Złożoność obliczeniowa wynosi $O(|\mathcal{A}(s)|^2)$ na każdą turę, co przy typowej liczbie dostępnych akcji $|\mathcal{A}(s)| \approx 10$--$20$ daje od 100 do 400 wywołań symulatora --- akceptowalny koszt w porównaniu z wariantem głębokości~3, gdzie liczba wywołań wzrasta do~$10^3$--$8\,000$.
+Głębokość $d = 2$ oznacza, że agent ocenia bezpośredni efekt akcji oraz najlepszą możliwą kontynuację w tej samej turze. Złożoność obliczeniowa wynosi $O(|\mathcal{A}(s)|^2)$ na każdą turę, co przy typowej liczbie dostępnych akcji $|\mathcal{A}(s)| \approx 10$--$20$ daje od 100 do 400 wywołań symulatora --- akceptowalny koszt w porównaniu z wariantem głębokości~3, gdzie liczba wywołań wzrasta z około $10^3$ do $8 000$.
 
 Wariant ten nie wprowadza nowych parametrów --- wagi $\mathbf{w}$ pozostają identyczne jak w agencie bazowym. Zmiana dotyczy wyłącznie sposobu ich wykorzystania --- zamiast oceniać każdą akcję w izolacji, agent przeszukuje sekwencje dwóch kolejnych akcji i wybiera taką pierwszą akcję, która prowadzi do najwyższej sumy ocen. Dzięki temu możliwe jest wykrycie kombinacji niewidocznych dla strategii zachłannej, bez zwiększania liczby optymalizowanych parametrów.

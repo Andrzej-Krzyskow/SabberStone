@@ -21,7 +21,7 @@ Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów, gdzie agent symu
 
 \subsection{Dynamic lookahead}
 
-Wariantem adaptacyjnym jest \textbf{dynamic lookahead}, w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęły boty Kiasa i Babela (win-rate 0{,}655) oraz Bohnhofa i Graeffego (win-rate 0{,}632), oba oparte na dynamic lookahead z talią MidrangeJadeShaman~\cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na ruch, zachowując jednocześnie możliwie największą głębokość przeszukiwania.
+Wariantem adaptacyjnym jest \textbf{dynamic lookahead}, w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęły boty Kiasa i Babela (win-rate 0{,}655) oraz Bohnhofa i Graeffego (win-rate 0{,}632), oba oparte na dynamic lookahead z talią MidrangeJadeShaman~\cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na turę (sekcja~\ref{sec:sabber_agent_interface}), zachowując jednocześnie możliwie największą głębokość przeszukiwania.
 
 \subsection{Lookahead z modelowaniem przeciwnika}
 

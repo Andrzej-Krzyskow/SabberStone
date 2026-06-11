@@ -3,13 +3,13 @@
 Ewolucja różnicowa (ang. \textit{differential evolution} --- DE) to algorytm zaproponowany przez Storna i Price'a w 1997 roku jako prosta i efektywna metaheurystyka do optymalizacji globalnej funkcji opartej na liczbach rzeczywistych \cite{Storn1997}. Mimo prostoty koncepcyjnej ewolucja różnicowa wielokrotnie wygrywała konkursy optymalizacyjne i stała się jednym z częściej stosowanych algorytmów swojej klasy, co dokumentuje literatura przeglądowa z ostatnich lat \cite{Bilal2020}.
 
 \subsection{Mechanizm działania}
-Populacja DE składa się z $NP$ osobników $\{\mathbf{x}_{i,G}\}_{i=1}^{NP}$, gdzie $G$ oznacza numer pokolenia, a każdy osobnik jest wektorem $D$-wymiarowym $\mathbf{x}_{i,G} \in \mathbb{R}^D$. Dla każdego \textit{wektora docelowego} $\mathbf{x}_{i,G}$ algorytm wykonuje trzy kroki:
+Populacja DE składa się z $NP$ osobników $\{\mathbf{x}_{i,G}\}_{i=1}^{NP}$, gdzie $G$ oznacza numer pokolenia, a każdy osobnik jest wektorem $D$-wymiarowym. W problemie nieograniczonym $\mathbf{x}_{i,G} \in \mathbb{R}^D$, lecz przy nałożonych ograniczeniach na zmienne, przestrzeń rozwiązań jest odpowiednio zawężana --- w niniejszej pracy, gdzie wagi przyjmują wartości z przedziału $[0, 1]$, dopuszczalny zbiór ma postać $[0, 1]^D$. Dla każdego \textit{wektora docelowego} $\mathbf{x}_{i,G}$ algorytm wykonuje trzy kroki:
 \begin{enumerate}
     \item \textbf{Mutacja.} Wybierane są losowo trzy różne osobniki $\mathbf{x}_{r_1}$, $\mathbf{x}_{r_2}$, $\mathbf{x}_{r_3}$ spośród pozostałej populacji. Tworzony jest \textit{wektor mutanta}:
     \[
     \mathbf{v}_{i,G} = \mathbf{x}_{r_1,G} + F \cdot (\mathbf{x}_{r_2,G} - \mathbf{x}_{r_3,G})
     \]
-    gdzie $F \in (0, 2]$ to \textit{współczynnik skalowania}, kontrolujący wielkość zaburzenia. Jest to wariant \texttt{DE/rand/1} --- bazowy schemat algorytmu \cite{Storn1997}. W literaturze spotykane są inne strategie mutacji, m.in. \texttt{DE/best/1} (zamiast losowego $\mathbf{x}_{r_1}$ używany jest najlepszy osobnik) czy \texttt{DE/current-to-best/1}, których własności są szczegółowo omawiane w pracy Bilala i in. \cite{Bilal2020}.
+    gdzie $F \in (0, 2]$ to \textit{współczynnik skalowania}, kontrolujący wielkość zaburzenia. Jest to wariant mutacji losowej (ang.~\texttt{DE/rand/1}) --- bazowy schemat algorytmu \cite{Storn1997}. W literaturze spotykane są inne strategie mutacji, m.in. mutacja do najlepszego (ang.~\texttt{DE/best/1}), w której zamiast losowego $\mathbf{x}_{r_1}$ używany jest najlepszy osobnik, a także mutacja od bieżącego do najlepszego (ang.~\texttt{DE/current-to-best/1}), w której wektor docelowy jest przesuwany w kierunku dotychczas najlepszego rozwiązania. Szczegółowy opis wariantów podają Bilal i in.~\cite{Bilal2020}.
 
     \item \textbf{Krzyżowanie.} Tworzony jest wektor próbny $\mathbf{u}_{i,G}$ przez binarne krzyżowanie równomierne wektora docelowego $\mathbf{x}_{i,G}$ i wektora mutanta $\mathbf{v}_{i,G}$:
     \[
@@ -19,7 +19,7 @@ Populacja DE składa się z $NP$ osobników $\{\mathbf{x}_{i,G}\}_{i=1}^{NP}$, g
     x_{i,G}^{(j)} & \text{w przeciwnym wypadku}
     \end{cases}
     \]
-    gdzie $CR \in [0, 1]$ to \textit{współczynnik krzyżowania}, a $j_{\mathrm{rand}}$ to losowy indeks, który gwarantuje, że wektor próbny różni się od docelowego w co najmniej jednej współrzędnej \cite{Storn1997}.
+    gdzie indeks $j$ oznacza kolejną współrzędną wektora ($j = 1, \ldots, D$), $\mathrm{rand}(0,1)$ to losowa liczba z przedziału $[0, 1]$, $CR \in [0, 1]$ to \textit{współczynnik krzyżowania}, a $j_{\mathrm{rand}}$ to losowy indeks, który gwarantuje, że wektor próbny różni się od docelowego w co najmniej jednej współrzędnej \cite{Storn1997}.
 
     \item \textbf{Selekcja.} Wektor próbny zastępuje wektor docelowy wyłącznie wtedy, gdy jego wartość funkcji celu jest nie gorsza:
     \[

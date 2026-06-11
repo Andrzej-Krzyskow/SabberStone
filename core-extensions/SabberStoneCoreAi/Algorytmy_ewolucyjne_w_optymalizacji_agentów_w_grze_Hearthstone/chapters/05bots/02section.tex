@@ -11,7 +11,7 @@ Algorytm buduje drzewo stanów gry przez iteracyjne powtarzanie czterech faz~\ci
 \[
 \mathrm{UCB1}(v) = \frac{w_v}{n_v} + C\sqrt{\frac{\ln n_{\mathrm{parent}}}{n_v}}
 \]
-gdzie $w_v$ to suma wygranych w węźle $v$, $n_v$ to liczba wizyt, a $C$ to stała eksploracji~\cite{Browne2012}.
+gdzie $w_v$ to suma wygranych w węźle $v$, $n_v$ to liczba wizyt węzła $v$, $n_{\mathrm{parent}}$ to liczba wizyt węzła rodzica, a $C$ to stała eksploracji~\cite{Browne2012}.
 \item \textbf{Ekspansja} --- do drzewa dodawany jest jeden lub więcej nowych węzłów potomnych.
 \item \textbf{Symulacja} --- od nowo dodanego węzła prowadzona jest losowa symulacja rozgrywki (ang.~\textit{rollout}) aż do końca gry lub limitu głębokości.
 \item \textbf{Propagacja wsteczna} --- wynik symulacji jest propagowany wstecz do korzenia, aktualizując statystyki odwiedzonych węzłów.

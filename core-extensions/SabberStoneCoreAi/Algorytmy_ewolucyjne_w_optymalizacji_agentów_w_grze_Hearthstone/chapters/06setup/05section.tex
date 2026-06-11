@@ -6,7 +6,7 @@ W tym rozdziale opisano sprzęt, konfigurację parametrów oraz talie użyte we 
 
 Wszystkie eksperymenty przeprowadzono na serwerze wyposażonym w dwa procesory AMD EPYC 7601 (łącznie 64 rdzenie fizyczne, 128 wątków logicznych), skonfigurowanymi jako jedna jednostka obliczeniowa, z 256 GB pamięci RAM DDR4 (2400 MHz) oraz systemem operacyjnym Windows Server 2019. Rozgrywki symulowano w środowisku SabberStone \cite{sabberstone_github}, który został napisany w języku C\# na platformie .NET Core. Skrypty optymalizacyjne uruchamiano w środowisku Python 3.
 
-Rozgrywki nadają się do trywialnej równoległości (ang. \textit{embarrassingly parallel}) --- każda para agentów może być symulowana w osobnym wątku, co pozwala na wywoływanie walk jednocześnie na 128 wątkach procesora i pełne obciążenie dostępnych rdzeni. Pojedyncze uruchomienie eksperymentu trwało około 9,5 godziny. Wyjątek stanowi wariant z przeszukiwaniem głębokościowym \textit{lookahead}(sekcja~\ref{sec:agent21depth}), który wymagał około 3,5 razy dłuższego czasu, tj. około 33 godzin, z uwagi na wzrost przestrzeni akcji przy głębszym przeszukiwaniu. Z tego powodu uruchamiany był tylko raz, aby wyrównać nakład obliczeniowy w stosunku do innych propozycji.
+Rozgrywki nadają się do trywialnej równoległości (ang. \textit{embarrassingly parallel}) --- każda para agentów może być symulowana w osobnym wątku, co pozwala na wywoływanie walk jednocześnie na 128 wątkach procesora i pełne obciążenie dostępnych rdzeni. Pojedyncze uruchomienie eksperymentu trwało około 9,5 godziny. Wyjątek stanowi wariant z przeszukiwaniem głębokościowym (sekcja~\ref{sec:agent21depth}), który wymagał około 3,5 razy dłuższego czasu, tj. około 33 godzin, z uwagi na wzrost przestrzeni akcji przy głębszym przeszukiwaniu. Z tego powodu uruchamiany był tylko raz, aby wyrównać nakład obliczeniowy w stosunku do innych propozycji.
 
 Łączny orientacyjny czas obliczeniowy wszystkich eksperymentów wyniósł około \textbf{572,81 godzin} ($\approx 23,87$ dni ciągłej pracy serwera). Zestawienie liczby uruchomień poszczególnych wariantów przedstawia tabela \ref{tab:runs}.
 
@@ -58,10 +58,45 @@ Wariant & Schemat oceny & Uruch. & Czas [h] \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Dobór rozmiaru populacji} \label{sec:popsize_tuning}
+
+Parametry strategii ewolucyjnej w wariantach koewolucyjnych przyjęto bezpośrednio z badania García-Sáncheza i in.~\cite{sanchez2020} --- autorzy przeprowadzili własny dobór konfiguracji dla agenta bazowego. Dla algorytmu SHADE sytuacja jest inna, ponieważ wśród jego parametrów ważny wpływ na jakość treningu i koszt obliczeniowy ma rozmiar populacji \texttt{POP\_SIZE}. Z tego powodu przed właściwymi eksperymentami przeprowadzono strojenie tego parametru. Aby nie faworyzować SHADE dodatkowym strojeniem na każdym wariancie agenta, testowano wyłącznie agenta bazowego (21 parametrów) --- uzyskana wartość \texttt{POP\_SIZE} jest następnie stosowana we wszystkich wariantach SHADE w trakcie badań.
+
+Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla obu wariantów SHADE (koewolucyjnego i z Hall of Fame). Dla każdej wartości wytrenowano dwóch niezależnych agentów, uzyskując dwa różne zestawy wag (w tabeli~\ref{tab:popsize}: zestaw~1 i zestaw~2). Łącznie powstało więc $3 \times 2 = 6$ konfiguracji na wariant SHADE. W turnieju porównawczym zestawiono wszystkich sześciu agentów w formacie każdy z każdym (270 000 gier, po 2000 na parę kombinacji talii), osobno dla każdego wariantu SHADE.
+
+Wyniki turnieju zestawiono w tabeli~\ref{tab:popsize}. W obu wariantach agenci wytrenowani z $\texttt{POP\_SIZE} = 15$ uzyskali najwyższy wskaźnik wygranych --- odpowiednio 52,15\% i 51,65\% (wariant koewolucyjny) oraz 52,30\% i 51,20\% (wariant Hall of Fame), wyraźnie przewyższając konfiguracje z $\texttt{POP\_SIZE} = 5$, które osiągnęły ok.\ 48\%--50\%. Na podstawie tych wyników przyjęto $\texttt{POP\_SIZE} = 15$ jako wartość bazową dla dalszych eksperymentów z użyciem SHADE.
+
+\begin{table}[!h]
+\centering
+\caption{Wyniki turnieju doboru rozmiaru populacji}  \label{tab:popsize}
+\begin{tabular}{llrrr}
+\toprule
+Wariant & Agent & Wygrane & Gry & Zwycięstwa\% \\
+\midrule
+\multirow{6}{*}{Koewolucyjny}
+    & POP\_SIZE = 5,  zestaw 1 & 43\,775 & 90\,000 & 48,64\% \\
+    & POP\_SIZE = 5,  zestaw 2 & 43\,312 & 90\,000 & 48,12\% \\
+    & POP\_SIZE = 10, zestaw 1 & 45\,824 & 90\,000 & 50,92\% \\
+    & POP\_SIZE = 10, zestaw 2 & 43\,663 & 90\,000 & 48,51\% \\
+    & \textbf{POP\_SIZE = 15, zestaw 1} & \textbf{46\,938} & \textbf{90\,000} & \textbf{52,15\%} \\
+    & \textbf{POP\_SIZE = 15, zestaw 2} & \textbf{46\,488} & \textbf{90\,000} & \textbf{51,65\%} \\
+\midrule
+\multirow{6}{*}{Hall of Fame}
+    & POP\_SIZE = 5,  zestaw 1 & 45\,150 & 90\,000 & 50,17\% \\
+    & POP\_SIZE = 5,  zestaw 2 & 40\,291 & 90\,000 & 44,77\% \\
+    & POP\_SIZE = 10, zestaw 1 & 46\,232 & 90\,000 & 51,37\% \\
+    & POP\_SIZE = 10, zestaw 2 & 45\,180 & 90\,000 & 50,20\% \\
+    & \textbf{POP\_SIZE = 15, zestaw 1} & \textbf{46\,079} & \textbf{90\,000} & \textbf{51,20\%} \\
+    & \textbf{POP\_SIZE = 15, zestaw 2} & \textbf{47\,068} & \textbf{90\,000} & \textbf{52,30\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Parametry algorytmów}
 \label{sec:params}
 
-Parametry algorytmu dla modyfikacji agenta podstawowego (warianty koewolucyjne) przyjęto zgodnie z konfiguracją oryginalnego badania~\cite{sanchez2020}, aby zachować porównywalność wyników i zbadać wyłącznie wpływ samych modyfikacji funkcji oceny. Jedyną zmianą względem oryginału jest zwiększenie parametru odpowiedzialnego za liczbę rdzeni, co wynika  z dostępności wieloprocesorowego serwera. Parametry te zestawiono w tabeli~\ref{tab:params_base}.
+Parametry strategii ewolucyjnej dla wariantów koewolucyjnych przyjęto zgodnie z konfiguracją oryginalnego badania~\cite{sanchez2020}, aby zachować porównywalność wyników i zbadać wyłącznie wpływ samych modyfikacji funkcji oceny. Jedyną zmianą względem oryginału jest zwiększenie parametru odpowiedzialnego za liczbę rdzeni, co wynika  z dostępności wieloprocesorowego serwera. Parametry te zestawiono w tabeli~\ref{tab:params_base}.
 
 \begin{table}[ht]
 \centering
@@ -80,7 +115,7 @@ $D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 \end{tabular}
 \end{table}
 
-Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) wybranej podczas procesu dostrajania parametrów (sekcja~\ref{sec:popsize_tuning}). Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, a wynika to z tego, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
+Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) dobranej w sekcji~\ref{sec:popsize_tuning} na agencie bazowym. Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, co wynika z faktu, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
 
 \begin{table}[ht]
 \centering
@@ -129,7 +164,7 @@ Eksperymenty przeprowadzono z użyciem trzech talii stosowanych w oryginalnym ba
 Jest to talia skupiająca uwagę na kontroli planszy i opiera się na unikalnej mechanice Kazakusa --- każda karta w talii jest unikalna, nie ma swoich duplikatów, co aktywuje zdolność Reno Jacksona, czyli pełne leczenie bohatera. Strategia polega na przeżyciu wczesnej gry, uniemożliwieniu przeciwnikowi rozbudowy planszy i wygraniu poprzez silne zaklęcia w późnej fazie. Talia faworyzuje agentów zarządzających zasobami kosztem agresywnych strategii.
 
 \paragraph{MidrangeJadeShaman --- klasa Szaman.}
-Jest to talia, która stara się balansować rozgrywkę i opiera się na mechanice Jade Golem --- każdy kolejny przywołany golem ma o 1/1 więcej statystyk niż poprzedni. Strategia łączy wczesną kontrolę planszy z narastającą przewagą w fazie środkowej i końcowej. Mechanika ta wymaga od agenta uwzględnienia wartości stronników w horyzoncie wielu tur, a nie tylko aktualnego stanu planszy.
+Jest to talia, która stara się balansować rozgrywkę i opiera się na mechanice Jade Golem --- $n$-ty przywołany golem ma $n$ punktów ataku oraz $n$ punktów zdrowia, więc każdy kolejny jest o jeden punkt ataku i o jeden punkt zdrowia silniejszy niż poprzedni. Strategia łączy wczesną kontrolę planszy z narastającą przewagą w fazie środkowej i końcowej. Mechanika ta wymaga od agenta uwzględnienia wartości stronników w horyzoncie wielu tur, a nie tylko aktualnego stanu planszy.
 
 \paragraph{AggroPirateWarrior --- klasa Wojownik.}
 Talia agresywna oparta na mechanice piratów i synergii z bronią bohatera. Celem jest zadanie jak największych obrażeń bezpośrednio bohaterowi przeciwnika, zanim agresja opadnie i przewaga zasobów przejdzie na stronę przeciwnika. Talia premiuje agentów rozumiejących wartość broni i synergii z piratami.

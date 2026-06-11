@@ -4,9 +4,9 @@ Strategie ewolucyjne (ang. \textit{evolution strategies} --- ES) to gałąź alg
 \[
 x_i' = x_i + \mathcal{N}(0, \sigma_i^2)
 \]
-gdzie $\sigma_i$ to odchylenie standardowe, zwane \textit{wielkością kroku} (ang. \textit{step size}). Ważną cechą strategii ewolucyjnych jest \textbf{samodostosowywanie} parametrów mutacji --- wektory $\boldsymbol{\sigma}$ są optymalizowane równolegle z samym rozwiązaniem, co pozwala algorytmowi dostosowywać kierunek i skalę przeszukiwań do lokalnej geometrii przestrzeni funkcji celu \cite{Hansen2016CMA}.
+gdzie $\sigma_i$ to odchylenie standardowe, zwane \textit{wielkością kroku} (ang. \textit{step size}). W wielu wariantach strategii ewolucyjnych stosuje się \textbf{samodostosowywanie} parametrów mutacji --- wektory $\boldsymbol{\sigma}$ mogą być aktualizowane równolegle z samym rozwiązaniem, co ułatwia dostosowanie skali przeszukiwań do lokalnej geometrii przestrzeni funkcji celu \cite{Hansen2016CMA}, jednak nie jest to cecha wspólna wszystkich algorytmów z tej rodziny.
 
-Strategie ewolucyjne określa się za pomocą notacji $(\mu + \lambda)$ lub $(\mu, \lambda)$, gdzie $\mu$ oznacza liczbę rodziców, a $\lambda$ liczbę potomków. W wariancie $(\mu + \lambda)$ selekcja obejmuje zarówno rodziców, jak i potomstwo (podejście elitarne), natomiast w wariancie $(\mu, \lambda)$ populacja rodziców jest w całości zastępowana przez potomstwo, co sprzyja eksploracji \cite{Hansen2016CMA}.
+Strategie ewolucyjne określa się za pomocą notacji $(\mu + \lambda)$ lub $(\mu, \lambda)$, które opisują ich dwa różne warianty, gdzie $\mu$ oznacza liczbę rodziców, a $\lambda$ liczbę potomków. W wariancie $(\mu + \lambda)$ selekcja obejmuje zarówno rodziców, jak i potomstwo (podejście elitarne), natomiast w wariancie $(\mu, \lambda)$ populacja rodziców jest w całości zastępowana przez potomstwo, co sprzyja eksploracji \cite{Hansen2016CMA}.
 
-Z punktu widzenia niniejszej pracy istotne jest to, że właśnie strategie ewolucyjne zostały zastosowane przez García-Sáncheza i in. \cite{sanchez2020} jako metoda optymalizacji wag funkcji oceny agenta grającego w Hearthstone --- podejście to stanowi bezpośrednią bazę dla eksperymentów w dalszej części pracy. Wyróżniającą cechą tej rodziny metod jest samodostosowanie parametrów mutacji, którego ideę rozwija wykorzystany w dalszej części pracy algorytm SHADE.
+Strategie ewolucyjne zastosowano m.in. w pracy García-Sáncheza i in.~\cite{sanchez2020} do optymalizacji wag funkcji oceny agenta grającego w Hearthstone.
 
