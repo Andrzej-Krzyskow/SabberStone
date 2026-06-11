@@ -1,6 +1,6 @@
-\section{Zastosowanie algorytmu SHADE} \label{sec:shade_application}
+\section{Zastosowanie SHADE} \label{sec:shade_application}
 
-Każdy z pięciu wariantów agenta opisanych w sekcji~\ref{sec:modifications} był optymalizowany przy użyciu trzech podejść. Punktem odniesienia jest \textbf{strategia ewolucyjna} w wariancie $(\mu,\lambda) = (10,10)$~\cite{sanchez2020}, w której przystosowanie osobników wyznacza się w schemacie \textbf{koewolucji konkurencyjnej}~\cite{stanley2004} --- osobniki oceniane są nawzajem w obrębie każdej generacji, bez zewnętrznego zbioru referencyjnego. Dwa kolejne podejścia oparto na \textbf{algorytmie SHADE}: wariancie koewolucyjnym oraz wariancie z mechanizmem Hall of Fame. Zestawienie tych trzech optymalizatorów na tych samych wariantach reprezentacji pozwala ocenić, czy adaptacyjna regulacja parametrów SHADE przekłada się na wyższy wskaźnik wygranych względem strategii ewolucyjnej w schemacie koewolucyjnym.
+Każdy z pięciu wariantów agenta opisanych w sekcji~\ref{sec:modifications} był optymalizowany przy użyciu trzech podejść. Punktem odniesienia jest \textbf{strategia ewolucyjna} w wariancie $(\mu,\lambda) = (10,10)$~\cite{sanchez2020}, w której przystosowanie osobników wyznacza się w schemacie \textbf{koewolucji konkurencyjnej}~\cite{stanley2004} --- osobniki oceniane są nawzajem w obrębie każdej generacji, bez zewnętrznego zbioru referencyjnego. Dwa kolejne podejścia oparto na \textbf{metodzie SHADE}: wariancie koewolucyjnym oraz wariancie z mechanizmem Hall of Fame. Zestawienie tych trzech optymalizatorów na tych samych wariantach reprezentacji pozwala ocenić, czy adaptacyjna regulacja parametrów SHADE przekłada się na wyższy wskaźnik wygranych względem strategii ewolucyjnej w schemacie koewolucyjnym.
 
 \subsection{SHADE koewolucyjny} \label{sec:shade_coev}
 
@@ -28,11 +28,11 @@ gdzie $\texttt{NUM\_GAMES}$ to parametr eksperymentalny określający liczbę sy
     \end{cases}
 \end{equation}
 
-Niezależnie od wyniku selekcji, wartość przystosowania rodzica jest aktualizowana do wartości $f_i$ obliczonej w bieżącej generacji. Zapobiega to sytuacji, w której fitness rodziców i mutantów byłby obliczany w różnych pulach rozgrywek, co prowadziłoby do nieporównywalnych wartości i błędnych decyzji selekcyjnych.
+Niezależnie od wyniku selekcji, wartość przystosowania rodzica jest aktualizowana do wartości $f_i$ obliczonej w bieżącej generacji. Zapobiega to sytuacji, w której przystosowanie rodziców i mutantów byłoby obliczane w różnych pulach rozgrywek, co prowadziłoby do nieporównywalnych wartości i błędnych decyzji selekcyjnych.
 
 \subsection{SHADE z Hall of Fame} \label{sec:shade_hof}
 
-W wariancie z Hall of Fame każdy osobnik oceniany jest względem ustalonego zbioru referencyjnego $\mathcal{R}$. Fitness przyjmuje postać analogiczną do \eqref{eq:fitness_coev}, lecz suma przebiega po stałym zbiorze przeciwników:
+W wariancie z Hall of Fame każdy osobnik oceniany jest względem ustalonego zbioru referencyjnego $\mathcal{R}$. Przystosowanie przyjmuje postać analogiczną do \eqref{eq:fitness_coev}, lecz suma przebiega po stałym zbiorze przeciwników:
 \begin{equation}
     \phi_{\mathcal{R}}(\mathbf{w}) =
         \sum_{\mathbf{r} \in \mathcal{R}}
@@ -50,7 +50,7 @@ Skład zbioru $\mathcal{R}$ dobierano osobno dla każdego wariantu agenta. Dla w
 \end{itemize}
 Dla wariantów z 28 i 63 parametrami przygotowano osobne zbiory referencyjne, złożone z 20 najlepszych osobników uzyskanych w odpowiadającym wariancie eksperymentów koewolucyjnych, przeprowadzonych przed badaniami wariantów SHADE, 3 agentów wytrenowanych na lokalnej maszynie przez autora niniejszej pracy oraz 6 agentów o losowo zainicjalizowanych wagach.
 
-Skład zbioru $\mathcal{R}$ dobrano tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, więc zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę fitness między obiema wersjami. Silni przeciwnicy — wytrenowani wcześniej agenci — zwiększają presję selekcyjną w kierunku skutecznych strategii i ograniczają przedwczesną zbieżność w kierunku optimum lokalnego. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile daje algorytmowi wczesny sygnał do nauki, a osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. To porządkuje przeszukiwanie, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
+Skład zbioru $\mathcal{R}$ dobrano tak, aby nadać kierunek zbieżności populacji. Rozmiar $|\mathcal{R}| = 29$ nie jest przypadkowy --- w wariancie koewolucyjnym każdy osobnik rywalizuje z pozostałymi $2 \cdot NP - 1 = 29$ osobnikami puli $P_t \cup U_t$, więc zbiór referencyjny o tym samym rozmiarze zapewnia porównywalną liczbę pojedynków i zbliżoną skalę przystosowania między obiema wersjami. Silni przeciwnicy — wytrenowani wcześniej agenci — zwiększają presję selekcyjną w kierunku skutecznych strategii i ograniczają przedwczesną zbieżność w kierunku optimum lokalnego. Jednocześnie obecność słabszych przeciwników (agenci z losowymi wagami) oraz agentów o umiarkowanej sile daje algorytmowi wczesny sygnał do nauki, a osobniki, które nie potrafią pokonać nawet łatwych przeciwników, są szybko eliminowane. To porządkuje przeszukiwanie, zanim populacja osiągnie poziom wymagający rywalizacji z najsilniejszymi agentami w zbiorze.
 
 Parametr $K_{\text{HOF}} = 5$ oznacza interwał aktualizacji Hall of Fame wyrażony w generacjach --- co piątą generację wykonywana jest podmiana jednego agenta w $\mathcal{R}$. Wartość dobrano jako kompromis między kosztem obliczeniowym a aktualnością przeciwników. Częstsza aktualizacja wymagałaby kosztownej ponownej ewaluacji całej populacji rodziców (sekcja poniżej), a rzadsza utrzymywałaby w $\mathcal{R}$ zbyt długo przestarzałych rywali. Przy typowym przebiegu treningu SHADE z Hall of Fame ($\approx 35$--$43$ generacji przy $\texttt{POP\_SIZE} = 15$) interwał~5 daje około 7--8 podmian w trakcie jednego uruchomienia, co pozwala stopniowo odświeżyć zbiór referencyjny bez nadmiernego narzutu. Zastępowany jest agent, przeciwko któremu bieżąca populacja zdobyła łącznie najwięcej zwycięstw, uznawany jest za najsłabszego i najmniej wymagającego przeciwnika:
 
@@ -66,4 +66,4 @@ Parametr $K_{\text{HOF}} = 5$ oznacza interwał aktualizacji Hall of Fame wyraż
         \phi_{\mathcal{R}}(\mathbf{w})\right\}
 \end{equation}
 
-Po każdej aktualizacji $\mathcal{R}$ wszyscy rodzice są ponownie ewaluowani względem nowego zbioru, a zaktualizowane wartości fitness zastępują dotychczasowe w wektorze $\phi$, zapewniając spójność skali przed kolejną generacją mutacji. Dodatkowy koszt tej operacji jest przyczyną niższej wartości \texttt{MAX\_EVALUATIONS} w tym wariancie względem wariantu koewolucyjnego.
+Po każdej aktualizacji $\mathcal{R}$ wszyscy rodzice są ponownie ewaluowani względem nowego zbioru, a zaktualizowane wartości przystosowania zastępują dotychczasowe w wektorze $\phi$, zapewniając spójność skali przed kolejną generacją mutacji. Dodatkowy koszt tej operacji jest przyczyną niższej wartości \texttt{MAX\_EVALUATIONS} w tym wariancie względem wariantu koewolucyjnego.

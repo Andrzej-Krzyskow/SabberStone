@@ -1,6 +1,6 @@
 \section{Protokół wyrównania budżetu obliczeniowego} \label{sec:budget}
 
-Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji fitness jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą każdy z każdym, generując $\binom{2\mu}{2} \times 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \times 9$. Wyrównanie tylko po liczbie wywołań funkcji przystosowania prowadziłoby do przydzielenia bardzo różnej mocy obliczeniowej poszczególnym konfiguracjom.
+Rzetelne porównanie wariantów algorytmów wymaga przydzielenia każdemu z nich identycznego budżetu obliczeniowego. Wyrównanie wyłącznie według liczby wywołań funkcji przystosowania jest niewystarczające --- w schemacie koewolucyjnym jedno wywołanie ewaluatora ocenia pulę $2\mu$ osobników metodą każdy z każdym, generując $\binom{2\mu}{2} \cdot 9$ wywołań symulatora (9 kombinacji talii), natomiast w SHADE z Hall of Fame analogiczny koszt wynosi $N_{\text{opp}} \cdot 9$. Wyrównanie tylko po liczbie wywołań funkcji przystosowania prowadziłoby do przydzielenia bardzo różnej mocy obliczeniowej poszczególnym konfiguracjom.
 
 \subsection{Jednostka budżetowa}
 
@@ -36,29 +36,29 @@ $\mu$ & $N_{\text{opp}} = 2\mu - 1$ \\
 
 W generacji~0 pula zawiera wyłącznie $\mu$ osobników początkowych --- populacja potomna jeszcze nie istnieje w pierwszym kroku. W kolejnych generacjach pula liczy $2\mu$ osobników. Koszt generacji~0 oraz koszt jednej generacji ewolucyjnej wynoszą odpowiednio:
 \begin{equation}
-    B_0 = \frac{\mu(\mu-1)}{2} \times 9, \qquad
-    B_{\text{evo}} = \mu(2\mu - 1) \times 9
+    B_0 = \frac{\mu(\mu-1)}{2} \cdot 9, \qquad
+    B_{\text{evo}} = \mu(2\mu - 1) \cdot 9
     \label{eq:bevo}
 \end{equation}
 Całkowita liczba wywołań symulatora:
 \begin{equation}
-    B_{\text{koew}} = B_0 + G_{\text{evo}} \times B_{\text{evo}},
+    B_{\text{koew}} = B_0 + G_{\text{evo}} \cdot B_{\text{evo}},
     \qquad G_{\text{evo}} = \frac{\texttt{MAX\_EVALUATIONS}}{\mu} - 1
     \label{eq:btotal_ga}
 \end{equation}
 
 \paragraph{SHADE z Hall of Fame.}
 
-Każdy osobnik oceniany jest względem $N_{\text{opp}}$ stałych przeciwników we wszystkich kombinacjach talii. Co $K_{\text{HOF}} = 5$ generacji mechanizm Hall of Fame ponownie ewaluuje $\mu$ rodziców, a koszt tej reewaluacji nie jest wliczany do licznika \texttt{check\_evals}. Łączna liczba wywołań funkcji fitness wynosi:
+Każdy osobnik oceniany jest względem $N_{\text{opp}}$ stałych przeciwników we wszystkich kombinacjach talii. Co $K_{\text{HOF}} = 5$ generacji mechanizm Hall of Fame ponownie ewaluuje $\mu$ rodziców, a koszt tej reewaluacji nie jest wliczany do licznika \texttt{check\_evals}. Łączna liczba wywołań funkcji przystosowania wynosi:
 \begin{equation}
     F_{\text{total}} = \mu + \texttt{check\_evals}
     + \left\lfloor \frac{\texttt{check\_evals}}
-      {I_{\text{HOF}} \cdot \mu} \right\rfloor \times \mu
+      {I_{\text{HOF}} \cdot \mu} \right\rfloor \cdot \mu
     \label{eq:ftotal}
 \end{equation}
 Łączna liczba wywołań symulatora:
 \begin{equation}
-    B_{\text{HoF}} = F_{\text{total}} \times N_{\text{opp}} \times 9
+    B_{\text{HoF}} = F_{\text{total}} \cdot N_{\text{opp}} \cdot 9
     \label{eq:btotal_pure}
 \end{equation}
 
@@ -66,13 +66,13 @@ Każdy osobnik oceniany jest względem $N_{\text{opp}}$ stałych przeciwników w
 
 Punkt odniesienia stanowi eksperyment García-Sáncheza~\cite{sanchez2020} przy $\mu = 10$ i \texttt{MAX\_EVALUATIONS = 1000}:
 \begin{equation}
-    B^* = \frac{10 \cdot 9}{2} \times 9
-        + 99 \times 10 \times 19 \times 9
+    B^* = \frac{10 \cdot 9}{2} \cdot 9
+        + 99 \cdot 10 \cdot 19 \cdot 9
     = 405 + 169 290
     = \mathbf{169 695 \text{ wywołań symulatora}}
     \label{eq:bstar}
 \end{equation}
-co odpowiada $3 393 900$ rozegranych partii Hearthstone ($B^* \times 20$).
+co odpowiada $3 393 900$ rozegranych partii Hearthstone ($B^* \cdot 20$).
 
 \subsection{Wyznaczanie wartości \texttt{check\_evals}}
 
@@ -82,7 +82,7 @@ Dla SHADE koewolucyjnego wartość \texttt{check\_evals} wyznacza się analitycz
     \frac{\dfrac{B^*}{9} - \dfrac{\mu(\mu-1)}{2}}{2\mu - 1}
     \label{eq:check_coev}
 \end{equation}
-Dla SHADE z Hall of Fame wartość wyznaczana jest iteracyjnie jako największa liczba całkowita spełniająca warunek $F_{\text{total}} \leq F^*_{\text{total}}$, gdzie $F^*_{\text{total}} = B^* / (9 \times N_{\text{opp}})$.
+Dla SHADE z Hall of Fame wartość wyznaczana jest iteracyjnie jako największa liczba całkowita spełniająca warunek $F_{\text{total}} \leq F^*_{\text{total}}$, gdzie $F^*_{\text{total}} = B^* / (9 \cdot N_{\text{opp}})$.
 
 \subsection{Wyniki wyrównania}
 

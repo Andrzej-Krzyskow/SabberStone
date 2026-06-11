@@ -63,7 +63,7 @@ Wariant & Schemat oceny & Uruch. & Czas [h] \\
 
 Parametry strategii ewolucyjnej w wariantach koewolucyjnych przyjęto bezpośrednio z badania García-Sáncheza i in.~\cite{sanchez2020} --- autorzy przeprowadzili własny dobór konfiguracji dla agenta bazowego. Dla algorytmu SHADE sytuacja jest inna, ponieważ wśród jego parametrów ważny wpływ na jakość treningu i koszt obliczeniowy ma rozmiar populacji \texttt{POP\_SIZE}. Z tego powodu przed właściwymi eksperymentami przeprowadzono strojenie tego parametru. Aby nie faworyzować SHADE dodatkowym strojeniem na każdym wariancie agenta, testowano wyłącznie agenta bazowego (21 parametrów) --- uzyskana wartość \texttt{POP\_SIZE} jest następnie stosowana we wszystkich wariantach SHADE w trakcie badań.
 
-Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla obu wariantów SHADE (koewolucyjnego i z Hall of Fame). Dla każdej wartości wytrenowano dwóch niezależnych agentów, uzyskując dwa różne zestawy wag (w tabeli~\ref{tab:popsize}: zestaw~1 i zestaw~2). Łącznie powstało więc $3 \times 2 = 6$ konfiguracji na wariant SHADE. W turnieju porównawczym zestawiono wszystkich sześciu agentów w formacie każdy z każdym (270 000 gier, po 2000 na parę kombinacji talii), osobno dla każdego wariantu SHADE.
+Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla obu wariantów SHADE (koewolucyjnego i z Hall of Fame). Dla każdej wartości wytrenowano dwóch niezależnych agentów, uzyskując dwa różne zestawy wag (w tabeli~\ref{tab:popsize}: zestaw~1 i zestaw~2). Łącznie powstało więc $3 \cdot 2 = 6$ konfiguracji na wariant SHADE. W turnieju porównawczym zestawiono wszystkich sześciu agentów w formacie każdy z każdym (270 000 gier, po 2000 na parę kombinacji talii), osobno dla każdego wariantu SHADE.
 
 Wyniki turnieju zestawiono w tabeli~\ref{tab:popsize}. W obu wariantach agenci wytrenowani z $\texttt{POP\_SIZE} = 15$ uzyskali najwyższy wskaźnik wygranych --- odpowiednio 52,15\% i 51,65\% (wariant koewolucyjny) oraz 52,30\% i 51,20\% (wariant Hall of Fame), wyraźnie przewyższając konfiguracje z $\texttt{POP\_SIZE} = 5$, które osiągnęły ok.\ 48\%--50\%. Na podstawie tych wyników przyjęto $\texttt{POP\_SIZE} = 15$ jako wartość bazową dla dalszych eksperymentów z użyciem SHADE.
 
@@ -115,7 +115,14 @@ $D$                       & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 \end{tabular}
 \end{table}
 
-Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) dobranej w sekcji~\ref{sec:popsize_tuning} na agencie bazowym. Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej $\lfloor \texttt{MAX\_EVALUATIONS = 645} / \texttt{POP\_SIZE = 15} \rfloor = 43$ dla wariantu koewolucyjnego oraz $\lfloor \texttt{MAX\_EVALUATIONS = 525} / \texttt{POP\_SIZE = 15} \rfloor = 35$, więc pełna pojemność bufora nie jest wykorzystywana. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, co wynika z faktu, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
+Warianty SHADE używają większej populacji ($\texttt{POP\_SIZE} = 15$) dobranej w sekcji~\ref{sec:popsize_tuning} na agencie bazowym. Maksymalne okno historii parametrów SHADE ustawiono na $H = 100$, jednak
+przy $\texttt{POP\_SIZE} = 15$ historia zawiera co najwyżej:
+\[
+\left\lfloor \frac{\texttt{MAX\_EVALUATIONS}}{\texttt{POP\_SIZE}} \right\rfloor
+= \left\lfloor \frac{645}{15} \right\rfloor = 43
+\]
+dla wariantu koewolucyjnego oraz $\lfloor 525 / 15 \rfloor = 35$ dla wariantu
+z Hall of Fame, więc pełna pojemność bufora nie jest wykorzystywana.. Wartości \texttt{MAX\_EVALUATIONS} różnią się między wariantami, co wynika z faktu, że SHADE z Hall of Fame ma mniejszy budżet ewaluacji. W tym wariancie co $K_{\text{HOF}} = 5$ generacji wszyscy rodzice są ponownie ewaluowani po aktualizacji $\mathcal{R}$, co generuje dodatkowy koszt obliczeniowy nieujęty w liczniku \texttt{MAX\_EVALUATIONS}. Parametry obu wariantów SHADE zestawiono odpowiednio w tabelach \ref{tab:params_coev} oraz \ref{tab:params_hof}.
 
 \begin{table}[ht]
 \centering
@@ -158,15 +165,15 @@ $D$                          & 21 / 28 / 63 & Wymiar przestrzeni wag \\
 
 \subsection{Talie eksperymentalne}
 
-Eksperymenty przeprowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu \cite{sanchez2020}, a każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \times 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
+Eksperymenty przeprowadzono z użyciem trzech talii stosowanych w oryginalnym badaniu \cite{sanchez2020}, a każda para agentów rozgrywa partie we wszystkich dziewięciu kombinacjach talii ($3 \cdot 3$), co zapewnia ocenę odporną na specyfikę konkretnej talii. Pełny skład talii przedstawia tabela \ref{tab:decklists}.
 
-\paragraph{RenoKazakusMage --- klasa Mag.}
+\paragraph{\textit{RenoKazakusMage} --- klasa Mag.}
 Jest to talia skupiająca uwagę na kontroli planszy i opiera się na unikalnej mechanice Kazakusa --- każda karta w talii jest unikalna, nie ma swoich duplikatów, co aktywuje zdolność Reno Jacksona, czyli pełne leczenie bohatera. Strategia polega na przeżyciu wczesnej gry, uniemożliwieniu przeciwnikowi rozbudowy planszy i wygraniu poprzez silne zaklęcia w późnej fazie. Talia faworyzuje agentów zarządzających zasobami kosztem agresywnych strategii.
 
-\paragraph{MidrangeJadeShaman --- klasa Szaman.}
+\paragraph{\textit{MidrangeJadeShaman} --- klasa Szaman.}
 Jest to talia, która stara się balansować rozgrywkę i opiera się na mechanice Jade Golem --- $n$-ty przywołany golem ma $n$ punktów ataku oraz $n$ punktów zdrowia, więc każdy kolejny jest o jeden punkt ataku i o jeden punkt zdrowia silniejszy niż poprzedni. Strategia łączy wczesną kontrolę planszy z narastającą przewagą w fazie środkowej i końcowej. Mechanika ta wymaga od agenta uwzględnienia wartości stronników w horyzoncie wielu tur, a nie tylko aktualnego stanu planszy.
 
-\paragraph{AggroPirateWarrior --- klasa Wojownik.}
+\paragraph{\textit{AggroPirateWarrior} --- klasa Wojownik.}
 Talia agresywna oparta na mechanice piratów i synergii z bronią bohatera. Celem jest zadanie jak największych obrażeń bezpośrednio bohaterowi przeciwnika, zanim agresja opadnie i przewaga zasobów przejdzie na stronę przeciwnika. Talia premiuje agentów rozumiejących wartość broni i synergii z piratami.
 
 \begin{table}[p]
@@ -176,7 +183,7 @@ Talia agresywna oparta na mechanice piratów i synergii z bronią bohatera. Cele
 \label{tab:decklists}
 \begin{tabular}{p{4.8cm} p{4.8cm} p{4.8cm}}
 \toprule
-\textbf{AggroPirateWarrior} & \textbf{MidrangeJadeShaman} & \textbf{RenoKazakusMage} \\
+\textbf{\textit{AggroPirateWarrior}} & \textbf{\textit{MidrangeJadeShaman}} & \textbf{\textit{RenoKazakusMage}} \\
 \textbf{(klasa Wojownik)} & \textbf{(klasa Szaman)} & \textbf{(klasa Mag)} \\
 \midrule
 Arkanitowy Rozpruwacz ×2        & Al'Akir, Władca Wichrów ×1   & Alexstraza ×1 \\

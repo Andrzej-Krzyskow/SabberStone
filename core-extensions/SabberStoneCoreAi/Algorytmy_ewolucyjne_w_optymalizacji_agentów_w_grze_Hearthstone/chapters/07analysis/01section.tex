@@ -1,37 +1,37 @@
 \section{Schemat analizy i metodologia oceny}
 \label{sec:analysis-scheme}
 
-Analizę wyników podzielono na trzy fazy. Każda kolejna faza rozszerza zakres porównań --- od oceny wewnętrznej wariantów do konfrontacji z agentem zewnętrznym, czyli najlepszym uczestnikiem konkursu Hearthstone AI Competition z edycji 2020 \cite{hearthstone_competition}.
+Analizę wyników podzielono na trzy fazy. Każda kolejna faza rozszerza zakres porównań --- od oceny wewnętrznej wariantów do konfrontacji z agentem zewnętrznym, czyli najlepszym uczestnikiem konkursu \textit{Hearthstone AI Competition} z edycji 2020 \cite{hearthstone_competition}.
 
 \textbf{Faza~I} służy wyłonieniu jednego reprezentanta dla agenta bazowego oraz każdego z pięciu wariantów modyfikacji. Każdy wariant był optymalizowany dziewięć razy --- po trzy uruchomienia dla każdego z trzech optymalizatorów: algorytmu koewolucyjnego, SHADE koewolucyjnego i SHADE z Hall of Fame. W ten sposób dla każdego wariantu uzyskano dziewięć wektorów wag --- trzy grupy po trzech osobników, przy czym każda grupa odpowiadała jednemu optymalizatorowi. Wybór reprezentanta przebiegał dwuetapowo. W pierwszym etapie każda trójka osobników uzyskanych tym samym optymalizatorem rywalizowała w osobnym mini-turnieju, z którego wyłaniano jednego zwycięzcę. W drugim etapie trzej zwycięzcy --- po jednym z każdego optymalizatora --- rywalizowali między sobą w kolejnym mini-turnieju, a jego zwycięzca stawał się reprezentantem danego wariantu. Takie podejście różni się od procedury stosowanej przez García-Sáncheza i in.~\cite{sanchez2020}, gdzie jako reprezentanta przyjęto najlepszego osobnika z pierwszego ukończonego przebiegu ewolucyjnego ze względu na ograniczenia czasowe związane z terminem konkursu. Turniej zmniejsza ryzyko wyboru osobnika, który był dobry przypadkowo.
 
 \textbf{Faza~II} to turniej główny. Bierze w nim udział sześciu agentów: reprezentant agenta bazowego i reprezentanci pięciu modyfikacji. Celem jest sprawdzenie, który wariant radzi sobie najlepiej w jednakowych warunkach i czy wprowadzone zmiany w ogóle poprawiają skuteczność gry.
 
-\textbf{Faza~III} to konfrontacja zwycięzcy turnieju głównego z agentem zewnętrznym z konkursu Hearthstone AI Competition~\cite{hearthstone_competition}. Pozwala to ocenić, jak proponowane podejście wypada na tle innych rozwiązań.
+\textbf{Faza~III} to konfrontacja zwycięzcy turnieju głównego z agentem zewnętrznym z konkursu \textit{Hearthstone AI Competition}~\cite{hearthstone_competition}. Pozwala to ocenić, jak proponowane podejście wypada na tle innych rozwiązań.
 
 We wszystkich fazach stosowano ten sam protokół rozgrywek. Mecz między dwoma agentami obejmował dziewięć kombinacji par talii: \textit{RenoKazakusMage}, \textit{MidrangeJadeShaman} i \textit{AggroPirateWarrior}. Dla każdej kombinacji rozgrywano 1000 partii przy jednym ustawieniu kolejności graczy i 1000 partii po jej odwróceniu. Na jedną kombinację talii przypadało więc 2000 partii. Cały mecz dwóch agentów obejmował:
 \begin{equation}
-    9 \times 2000 = 18\,000 \text{ partii.}
+    9 \cdot 2000 = 18\,000 \text{ partii.}
     \label{eq:games_per_match}
 \end{equation}
 
 Obaj agenci biorą udział w każdej partii, więc każdy z nich zbiera wyniki ze wszystkich 18\,000 partii. W mini-turnieju trzech agentów każdy rozgrywa dwa mecze --- po jednym z każdym rywalem. Łącznie daje to:
 \begin{equation}
-    2 \times 18\,000 = 36\,000 \text{ partii na agenta.}
+    2 \cdot 18\,000 = 36\,000 \text{ partii na agenta.}
     \label{eq:games_per_agent_minitournament}
 \end{equation}
 
 Cały mini-turniej trzech agentów obejmuje:
 \begin{equation}
-    \frac{3 \times 36\,000}{2} = 54\,000 \text{ partii,}
+    \frac{3 \cdot 36\,000}{2} = 54\,000 \text{ partii,}
     \label{eq:games_per_minitournament}
 \end{equation}
 ponieważ każda partia jest zaliczana obu uczestniczącym agentom.
 
 Skuteczność agenta mierzona jest odsetkiem zwycięstw (ang.~\textit{win rate}):
 \begin{equation}
-    \text{WR}(A) = \frac{\text{wygrane}(A)}{\text{liczba partii rozegranych przez } A} \times 100\%.
+    \text{WR}(A) = \frac{\text{wygrane}(A)}{\text{liczba partii rozegranych przez } A} \cdot 100\%.
     \label{eq:winrate}
 \end{equation}
 
-Odsetek zwycięstw każdego agenta liczony jest względem wszystkich jego partii w turnieju, a nie tylko względem jednego przeciwnika. Dzięki temu wynik jest mniej wrażliwy na asymetrię konkretnych zestawień talii.
+Wskaźnik zwycięstw każdego agenta liczony jest względem wszystkich jego partii w turnieju, a nie tylko względem jednego przeciwnika. Dzięki temu wynik jest mniej wrażliwy na asymetrię konkretnych zestawień talii.

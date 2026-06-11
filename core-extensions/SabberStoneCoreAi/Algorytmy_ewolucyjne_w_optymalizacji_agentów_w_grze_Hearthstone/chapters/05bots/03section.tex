@@ -1,32 +1,32 @@
-\section{Algorytmy lookahead} \label{sec:lookahead}
+\section{Przeszukiwanie głębokościowe} \label{sec:lookahead}
 
-Algorytmy \textit{lookahead} są prostszą alternatywą dla MCTS. Zamiast budować drzewo przez losowe symulacje, agent systematycznie sprawdza możliwe sekwencje akcji do zadanej głębokości i ocenia stan końcowy za pomocą heurystycznej funkcji oceny~\cite{dockhorn2019}. Podejście to nie wymaga kosztownych \textit{rolloutów}, ale liczba stanów rośnie wykładniczo z głębokością, co w Hearthstone szybko staje się problemem.
+Przeszukiwanie głębokościowe (ang.~\textit{lookahead}) jest prostszą alternatywą dla MCTS. Zamiast budować drzewo przez losowe symulacje, agent systematycznie sprawdza możliwe sekwencje akcji do zadanej głębokości i ocenia stan końcowy za pomocą heurystycznej funkcji oceny~\cite{dockhorn2019}. Podejście to nie wymaga kosztownych losowych symulacji rozgrywki, ale liczba stanów rośnie wykładniczo z głębokością, co w Hearthstone szybko staje się problemem.
 
-\subsection{Greedy: 1-step lookahead}
+\subsection{Zachłanne przeszukiwanie}
 
-Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej dozwolonej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Agenci tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany agent zachłanny zajął 7. miejsce (win-rate 0{,}570 w UCDT)~\cite{hearthstone_competition}.
+Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej dozwolonej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Agenci tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany agent zachłanny zajął 7. miejsce (wskaźnik wygranych 0{,}570 w ścieżce talii tworzonych przez użytkownika~\cite{hearthstone_competition}.
 
-\subsection{N-step lookahead}
+\subsection{Przeszukiwanie na głębokość $N$}
 
-Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów, gdzie agent symuluje wszystkie dostępne sekwencje akcji do głębokości $N$ i ocenia liście drzewa funkcją heurystyczną. W edycji 2019 pierwsze miejsce w ścieżce \textit{premade deck playing track} zajął agent \textbf{Heimbrodta} oparty na dynamic lookahead, a trzecie --- bot Öfelego i Mendeza Ruiza z greedy lookahead \cite{hearthstone_competition}. W edycji 2020 algorytmy lookahead wyraźnie zdominowały konkurencję, zajmując 7 z 10 pierwszych miejsc:
+Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów, gdzie agent symuluje wszystkie dostępne sekwencje akcji do głębokości $N$ i ocenia liście drzewa funkcją heurystyczną. W edycji 2019 pierwsze miejsce w ścieżce \textit{premade deck playing track} zajął agent \textbf{Heimbrodta} oparty na dynamicznym przeszukiwaniu głębokościowym (ang.~\textit{dynamic lookahead}), a trzecie --- agent Öfelego i Mendeza Ruiza z zachłannym przeszukiwaniem głębokościowym (ang.~\textit{greedy lookahead}) \cite{hearthstone_competition}. W edycji 2020 przeszukiwanie głębokościowe wyraźnie zdominowało konkurencję, zajmując 7 z 10 pierwszych miejsc:
 \begin{itemize}
-\item 1.\ miejsce: Sebastian Miller, \textit{2-step lookahead}, win-rate 0{,}723,
-\item 2.\ miejsce: Bohnhof, Graeffe, \textit{dynamic lookahead}, win-rate 0{,}709,
-\item 4.\ miejsce: Tracht, Mozheiko, \textit{3-step lookahead}, win-rate 0{,}676,
-\item 5.\ miejsce: Markus Hempel, Julia Heise, \textit{2-step lookahead}, win-rate 0{,}660,
-\item 6.\ miejsce: Kartik Mudgal, Kushagra Kumar, \textit{dfs lookahead}, win-rate 0{,}586,
-\item 7.\ miejsce: Kartik Mudgal, Kushagra Kumar, \textit{dfs lookahead}, win-rate 0{,}578,
-\item 9.\ miejsce: Sathya Sudha Murugan, Maik Buettner, \textit{balanced lookahead}, win-rate 0{,}541~\cite{hearthstone_competition}.
+\item 1.\ miejsce: Sebastian Miller, przeszukiwanie dwuruchowe (ang.~\textit{2-step lookahead}), wskaźnik wygranych 0{,}723,
+\item 2.\ miejsce: Bohnhof, Graeffe, dynamiczne przeszukiwanie głębokościowe, wskaźnik wygranych 0{,}709,
+\item 4.\ miejsce: Tracht, Mozheiko, przeszukiwanie trzyruchowe (ang.~\textit{3-step lookahead}), wskaźnik wygranych 0{,}676,
+\item 5.\ miejsce: Markus Hempel, Julia Heise, przeszukiwanie dwuruchowe, wskaźnik wygranych 0{,}660,
+\item 6.\ miejsce: Kartik Mudgal, Kushagra Kumar, przeszukiwanie głębokościowe metodą DFS (ang.~\textit{depth-first search lookahead}), wskaźnik wygranych 0{,}586,
+\item 7.\ miejsce: Kartik Mudgal, Kushagra Kumar, przeszukiwanie głębokościowe metodą DFS, wskaźnik wygranych 0{,}578,
+\item 9.\ miejsce: Sathya Sudha Murugan, Maik Buettner, zrównoważone przeszukiwanie głębokościowe (ang.~\textit{balanced lookahead}), wskaźnik wygranych 0{,}541~\cite{hearthstone_competition}.
 \end{itemize}
 
-\subsection{Dynamic lookahead}
+\subsection{Dynamiczne przeszukiwanie głębokościowe}
 
-Wariantem adaptacyjnym jest \textbf{dynamic lookahead}, w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęły boty Kiasa i Babela (win-rate 0{,}655) oraz Bohnhofa i Graeffego (win-rate 0{,}632), oba oparte na dynamic lookahead z talią MidrangeJadeShaman~\cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na turę (sekcja~\ref{sec:sabber_agent_interface}), zachowując jednocześnie możliwie największą głębokość przeszukiwania.
+Wariantem adaptacyjnym jest \textbf{dynamiczne przeszukiwanie głębokościowe} (ang. \textit{dynamic lookahead}), w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęli agenci Kiasa i Babela (wskaźnik wygranych 0{,}655) oraz Bohnhofa i Graeffego (win-rate 0{,}632), oba oparte na dynamic lookahead z talią \textit{MidrangeJadeShaman}~\cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na turę (sekcja~\ref{sec:sabber_agent_interface}), zachowując jednocześnie możliwie największą głębokość przeszukiwania.
 
-\subsection{Lookahead z modelowaniem przeciwnika}
+\subsection{Przeszukiwanie głębokościowe z modelowaniem przeciwnika}
 
-Uzupełnieniem algorytmów lookahead jest modelowanie ruchów przeciwnika, opisane przez Dockhorna i in.~\cite{dockhorn2018} --- zamiast oceniać jedynie własne akcje, agent symuluje równocześnie odpowiedź przeciwnika w kolejnej turze i ocenia stan gry po obu ruchach. Dzięki temu agent unika ruchów, które wyglądają korzystnie jedynie gdy nie uwzględnimy odpowiedzi przeciwnika. Agent autorstwa Dockhorna wygrał ścieżkę \textit{premade deck playing track} w 2018 roku właśnie z zastosowaniem tej techniki~\cite{dockhorn2018, hearthstone_competition}.
+Uzupełnieniem przeszukiwania głębokościowego jest modelowanie ruchów przeciwnika, opisane przez Dockhorna i in.~\cite{dockhorn2018} --- zamiast oceniać jedynie własne akcje, agent symuluje równocześnie odpowiedź przeciwnika w kolejnej turze i ocenia stan gry po obu ruchach. Dzięki temu agent unika ruchów, które wyglądają korzystnie jedynie, gdy nie uwzględniamy odpowiedzi przeciwnika. Agent autorstwa Dockhorna wygrał ścieżkę \textit{premade deck playing track} w 2018 roku właśnie z zastosowaniem tej techniki~\cite{dockhorn2018, hearthstone_competition}.
 
-\subsection{Lookahead a MCTS}
+\subsection{Przeszukiwanie głębokościowe a MCTS}
 
-Zarówno MCTS, jak i lookahead wymagają dostępu do modelu przejść (ang.~\textit{forward model}) silnika gry. Kluczowa różnica polega na tym, że MCTS buduje drzewo probabilistyczne, kierując zasoby obliczeniowe na obiecujące gałęzie, podczas gdy lookahead przeszukuje drzewo deterministycznie i wyczerpująco do zadanej głębokości. Wyniki konkursów z lat 2018--2020 pokazują, że lookahead z głębokością 2--3 jest co najmniej równoważny MCTS przy porównywalnym budżecie obliczeniowym, a w edycji 2020 konsekwentnie go przewyższał~\cite{hearthstone_competition, dockhorn2019}.
+Zarówno MCTS, jak i przeszukiwanie głębokościowe wymagają dostępu do modelu przejść (ang.~\textit{forward model}) silnika gry. Kluczowa różnica polega na tym, że MCTS buduje drzewo probabilistyczne, kierując zasoby obliczeniowe na obiecujące gałęzie, podczas gdy przeszukiwanie głębokościowe przeszukuje drzewo deterministycznie i wyczerpująco do zadanej głębokości. Wyniki konkursów z lat 2018--2020 pokazują, że przeszukiwanie głębokościowe z głębokością 2--3 jest co najmniej równoważne MCTS przy porównywalnym budżecie obliczeniowym, a w edycji 2020 konsekwentnie go przewyższało~\cite{hearthstone_competition, dockhorn2019}.

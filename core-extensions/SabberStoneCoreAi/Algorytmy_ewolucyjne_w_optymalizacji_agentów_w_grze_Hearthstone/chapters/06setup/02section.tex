@@ -189,7 +189,7 @@ Wariant ten wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiow
     \end{cases}
     \label{eq:phase}
 \end{equation}
-Łączna liczba parametrów wynosi $D = 63 = 21 \times 3$. Wektor wag $\mathbf{w} \in [0,1]^{63}$ jest konkatenacją trzech niezależnych wektorów:
+Łączna liczba parametrów wynosi $D = 63 = 21 \cdot 3$. Wektor wag $\mathbf{w} \in [0,1]^{63}$ jest konkatenacją trzech niezależnych wektorów:
 \begin{equation}
     \mathbf{w} = \bigl[\mathbf{w}^{(1)} \mid \mathbf{w}^{(2)}
     \mid \mathbf{w}^{(3)}\bigr], \quad \mathbf{w}^{(i)} \in [0,1]^{21}
@@ -224,7 +224,7 @@ gdzie $\delta_{\min} = -0{,}1$, $\delta_{\max} = 0{,}1$, a $\text{clip}(x, 0, 1)
 
 Agent bazowy stosuje strategię zachłanną z horyzontem 1 --- ocenia akcje wyłącznie na podstawie natychmiastowej zmiany stanu gry, ignorując przyszłe konsekwencje w obrębie bieżącej tury. Tymczasem w Hearthstone wiele silnych kombinacji (ang. \textit{combo}) wymaga wykonania sekwencji akcji, gdzie pierwsza akcja sama w sobie ma niską wartość, ale otwiera możliwość wykonania kolejnej o dużej wartości. Strategia zachłanna nie uwzględnia zatem takich kombinacji --- przykładowo, zagranie taniej karty wzmacniającej (ang. \textit{buff}) przed atakiem stronnika przynosi łącznie wyższy zysk niż sama ocena zagrania wzmocnienia, która bez kontekstu kolejnej akcji wydaje się przeciętna.
 
-Piąty wariant zachowuje bazowy zestaw 21 parametrów, lecz zmienia \textbf{strategię decyzyjną} z zachłannej \eqref{eq:greedy} na przeszukiwanie z wyprzedzeniem (ang. \textit{lookahead}) o stałej głębokości $d = 2$ w obrębie tej samej tury. Wartość akcji $a$ wyznaczana jest rekurencyjnie:
+Piąty wariant zachowuje bazowy zestaw 21 parametrów, lecz zmienia \textbf{strategię decyzyjną} z zachłannej \eqref{eq:greedy} na przeszukiwanie głębokościowe (ang. \textit{lookahead}) o stałej głębokości $d = 2$ w obrębie tej samej tury. Wartość akcji $a$ wyznaczana jest rekurencyjnie:
 \begin{equation}
     F(s, a, \mathbf{w}, d) =
     \begin{cases}

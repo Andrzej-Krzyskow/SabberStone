@@ -1,10 +1,10 @@
 \section{Porównanie podejść w konkursie}
 
-Na podstawie wyników wszystkich trzech edycji widać wyraźne trendy \cite{hearthstone_competition, dockhorn2019}. Zestawienie najlepszych miejsc w ścieżce \textit{premade deck playing track} oraz najwyższego uzyskanego wskaźnika wygranych dla każdej klasy metod przedstawiono w tabeli~\ref{tab:competition_approaches}.
+Na podstawie wyników wszystkich trzech edycji widać wyraźne trendy \cite{hearthstone_competition, dockhorn2019}. Zestawienie najlepszych miejsc w ścieżce przygotowanych talii oraz najwyższego uzyskanego wskaźnika wygranych dla każdej klasy metod przedstawiono w tabeli~\ref{tab:competition_approaches}.
 
 \begin{table}[h!]
 \centering
-\caption{Czołowe miejsca w \textit{premade deck playing track}, \textit{Hearthstone AI Competition} 2018--2020. W 2018 jedynym agentem z przeszukiwaniem głębokościowym (ang. \textit{lookahead}) w czołówce był \textit{Tyche} (K.~Bornemann, 4.~miejsce) oparty na przeszukiwaniu z horyzontem 1 ruchu, a nie na głębszym przeszukiwaniu $N$ ruchów.}
+\caption{Czołowe miejsca w ścieżce przygotowanych talii, \textit{Hearthstone AI Competition} 2018--2020. W 2018 jedynym agentem z przeszukiwaniem głębokościowym w czołówce był \textit{Tyche} (K.~Bornemann, 4.~miejsce) oparty na przeszukiwaniu z horyzontem 1 ruchu, a nie na głębszym przeszukiwaniu $N$ ruchów.}
 \label{tab:competition_approaches}
 \begin{tabular}{lcccc}
 \toprule
@@ -19,4 +19,4 @@ Rolling Horizon EA    & 15.~m.    & ---        & ---           & b/d            
 \end{tabular}
 \end{table}
 
-Tabela~\ref{tab:competition_approaches} pokazuje, że w 2018 roku przeszukiwanie głębokościowe znalazło się w czołówce dopiero na 4. pozycji w wariancie z horyzontem 1 ruchu. MCTS dominowało w edycji 2018, lecz straciło przewagę w 2020 roku na rzecz przeszukiwania głębokościowego o większej głębokości. Możliwym wyjaśnieniem jest to, że w Hearthstone losowość efektów kart utrudnia efektywne \textit{rollouty} w MCTS, podczas gdy przeszukiwanie głębokościowe z dobrą heurystyką i głębokością 2--3 ruchów skuteczniej przewiduje konsekwencje wieloruchowych sekwencji~\cite{dockhorn2019}. Podejście ewolucyjne zajmuje osobną niszę --- w odróżnieniu od MCTS i przeszukiwania głębokościowego nie wymaga przeszukiwania drzewa gry w trakcie rozgrywki, więc każda decyzja jest szybka obliczeniowo, ale odbywa się to kosztem wielogodzinnego wstępnego treningu~\cite{sanchez2020}.
+Tabela~\ref{tab:competition_approaches} pokazuje, że w 2018 roku przeszukiwanie głębokościowe znalazło się w czołówce dopiero na 4. pozycji w wariancie z horyzontem 1 ruchu. MCTS dominowało w edycji 2018, lecz straciło przewagę w 2020 roku na rzecz przeszukiwania głębokościowego o większej głębokości. Możliwym wyjaśnieniem jest to, że w Hearthstone losowość efektów kart utrudnia efektywne losowe symulacje końcówek partii w MCTS, podczas gdy przeszukiwanie głębokościowe z dobrą heurystyką i głębokością 2--3 ruchów skuteczniej przewiduje konsekwencje wieloruchowych sekwencji~\cite{dockhorn2019}. Podejście ewolucyjne zajmuje osobną niszę --- w odróżnieniu od MCTS i przeszukiwania głębokościowego nie wymaga przeszukiwania drzewa gry w trakcie rozgrywki, więc każda decyzja jest szybka obliczeniowo, ale odbywa się to kosztem wielogodzinnego wstępnego treningu~\cite{sanchez2020}.
