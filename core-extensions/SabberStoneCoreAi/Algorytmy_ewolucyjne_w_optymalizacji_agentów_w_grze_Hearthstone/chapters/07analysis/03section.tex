@@ -11,19 +11,19 @@ Faza II sprawdza, które z zaproponowanych modyfikacji rzeczywiście poprawiają
 
 \input{chapters/07analysis/generated/phase2_agent_vs_agent_heatmap}
 
-Tabela~\ref{tab:phase2-agent-vs-agent-heatmap} potwierdza i uzupełnia wyniki zbiorcze. Wariant \textit{21 głębokościowy} wygrał z każdym rywalem w przedziale \(59{,}2\%\)--\(62{,}1\%\), co oznacza, że przewaga ma charakter globalny i nie jest ograniczona do jednego rywala. Najtrudniejszym przeciwnikiem dla wariantu \textit{21 głębokościowego} okazał się \textit{28 parametrów} --- jedyny wariant, który zdołał utrzymać wynik powyżej \(40\%\) w bezpośrednim starciu. Pozostałe cztery warianty często oscylują wokół \(50\%\) między sobą, co oznacza, że różnice w ich rankingu zbiorczym wynikają bardziej z sumy małych przewag niż z wyraźnej dominacji w konkretnych starciach. Wyjątkiem jest para \textit{28 parametrów} vs \textit{28 znormalizowany} --- tu przewaga pierwszego (\(52{,}6\%\)) jest wyraźniejsza niż w pozostałych zestawieniach tej grupy.
+Tabela~\ref{tab:phase2-agent-vs-agent-heatmap} potwierdza i uzupełnia wyniki zbiorcze. Wariant \textit{21 głębokościowy} wygrał z każdym rywalem w przedziale \(59{,}2\%\)--\(62{,}1\%\), co oznacza, że przewaga ma charakter globalny i nie jest ograniczona do jednego rywala. Najtrudniejszym przeciwnikiem dla wariantu \textit{21 głębokościowego} okazał się \textit{28 parametrów} --- jedyny wariant, który zdołał utrzymać wynik powyżej \(40\%\) w bezpośrednim starciu. Pozostałe cztery warianty często oscylują wokół \(50\%\) między sobą, co oznacza, że różnice w ich rankingu zbiorczym wynikają bardziej z sumy małych przewag niż z wyraźnej dominacji w konkretnych starciach. Wyjątkiem jest para \textit{28 parametrów} oraz \textit{28 znormalizowany} --- tu przewaga pierwszego (\(52{,}6\%\)) jest wyraźniejsza niż w pozostałych zestawieniach tej grupy.
 
 Z tej części pracy wynika, że największą poprawę jakości daje zmiana procesu podejmowania decyzji, a nie dalsze zwiększanie liczby współczynników --- przy danym budżecie obliczeniowym większy zysk daje lepsze planowanie akcji niż dodawanie kolejnych cech oceny.
 
 Faza II potwierdza też praktyczny sukces całego podejścia badawczego --- zaproponowane modyfikacje (poza wariantem \textit{63 parametry}) przewyższają wariant bazowy, a najlepszy wariant ma przewagę nad każdym rywalem. Nie są to więc wyłącznie teoretyczne przypuszczenia.
 
-\subsection{Wpływ rozszerzenia cech (21 vs 28)}
+\subsection{Wpływ rozszerzenia cech (\textit{21} oraz \textit{28})}
 
 Przejście z 21 do 28 parametrów poprawia skuteczność agenta: wariant \textit{28 parametrów} wygrał z agentem bazowym w bezpośrednim starciu wynikiem \(53{,}5\%\), a \textit{28 znormalizowany} --- \(51{,}0\%\).
 
 \input{chapters/07analysis/generated/28figures-input}
 
-Analiza wag reprezentanta wariantu 28-parametrowego (rysunek~\ref{fig:weights-v28}) wskazuje, które z siedmiu nowych cech faktycznie kształtują strategię.
+Analiza wag reprezentanta wariantu \textit{28-parametrowego} (rysunek~\ref{fig:weights-v28}) wskazuje, które z siedmiu nowych cech faktycznie kształtują strategię.
 
 Najistotniejsze okazały się następujące cechy: \textit{Br}, \textit{Zak}, \textit{Smok} i \textit{Jade}. Te parametry niosą ze sobą jasną informację o planie tury. \textit{Br} zwykle przekłada się na tempo wymian i kontrolę stołu. \textit{Zak} zwiększa wartość sekwencji z zaklęciami, więc pomaga wybierać bardziej opłacalne układy ruchów. \textit{Smok} i \textit{Jade} wzmacniają decyzje związane z synergią talii i planem na kilka tur do przodu.
 
@@ -31,12 +31,12 @@ Mniejsza rola \textit{Prz} i \textit{Pir} wynika z sytuacyjności tych cech --- 
 
 Bardzo mała rola \textit{Ręka} jest spójna z praktyką gry --- w tym zbiorze talii i przy tym stylu oceny większy wpływ ma bieżący stan stołu, tempo rozgrywki i aktywne synergie niż sama liczba kart na ręce. Model premiuje dobrą sytuację na planszy bardziej niż zapas kart, dlatego waga \textit{Ręka} spada blisko zera.
 
-\paragraph{Wniosek z porównania agenta z 21 oraz z 28 parametrami}
+\paragraph{Wniosek z porównania agenta z \textit{21} oraz z \textit{28 parametrami}}
 Rozszerzenie przestrzeni cech z 21 do 28 poprawia jakość agenta w porównaniu do wariantu bazowego. Częściowa odpowiedź na pytanie RQ1, dotyczącą samego rozszerzenia reprezentacji, jest więc pozytywna --- dodatkowe cechy kontekstowe wnoszą informację strategiczną, której agent bazowy nie wykorzystuje.
 
-\subsection{Wpływ normalizacji (28 vs 28 znormalizowany)}
+\subsection{Wpływ normalizacji (\textit{28} oraz \textit{28 znormalizowany})}
 
-Bezpośrednie porównanie \(28\) vs \(28\) znormalizowany wskazuje na przewagę wariantu bez normalizacji (\(\approx 52{,}6\%\) w bezpośrednim starciu). Oba warianty mają podobny poziom względem części pozostałych agentów, co sugeruje, że normalizacja nie powoduje zasadniczej zmiany w sposobie gry agenta, a jedynie obniża jego skuteczność.
+Bezpośrednie porównanie \textit{\(28\)} oraz \textit{\(28\)} znormalizowany wskazuje na przewagę wariantu bez normalizacji (\(\approx 52{,}6\%\) w bezpośrednim starciu). Oba warianty mają podobny poziom względem części pozostałych agentów, co sugeruje, że normalizacja nie powoduje zasadniczej zmiany w sposobie gry agenta, a jedynie obniża jego skuteczność.
 
 Rysunki~\ref{fig:weights-v28} i~\ref{fig:weights-v28norm} pokazują, że różnica nie wynika z jednej wagi, lecz z całego rozkładu między częścią bazową a nowymi siedmioma cechami. W wariancie bez normalizacji część nowych wag ma większe amplitudy, co wzmacnia ich wpływ w sytuacjach, dla których zostały zaprojektowane. W wariancie z normalizacją więcej wag jest bliżej środka skali, więc podejście agenta jest bardziej zachowawcze i mniej selektywne.
 
@@ -44,12 +44,12 @@ Normalizacja stabilizuje zachowanie modelu, ale może osłabiać cechy, które w
 
 Jedną z prawdopodobnych przyczyn słabszego wyniku wariantu \textit{28 znormalizowany} może być sama metoda wyznaczania maksymalnych progów parametrów. W badaniu pułap dla każdej cechy wyznaczano na podstawie wartości maksymalnej obserwowanej po rozegraniu $\approx1,08$ miliona gier, a taki sposób jest wrażliwy na rzadkie anomalie. Pojedynczy, bardzo wysoki odczyt może zawyżyć pułap i w konsekwencji niesprawiedliwie zaniżyć znormalizowane wartości tej wagi. W kolejnych eksperymentach warto rozważyć bardziej odporne podejście, np. użycie mediany lub średniej z \(N\) najwyższych obserwacji i obcięcie wartości powyżej tego progu do \(1\).
 
-\paragraph{Wniosek z porównania agentów z 28 parametrami}
+\paragraph{Wniosek z porównania agentów z \textit{28 parametrami}}
 Wariant bez normalizacji wyprzedza agenta znormalizowanego o około \(2{,}5\)p.p. w rywalizacji przeciw agentowi bazowemu. Odpowiedź na RQ1 jest w dalszym ciągu pozytywna, lecz z zastrzeżeniem --- rozszerzenie cech poprawia jakość agenta, ale pełny potencjał tej modyfikacji ujawnia się tylko bez nadmiernego wygładzania wartości cech.
 
-\subsection{Wpływ podziału fazowego (63 vs 63 płynny)}
+\subsection{Wpływ podziału fazowego (\textit{63} oraz \textit{63 płynny})}
 
-W parze \(63\) vs \(63\) płynny wariant płynny ma lekką przewagę --- w bezpośrednim starciu wskaźnik zwycięstw wynosi \(51{,}6\%\). Oba warianty mają tyle samo parametrów i ten sam mechanizm decyzyjny, a różni je wyłącznie sposób dekodowania wag między fazami gry (sekcja~\ref{sec:agent63smooth}). Wariant \textit{63 płynny} koduje wagi faz~2 i~3 jako przesunięcia względem fazy poprzedniej, ograniczone do \(\pm 0{,}1\) na każdy współczynnik. Skutkuje to mniejszą przestrzenią przeszukiwań niż w wariancie \textit{63 parametry}, w którym każda faza ma niezależny wektor 21 wag.
+W parze \textit{\(63\)} oraz \textit{\(63\)} płynny wariant ma lekką przewagę --- w bezpośrednim starciu wskaźnik zwycięstw wynosi \(51{,}6\%\). Oba warianty mają tyle samo parametrów i ten sam mechanizm decyzyjny, a różni je wyłącznie sposób dekodowania wag między fazami gry (sekcja~\ref{sec:agent63smooth}). Wariant \textit{63 płynny} koduje wagi faz~2 i~3 jako przesunięcia względem fazy poprzedniej, ograniczone do \(\pm 0{,}1\) na każdy współczynnik. Skutkuje to mniejszą przestrzenią przeszukiwań niż w wariancie \textit{63 parametry}, w którym każda faza ma niezależny wektor 21 wag.
 
 Mniejsza przestrzeń ułatwia szybszą zbieżność do rozwiązań o przyzwoitej jakości, ale może jednocześnie uniemożliwić znalezienie profili wag, w których ta sama cecha powinna mieć zupełnie inną wagę w każdej fazie --- takie układy są w wariancie płynnym po prostu niedostępne. W praktyce oznacza to kompromis między spójnością strategii a swobodą dopasowania wag do kontekstu tury.
 
@@ -57,12 +57,12 @@ Mniejsza przestrzeń ułatwia szybszą zbieżność do rozwiązań o przyzwoitej
 
 Rysunki~\ref{fig:weights-v63} i~\ref{fig:weights-v63smooth} pokazują ten kompromis. W wariancie \textit{63 parametry} widać gwałtowne skoki wag między fazą~1, 2 i~3 --- np.\ \(w_{\text{HA}}\) (atak bohatera) spada z ok.\ \(0{,}95\) w fazie~1 do ok.\ \(0{,}05\) w fazie~2, by wrócić do ok.\ \(0{,}96\) w fazie~3. Podobne wahania występują dla \(w_{\text{Windfury}}\) (zdolność stronnika furia wichru) i \(w_{\text{HP}}\) (zdrowie bohatera). Taki profil sugeruje, że optymalizator znalazł strategię silnie zależną od fazy, lecz potencjalnie niestabilną na granicach tur. W wariancie \textit{63 płynny} te same cechy zmieniają się łagodniej, np.\ \(w_{\text{HP}}\) rośnie stopniowo z ok.\ \(0{,}43\) przez \(0{,}52\) do \(0{,}62\), a \(w_{\text{app}}\) (pojawienie się stronnika) maleje równomiernie z ok.\ \(0{,}91\) do \(0{,}74\).
 
-\paragraph{Wniosek z porównania agentów z 63 parametrami}
-Reprezentacja fazowa jest użyteczna, ale jej skuteczność zależy od mechanizmu łączenia faz. Wariant \textit{63 płynny} wygrał z agentem bazowym wynikiem \(51{,}4\%\) w bezpośrednim starciu, podczas gdy \textit{63 parametry} bez wygładzania przegrał z wariantem bazowym (\(49{,}9\%\)). Bezpośrednie starcie między wariantami 63-parametrowymi daje wynik \(51{,}6\%\) zwycięstw na korzyść wariantu płynnego. Odpowiedź na pytanie badawcze nr 2 (RQ2) jest pozytywna pod pewnym warunkiem --- sam wzrost liczby parametrów nie poprawia jakości agenta --- potrzebny jest mechanizm zapewniający spójność decyzji między fazami gry.
+\paragraph{Wniosek z porównania agentów z \textit{63 parametrami}}
+Reprezentacja fazowa jest użyteczna, ale jej skuteczność zależy od mechanizmu łączenia faz. Wariant \textit{63 płynny} wygrał z agentem bazowym wynikiem \(51{,}4\%\) w bezpośrednim starciu, podczas gdy \textit{63 parametry} bez wygładzania przegrał z wariantem bazowym (\(49{,}9\%\)). Bezpośrednie starcie między wariantami \textit{63-parametrowymi} daje wynik \(51{,}6\%\) zwycięstw na korzyść wariantu płynnego. Odpowiedź na pytanie badawcze nr 2 (RQ2) jest pozytywna pod pewnym warunkiem --- sam wzrost liczby parametrów nie poprawia jakości agenta --- potrzebny jest mechanizm zapewniający spójność decyzji między fazami gry.
 
-\subsection{Wpływ podejścia głębokościowego (bazowy 21 vs 21 głębokościowy)}
+\subsection{Wpływ podejścia głębokościowego (\textit{bazowy 21} oraz \textit{21 głębokościowy})}
 
-Największy efekt w całej fazie II widać w porównaniu \textit{bazowy 21} vs \textit{21 głębokościowy} --- wariant głębokościowy osiąga około \(61{,}7\%\) zwycięstw w bezpośrednim starciu. Co ważne, ta skala przewagi utrzymuje się również wobec pozostałych wariantów, nie jest więc wynikiem jednego sprzyjającego zestawienia.
+Największy efekt w całej fazie II widać w porównaniu \textit{bazowy 21} oraz \textit{21 głębokościowy} --- wariant głębokościowy osiąga około \(61{,}7\%\) zwycięstw w bezpośrednim starciu. Co ważne, ta skala przewagi utrzymuje się również wobec pozostałych wariantów, nie jest więc wynikiem jednego sprzyjającego zestawienia.
 
 \input{chapters/07analysis/generated/21figures-input}
 
@@ -77,7 +77,7 @@ Dodanie przeszukiwania głębokościowego daje największy i najbardziej stabiln
 
 \input{chapters/07analysis/generated/phase2-weights}
 
-Rysunek~\ref{fig:weights-heatmap-base21} zestawia zwycięskie konfiguracje wag po sprowadzeniu ich do tego samego układu 21 cech. Dla wariantów 21-parametrowych porównano pełny wektor wag, a dla wariantów 28-parametrowych i 63-parametrowych --- pierwsze 21 wag z wektora.
+Rysunek~\ref{fig:weights-heatmap-base21} zestawia zwycięskie konfiguracje wag po sprowadzeniu ich do tego samego układu 21 cech. Dla wariantów \textit{21-parametrowych} porównano pełny wektor wag, a dla wariantów \textit{28-parametrowych} i \textit{63-parametrowych} --- pierwsze 21 wag z wektora.
 
 Na mapie cieplnej widać, że większość wariantów ma zbliżony układ wielu wag --- część współczynników wygląda podobnie między agentami, a różnice dotyczą głównie tego, jak mocno dana waga jest zwiększona lub obniżona. Wariant \textit{21 głębokościowy} częściej ma inny rozkład wartości niż pozostałe, ale nie jest całkowicie odseparowany od reszty grupy. Wniosek z tej mapy jest taki, że przewaga tego wariantu z fazy II nie wygląda na efekt jednej wyjątkowej wagi, lecz raczej na efekt całego układu współczynników i sposobu podejmowania decyzji.
 

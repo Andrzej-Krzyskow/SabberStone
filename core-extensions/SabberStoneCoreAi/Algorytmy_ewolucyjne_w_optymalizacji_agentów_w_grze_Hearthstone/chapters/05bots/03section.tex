@@ -4,7 +4,7 @@ Przeszukiwanie głębokościowe (ang.~\textit{lookahead}) jest prostszą alterna
 
 \subsection{Zachłanne przeszukiwanie}
 
-Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej dozwolonej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Agenci tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany agent zachłanny zajął 7. miejsce (wskaźnik wygranych 0{,}570 w ścieżce talii tworzonych przez użytkownika~\cite{hearthstone_competition}.
+Najbardziej podstawową formą jest agent \textbf{zachłanny}, który rozważa tylko bezpośrednie konsekwencje każdej dozwolonej akcji i wybiera tę prowadzącą do najwyżej ocenionego stanu po jednym ruchu (ang.~\textit{1-step lookahead}). W silniku SabberStone odpowiada to domyślnemu \textit{agentowi zachłannemu} opisanemu w sekcji~\ref{sec:baseline}. Agenci tego typu dominowały liczbowo w konkursie w latach 2018--2020, lecz rzadko zajmowały czołowe miejsca --- w edycji 2020 najwyżej sklasyfikowany agent zachłanny zajął 7. miejsce (wskaźnik wygranych 0{,}570 w ścieżce talii tworzonych przez użytkownika (ang.~\textit{User Created Deck Track}, UCDT)~\cite{hearthstone_competition}.
 
 \subsection{Przeszukiwanie na głębokość $N$}
 
@@ -21,7 +21,7 @@ Rozszerzeniem jest przeszukiwanie na głębokość $N$ ruchów, gdzie agent symu
 
 \subsection{Dynamiczne przeszukiwanie głębokościowe}
 
-Wariantem adaptacyjnym jest \textbf{dynamiczne przeszukiwanie głębokościowe} (ang. \textit{dynamic lookahead}), w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęli agenci Kiasa i Babela (wskaźnik wygranych 0{,}655) oraz Bohnhofa i Graeffego (win-rate 0{,}632), oba oparte na dynamic lookahead z talią \textit{MidrangeJadeShaman}~\cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na turę (sekcja~\ref{sec:sabber_agent_interface}), zachowując jednocześnie możliwie największą głębokość przeszukiwania.
+Wariantem adaptacyjnym jest \textbf{dynamiczne przeszukiwanie głębokościowe} (ang. \textit{dynamic lookahead}), w którym głębokość przeszukiwania jest dostosowywana na bieżąco w zależności od dostępnego czasu obliczeniowego lub złożoności aktualnego stanu planszy. W ścieżce UCDT 2020 pierwsze i drugie miejsce zajęli agenci Kiasa i Babela (wskaźnik wygranych 0{,}655) oraz Bohnhofa i Graeffego (wskaźnik wygranych 0{,}632), oba oparte na dynamicznym przeszukiwaniu głębokościowym z talią \textit{MidrangeJadeShaman} \cite{hearthstone_competition}. Dynamiczne zarządzanie głębokością pozwala unikać przekroczenia limitu czasu na turę (sekcja~\ref{sec:sabber_agent_interface}), zachowując jednocześnie możliwie największą głębokość przeszukiwania.
 
 \subsection{Przeszukiwanie głębokościowe z modelowaniem przeciwnika}
 

@@ -22,11 +22,11 @@ Dla większości wariantów wykonano po trzy niezależne przebiegi na każdy opt
 Wariant & Schemat oceny & Uruch. & Czas [h] \\
 \midrule
 \multicolumn{4}{l}{\textit{Modyfikacje agenta bazowego (koewolucja, POP\_SIZE = 10)}} \\
-\hspace{1em}28 parametrów      & koewolucja & 3 & 27,71 \\
-\hspace{1em}28 znormalizowany  & koewolucja & 3 & 29,71 \\
-\hspace{1em}63 parametry       & koewolucja & 3 & 27,09 \\
-\hspace{1em}63 płynny          & koewolucja & 3 & 26,86 \\
-\hspace{1em}21 głębokościowy   & koewolucja & 1 & 34.51 \\
+\hspace{1em}\textit{28 parametrów}      & koewolucja & 3 & 27,71 \\
+\hspace{1em}\textit{28 znormalizowany}  & koewolucja & 3 & 29,71 \\
+\hspace{1em}\textit{63 parametry}       & koewolucja & 3 & 27,09 \\
+\hspace{1em}\textit{63 płynny}          & koewolucja & 3 & 26,86 \\
+\hspace{1em}\textit{21 głębokościowy}   & koewolucja & 1 & 34{,}51 \\
 \midrule
 \multicolumn{4}{l}{\textit{Tuning parametru POP\_SIZE dla SHADE}} \\
 \hspace{1em}SHADE koew., POP\_SIZE = 5    & koewolucja   & 2 & 18,81 \\
@@ -37,22 +37,22 @@ Wariant & Schemat oceny & Uruch. & Czas [h] \\
 \hspace{1em}SHADE HoF, POP\_SIZE = 15     & Hall of Fame & 2 & 19,37 \\
 \midrule
 \multicolumn{4}{l}{\textit{Testy SHADE na agencie bazowy 21}} \\
-\hspace{1em}bazowy 21        & SHADE koew.  & 1 & 8.89 \\
-\hspace{1em}bazowy 21        & SHADE HoF    & 1 & 9.70 \\
+\hspace{1em}\textit{bazowy 21}        & SHADE koew.  & 1 & 8{,}89 \\
+\hspace{1em}\textit{bazowy 21}        & SHADE HoF    & 1 & 9{,}70 \\
 \midrule
 \multicolumn{4}{l}{\textit{Warianty SHADE koewolucyjnego (POP\_SIZE = 15)}} \\
-\hspace{1em}28 parametrów      & SHADE koew. & 3 & 27,81 \\
-\hspace{1em}28 znormalizowany  & SHADE koew. & 3 & 29,37 \\
-\hspace{1em}63 parametry       & SHADE koew. & 3 & 26,57 \\
-\hspace{1em}63 płynny          & SHADE koew. & 3 & 26,42 \\
-\hspace{1em}21 głębokościowy   & SHADE koew. & 1 & 30.21 \\
+\hspace{1em}\textit{28 parametrów}      & SHADE koew. & 3 & 27,81 \\
+\hspace{1em}\textit{28 znormalizowany}  & SHADE koew. & 3 & 29,37 \\
+\hspace{1em}\textit{63 parametry}       & SHADE koew. & 3 & 26,57 \\
+\hspace{1em}\textit{63 płynny}          & SHADE koew. & 3 & 26,42 \\
+\hspace{1em}\textit{21 głębokościowy}   & SHADE koew. & 1 & 30{,}21 \\
 \midrule
 \multicolumn{4}{l}{\textit{Warianty SHADE z Hall of Fame (POP\_SIZE = 15)}} \\
-\hspace{1em}28 parametrów      & SHADE HoF & 3 & 30.36 \\
-\hspace{1em}28 znormalizowany  & SHADE HoF & 3 & 31.78 \\
-\hspace{1em}63 parametry       & SHADE HoF & 3 & 29.41 \\
-\hspace{1em}63 płynny          & SHADE HoF & 3 & 29.47 \\
-\hspace{1em}21 głębokościowy   & SHADE HoF & 1 & 34.62 \\
+\hspace{1em}\textit{28 parametrów}      & SHADE HoF & 3 & 30{,}36 \\
+\hspace{1em}\textit{28 znormalizowany}  & SHADE HoF & 3 & 31{,}78 \\
+\hspace{1em}\textit{63 parametry}       & SHADE HoF & 3 & 29{,}41 \\
+\hspace{1em}\textit{63 płynny}          & SHADE HoF & 3 & 29{,}47 \\
+\hspace{1em}\textit{21 głębokościowy}   & SHADE HoF & 1 & 34{,}62 \\
 \midrule
 \textbf{Suma} & & \textbf{53} & \textbf{572,81} \\
 \bottomrule
@@ -61,7 +61,7 @@ Wariant & Schemat oceny & Uruch. & Czas [h] \\
 
 \subsection{Dobór rozmiaru populacji} \label{sec:popsize_tuning}
 
-Parametry strategii ewolucyjnej w wariantach koewolucyjnych przyjęto bezpośrednio z badania García-Sáncheza i in.~\cite{sanchez2020} --- autorzy przeprowadzili własny dobór konfiguracji dla agenta bazowego. Dla algorytmu SHADE sytuacja jest inna, ponieważ wśród jego parametrów ważny wpływ na jakość treningu i koszt obliczeniowy ma rozmiar populacji \texttt{POP\_SIZE}. Z tego powodu przed właściwymi eksperymentami przeprowadzono strojenie tego parametru. Aby nie faworyzować SHADE dodatkowym strojeniem na każdym wariancie agenta, testowano wyłącznie agenta bazowego (21 parametrów) --- uzyskana wartość \texttt{POP\_SIZE} jest następnie stosowana we wszystkich wariantach SHADE w trakcie badań.
+Parametry strategii ewolucyjnej w wariantach koewolucyjnych przyjęto bezpośrednio z badania García-Sáncheza i in.~\cite{sanchez2020} --- autorzy przeprowadzili własny dobór konfiguracji dla agenta bazowego. Dla metody SHADE sytuacja jest inna, ponieważ wśród jego parametrów ważny wpływ na jakość treningu i koszt obliczeniowy ma rozmiar populacji \texttt{POP\_SIZE}. Z tego powodu przed właściwymi eksperymentami przeprowadzono strojenie tego parametru. Aby nie faworyzować SHADE dodatkowym strojeniem na każdym wariancie agenta, testowano wyłącznie agenta bazowego (21 parametrów) --- uzyskana wartość \texttt{POP\_SIZE} jest następnie stosowana we wszystkich wariantach SHADE w trakcie badań.
 
 Przetestowano wartości $\texttt{POP\_SIZE} \in \{5, 10, 15\}$ dla obu wariantów SHADE (koewolucyjnego i z Hall of Fame). Dla każdej wartości wytrenowano dwóch niezależnych agentów, uzyskując dwa różne zestawy wag (w tabeli~\ref{tab:popsize}: zestaw~1 i zestaw~2). Łącznie powstało więc $3 \cdot 2 = 6$ konfiguracji na wariant SHADE. W turnieju porównawczym zestawiono wszystkich sześciu agentów w formacie każdy z każdym (270 000 gier, po 2000 na parę kombinacji talii), osobno dla każdego wariantu SHADE.
 
