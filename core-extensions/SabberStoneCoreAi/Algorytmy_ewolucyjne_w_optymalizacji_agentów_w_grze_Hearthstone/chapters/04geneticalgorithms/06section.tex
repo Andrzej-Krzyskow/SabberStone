@@ -1,6 +1,6 @@
 \section{JADE --- adaptacyjna ewolucja różnicowa} \label{sec:jade}
 
-Pierwszym powszechnie przyjętym rozwiązaniem problemu doboru parametrów sterujących DE był algorytm JADE (\textit{Adaptive Differential Evolution with Optional External Archive}). Został on zaproponowany przez Zhanga i Sandersona \cite{Zhang2009JADE} i wprowadza strategię mutacji \texttt{DE/current-to-pbest/1}:
+Pierwszym powszechnie przyjętym rozwiązaniem problemu doboru parametrów sterujących DE był algorytm JADE (ang. \textit{Joint Approximation Diagonalization of Eigen-matrices}). Został on zaproponowany przez Zhanga i Sandersona \cite{Zhang2009JADE} i wprowadza strategię mutacji \texttt{DE/current-to-pbest/1}:
 \[
 \mathbf{v}_{i,G} = \mathbf{x}_{i,G} + F_i \cdot (\mathbf{x}_{\mathrm{pbest},G} - \mathbf{x}_{i,G}) + F_i \cdot (\mathbf{x}_{r_1,G} - \tilde{\mathbf{x}}_{r_2,G})
 \]

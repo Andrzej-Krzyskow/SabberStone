@@ -151,15 +151,15 @@ Indeks & Cecha & $C_k$ \\
 8  & Zużyta mana                              &  10{,}0   \\
 9  & Zdrowie stronnika ($\nu$)                &  17{,}0   \\
 10 & Atak stronnika ($\nu$)                   &  28{,}0   \\
-11 & Zdolność: Szarża                         &   1{,}0   \\
-12 & Zdolność: Agonia                         &   1{,}0   \\
-13 & Zdolność: Boska tarcza                   &   1{,}0   \\
-14 & Zdolność: Inspiracja                     &   1{,}0   \\
-15 & Zdolność: Kradzież życia                 &   1{,}0   \\
-16 & Zdolność: Ukrycie                        &   1{,}0   \\
-17 & Zdolność: Prowokacja                     &   1{,}0   \\
-18 & Zdolność: Furia Wichru                   &   1{,}0   \\
-19 & Zdolność: Trucizna                       &   1{,}0   \\
+11 & Zdolność: szarża                         &   1{,}0   \\
+12 & Zdolność: agonia                         &   1{,}0   \\
+13 & Zdolność: boska tarcza                   &   1{,}0   \\
+14 & Zdolność: inspiracja                     &   1{,}0   \\
+15 & Zdolność: kradzież życia                 &   1{,}0   \\
+16 & Zdolność: ukrycie                        &   1{,}0   \\
+17 & Zdolność: prowokacja                     &   1{,}0   \\
+18 & Zdolność: furia wichru                   &   1{,}0   \\
+19 & Zdolność: trucizna                       &   1{,}0   \\
 20 & Rzadkość karty stronnika                 &   4{,}0   \\
 21 & Koszt many karty stronnika               &  25{,}0   \\
 22 & Trwałość broni bohatera                  &   8{,}0   \\
@@ -197,7 +197,7 @@ Wariant ten wprowadza \textbf{niezależny wektor wag dla każdej fazy}, definiow
 \subsection{Wariant 63 parametrów z płynnym przejściem}
 \label{sec:agent63smooth}
 
-Niezależna reprezentacja wag faz w wariancie~\ref{sec:agent63} może prowadzić do niespójności na granicach tur --- skoki wartości wag skutkowałyby niestabilną strategią agenta. Przykładowo, jeśli waga prowokacji w fazie~1 wynosi 0,9, a w fazie~2 wynosi 0,1, to po przekroczeniu tury~3 agent nagle przestaje cenić Stronników z prowokacją, co jest nienaturalne z punktu widzenia spójnej strategii.
+Niezależna reprezentacja wag faz w wariancie~\ref{sec:agent63} może prowadzić do niespójności na granicach tur --- skoki wartości wag skutkowałyby niestabilną strategią agenta. Przykładowo, jeśli waga prowokacji w fazie~1 wynosi 0,9, a w fazie~2 wynosi 0,1, to po przekroczeniu tury~3 agent nagle przestaje cenić stronników z prowokacją, co jest nienaturalne z punktu widzenia spójnej strategii.
 
 Ten wariant koduje wagi faz~2 i~3 jako \textbf{deltę względem fazy poprzedniej}, ograniczając wielkość możliwej zmiany do $\pm 0{,}1$ na każdy parametr między kolejnymi fazami. Zamiast optymalizować bezpośrednio wartości wag faz~2 i~3, algorytm ewolucyjny optymalizuje \emph{wielkość zmiany} względem fazy poprzedniej.
 

@@ -4,7 +4,7 @@ Na podstawie wyników wszystkich trzech edycji widać wyraźne trendy \cite{hear
 
 \begin{table}[h!]
 \centering
-\caption{Czołowe miejsca w \textit{Premade Deck Playing Track}, \textit{Hearthstone AI Competition} 2018--2020}
+\caption{Czołowe miejsca w \textit{premade deck playing track}, \textit{Hearthstone AI Competition} 2018--2020}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Podejście} & \textbf{2018} & \textbf{2019} & \textbf{2020} & \textbf{Max WR} \\
@@ -17,7 +17,7 @@ Rolling Horizon EA    & 15.~m.    & ---        & ---           & b/d            
 \bottomrule
 \end{tabular}
 \\[4pt]
-\small{*Kai Bornemann – Tyche, One-Step Lookahead, 4.~miejsce \textit{Premade Deck Playing Track} 2018.}
+\small{*Kai Bornemann – Tyche, one-step lookahead, 4.~miejsce \textit{premade deck playing track} 2018.}
 \end{table}
 
 MCTS dominowało w edycji 2018, lecz straciło przewagę w 2020 roku na rzecz lookahead z głębszym przeszukiwaniem. Możliwym wyjaśnieniem jest to, że w Hearthstone losowość efektów kart utrudnia efektywne \textit{rollouty} w MCTS, podczas gdy lookahead z dobrą heurystyką i głębokością 2--3 skuteczniej przewiduje konsekwencje wieloruchowych sekwencji~\cite{dockhorn2019}. Podejście ewolucyjne zajmuje osobną niszę: w odróżnieniu od MCTS i lookahead nie wymaga przeszukiwania drzewa gry w trakcie rozgrywki, więc każda decyzja jest szybka obliczeniowo, ale odbywa się to kosztem wielogodzinnego wstępnego treningu~\cite{sanchez2020}.

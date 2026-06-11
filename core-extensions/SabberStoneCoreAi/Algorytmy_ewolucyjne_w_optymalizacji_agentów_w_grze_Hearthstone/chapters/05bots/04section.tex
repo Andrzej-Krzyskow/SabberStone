@@ -12,7 +12,7 @@ Beam Search --- uproszczenie przeszukiwania wszerz, zachowujące tylko $k$ najba
 
 \subsection{Sieci neuronowe i uczenie maszynowe}
 
-Kilku uczestników stosowało podejścia oparte na uczeniu maszynowym. Grad~\cite{Grad2017} zaproponował użycie sieci neuronowej jako zamiennika ręcznie zaprojektowanej heurystyki --- sieć trenowano na danych z rozgrywek i wykorzystywano do oceny wartości stanu gry. Świechowski i in.~\cite{swiechowski2018} zastosowali modele nadzorowane jako sieć przewodnika w MCTS, kierując ekspansją drzewa ku akcjom obserwowanym u ludzkich graczy. W edycji 2019 Geis, Kleespies i Saflik zastosowali NN-based Tree Search w ścieżce \textit{User Created Deck Playing Track}~\cite{hearthstone_competition}.
+Kilku uczestników stosowało podejścia oparte na uczeniu maszynowym. Grad~\cite{Grad2017} zaproponował użycie sieci neuronowej jako zamiennika ręcznie zaprojektowanej heurystyki --- sieć trenowano na danych z rozgrywek i wykorzystywano do oceny wartości stanu gry. Świechowski i in.~\cite{swiechowski2018} zastosowali modele nadzorowane jako sieć przewodnika w MCTS, kierując ekspansją drzewa ku akcjom obserwowanym u ludzkich graczy. W edycji 2019 Geis, Kleespies i Saflik zastosowali NN-based Tree Search w ścieżce \textit{user created deck playing track}~\cite{hearthstone_competition}.
 
 \subsection{Symboliczne wnioskowanie}
 
@@ -20,4 +20,4 @@ Stiegler i in.~\cite{Stiegler2018} zaproponowali agenta opartego na wnioskowaniu
 
 \subsection{Rolling Horizon Evolutionary Algorithm}
 
-W edycji 2018 Weimer (15. miejsce, kat. \textit{Premade Deck Playing Track}) zastosował podejście Rolling Horizon Evolutionary Algorithm (RHEA). W tej metodzie, opisanej przez Gainę i in.~\cite{gaina2020}, algorytm ewolucyjny optymalizuje sekwencję akcji na bieżącą turę w czasie podejmowania decyzji --- bez wstępnego trenowania. W każdej chwili decyzji uruchamiana jest krótka sesja ewolucyjna, która wyznacza najlepszą sekwencję ruchów w ramach dostępnego czasu. Podejście to stanowi interesującą hybrydę między algorytmami \textit{online}, jak MCTS, a ewolucyjnymi, jednak w edycji 2018 nie dało wyników porównywalnych z czołowymi agentami~\cite{hearthstone_competition}.
+W edycji 2018 Weimer (15. miejsce, kat. \textit{premade deck playing track}) zastosował podejście Rolling Horizon Evolutionary Algorithm (RHEA). W tej metodzie, opisanej przez Gainę i in.~\cite{gaina2020}, algorytm ewolucyjny optymalizuje sekwencję akcji na bieżącą turę w czasie podejmowania decyzji --- bez wstępnego trenowania. W każdej chwili decyzji uruchamiana jest krótka sesja ewolucyjna, która wyznacza najlepszą sekwencję ruchów w ramach dostępnego czasu. Podejście to stanowi interesującą hybrydę między algorytmami \textit{online}, jak MCTS, a ewolucyjnymi, jednak w edycji 2018 nie dało wyników porównywalnych z czołowymi agentami~\cite{hearthstone_competition}.

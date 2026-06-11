@@ -1,6 +1,6 @@
 \section{SHADE --- ewolucja różnicowa z historyczną adaptacją} \label{sec:shade}
 
-SHADE (\textit{Success-History based Adaptive Differential Evolution}) został zaproponowany przez Tanabego i Fukunagę \cite{Tanabe2013SHADE} i rozwija ideę JADE, zastępując mechanizm adaptacji oparty na pojedynczej parze parametrów $(\mu_{CR}, \mu_F)$ \textbf{historyczną pamięcią} o rozmiarze $H$.
+SHADE (ang. \textit{Success-History based Adaptive Differential Evolution}) został zaproponowany przez Tanabego i Fukunagę \cite{Tanabe2013SHADE} i rozwija ideę JADE, zastępując mechanizm adaptacji oparty na pojedynczej parze parametrów $(\mu_{CR}, \mu_F)$ \textbf{historyczną pamięcią} o rozmiarze $H$.
 
 \subsection{Mechanizm historycznej adaptacji}
 W SHADE utrzymywane są dwie historyczne tablice o rozmiarze $H$ ---
@@ -20,7 +20,7 @@ M_{CR,k} \leftarrow \mathrm{mean}_\mathrm{WL}(S_{CR}), \quad M_{F,k} \leftarrow 
 gdzie wagi proporcjonalne są do poprawy wartości funkcji celu \cite{Tanabe2013SHADE}. Indeks $k$ jest aktualizowany cyklicznie po każdym pokoleniu, od $1$ do $H$. Przechowywanie $H$ niezależnych wartości historycznych, zamiast jednej aktualizowanej średniej, jak w JADE, sprawia, że SHADE jest odporniejszy na przedwczesną zbieżność parametrów, szczególnie w przestrzeniach wielomodalnych \cite{Tanabe2013SHADE}.
 
 \subsection{L-SHADE --- SHADE z liniową redukcją populacji}
-W 2014 roku Tanabe i Fukunaga zaproponowali rozszerzenie SHADE o mechanizm \textbf{liniowej redukcji liczebności populacji} (ang. \textit{Linear Population Size Reduction} --- LPSR), tworząc wariant L-SHADE \cite{Tanabe2014LSHADE}. Liczebność populacji jest zmniejszana liniowo od wartości początkowej $NP_{\mathrm{init}}$ do minimalnej $NP_{\mathrm{min}}$ w miarę wyczerpywania budżetu ewaluacji:
+W 2014 roku Tanabe i Fukunaga zaproponowali rozszerzenie SHADE o mechanizm \textbf{liniowej redukcji liczebności populacji} (ang. \textit{Linear Population Size Reduction}, LPSR), tworząc wariant L-SHADE \cite{Tanabe2014LSHADE}. Liczebność populacji jest zmniejszana liniowo od wartości początkowej $NP_{\mathrm{init}}$ do minimalnej $NP_{\mathrm{min}}$ w miarę wyczerpywania budżetu ewaluacji:
 \[
 NP_G = \mathrm{round}\!\left[ \frac{NP_{\mathrm{min}} - NP_{\mathrm{init}}}{MaxFES} \cdot FES + NP_{\mathrm{init}} \right]
 \]

@@ -9,7 +9,7 @@ Centralnym elementem rozgrywki jest plansza, na której, po zagraniu odpowiednic
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.9\textwidth]{images/hearthstone_board.png}
-  \caption{Elementy planszy w grze Hearthstone: (1) bohater gracza, (2) moc specjalna gracza, (3) stronnicy gracza, (4) ręka kart gracza, (5) dostępna mana gracza, (6) talia gracza, (7) bohater przeciwnika, (8) moc Specjalna przeciwnika, (9) stronnicy przeciwnika, (10) ręka kart przeciwnika, (11) dostępna mana przeciwnika, (12) talia przeciwnika.}
+  \caption{Elementy planszy w grze Hearthstone: (1) bohater gracza, (2) moc specjalna gracza, (3) stronnicy gracza, (4) ręka kart gracza, (5) dostępna mana gracza, (6) talia gracza, (7) bohater przeciwnika, (8) moc specjalna przeciwnika, (9) stronnicy przeciwnika, (10) ręka kart przeciwnika, (11) dostępna mana przeciwnika, (12) talia przeciwnika.}
   \label{fig:hs_board}
 \end{figure}
 
@@ -23,7 +23,7 @@ Stan gry w Hearthstone zmienia się nie tylko na podstawie decyzji taktycznych, 
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.9\textwidth]{images/hearthstone_cards.png}
-  \caption{Budowa karty w grze Hearthstone: (1) wartość ataku Stronnika, (2) rodzaj karty, (3) wartość zdrowia stronnika, (4) rzadkość karty, (5) koszt many, (6) wartość ataku Broni, (7) wartość wytrzymałości broni.}
+  \caption{Budowa karty w grze Hearthstone: (1) wartość ataku stronnika, (2) rodzaj karty, (3) wartość zdrowia stronnika, (4) rzadkość karty, (5) koszt many, (6) wartość ataku broni, (7) wartość wytrzymałości broni.}
   \label{fig:hs_cards}
 \end{figure}
 
@@ -32,7 +32,7 @@ Rozgrywka toczy się na planszy, pełniącej funkcję wirtualnego stołu bojoweg
 
 \begin{itemize}
 \item \textbf{Zaklęcia (ang. \textit{spells}):} Są to karty o jednorazowym działaniu, które od razu po zagraniu wykonują przypisany im efekt, a następnie są usuwane z gry. Efekty kart są bardzo zróżnicowane --- od zadawania bezpośrednich obrażeń wybranym celom lub obszarowo wszystkim jednostkom na planszy, poprzez leczenie bohatera, dociąganie dodatkowych kart z talii, aż po wzmacnianie własnych jednostek. Specjalnym rodzajem zaklęć są sekrety (ang. \textit{secrets}) --- są to ukryte pułapki zagrywane na wrogiego bohatera. Przeciwnik nie wie, jaki dokładnie sekret został zagrany. Sekrety aktywują się automatycznie podczas tury oponenta tylko wtedy, gdy zostanie spełniony przypisany im warunek, np. zniszczenie atakującej jednostki.
-\item \textbf{Bronie (ang. \textit{weapons}):} Są to karty zakładane na bohatera, które pozwalają mu na bezpośrednie uczestniczenie w walce i atakowanie wrogich celów. Każda broń posiada zdefiniowany atak (ang. \textit{attack}), czyli obrażenia zadawane przy uderzeniu oraz wytrzymałość (ang. \textit{durability}). Z każdym wykonanym atakiem wytrzymałość broni spada o 1, a po osiągnięciu zera ulega ona zniszczeniu i usunięciu z rozgrywki. Bohater może być wyposażony w maksymalnie jedną broń . Jeśli bohater atakuje za pomocą broni stronnika wroga, otrzymuje w odpowiedzi obrażenia równe sile ataku tej jednostki.
+\item \textbf{Bronie (ang. \textit{weapons}):} Są to karty zakładane na bohatera, które pozwalają mu na bezpośrednie uczestniczenie w walce i atakowanie wrogich celów. Każda broń posiada zdefiniowany atak (ang. \textit{attack}), czyli obrażenia zadawane przy uderzeniu oraz wytrzymałość (ang. \textit{durability}). Z każdym wykonanym atakiem wytrzymałość broni spada o 1, a po osiągnięciu zera ulega ona zniszczeniu i usunięciu z rozgrywki. Bohater może być wyposażony w maksymalnie jedną broń. Jeśli bohater atakuje za pomocą broni stronnika wroga, otrzymuje w odpowiedzi obrażenia równe sile ataku tej jednostki.
 \item \textbf{Stronnicy (ang. \textit{minions}):} Są to podstawowe jednostki bitewne przyzywane na planszę, które stanowią najważniejszy element mechaniki, wymiany obrażeń i budowania przewagi wywierającej presję na przeciwniku.
 \end{itemize}
 
@@ -40,13 +40,13 @@ Każdy stronnik posiada dwie główne statystyki: atak oraz punkty życia. Atak 
 
 Karty stronników bardzo często posiadają dodatkowe mechaniki i efekty, opisane za pomocą tzw. słów kluczowych (ang. \textit{keywords}). Do najważniejszych, z punktu widzenia budowy agentów sztucznej inteligencji \cite{sanchez2020}, należą:
 \begin{itemize}
-\item \textbf{Prowokacja (ang. \textit{taunt}):} najważniejsza mechanika defensywna. Jeśli gracz posiada na planszy stronnika z prowokacją, przeciwnik w pierwszej kolejności musi zaatakować tę jednostkę, zanim będzie mógł uderzyć wrogiego bohatera lub inne jednostki bez Prowokacji. Istnieje możliwość zignorowania Prowokacji przy użyciu odpowiednich zaklęć.
+\item \textbf{Prowokacja (ang. \textit{taunt}):} najważniejsza mechanika defensywna. Jeśli gracz posiada na planszy stronnika z prowokacją, przeciwnik w pierwszej kolejności musi zaatakować tę jednostkę, zanim będzie mógł uderzyć wrogiego bohatera lub inne jednostki bez prowokacji. Istnieje możliwość zignorowania prowokacji przy użyciu odpowiednich zaklęć.
 \item \textbf{Szarża (ang. \textit{charge}):} pozwala stronnikowi na ignorowanie zasady \enquote{choroby przywołania} i wykonanie ataku w tej samej turze, w której został przyzwany na planszę.
 \item \textbf{Okrzyk bojowy (ang. \textit{battlecry}):} efekt natychmiastowy, który aktywuje się wyłącznie w momencie zagrywania stronnika z ręki.
 \item \textbf{Agonia (ang. \textit{deathrattle}):} efekt, który jest opóźniony i aktywuje się dopiero w momencie zniszczenia jednostki i usunięcia jej z gry.
 \item \textbf{Boska tarcza (ang. \textit{divine shield}):} boska tarcza powoduje zignorowanie pierwszego źródła obrażeń, które powinny zostać przypisane stronnikowi. Znika bezpośrednio po przyjęciu pierwszych obrażeń.
 \item \textbf{Furia wichru (ang. \textit{windfury}):} pozwala stronnikowi na zaatakowanie dwa razy w ciągu tej samej tury.
-\item \textbf{Ukrycie (ang. \textit{Stealth}):} jednostka z tym słowem kluczowym nie może być obrana jako bezpośredni cel ataków. Wliczają się do tego celowane zaklęcia, moc specjalna oraz ataki stronników. Ukrycie działa do momentu, w którym jednostka sama nie zaatakuje i tym samym nie wyjdzie z ukrycia. Ukrycie nie chroni jednak przed obrażeniami obszarowymi ani przed obrażeniami zadawanymi losowo.
+\item \textbf{Ukrycie (ang. \textit{stealth}):} jednostka z tym słowem kluczowym nie może być obrana jako bezpośredni cel ataków. Wliczają się do tego celowane zaklęcia, moc specjalna oraz ataki stronników. Ukrycie działa do momentu, w którym jednostka sama nie zaatakuje i tym samym nie wyjdzie z ukrycia. Ukrycie nie chroni jednak przed obrażeniami obszarowymi ani przed obrażeniami zadawanymi losowo.
 \item \textbf{Trucizna (ang. \textit{poisonous}):} powoduje natychmiastowe zniszczenie każdego stronnika, który otrzymał obrażenia od jednostki z tym słowem kluczowym.
 \item \textbf{Kradzież życia (ang. \textit{lifesteal}):} obrażenia zadane przez tę jednostkę przywracają taką samą liczbę punktów życia bohaterowi kontrolującemu tego stronnika.
 \item \textbf{Aura (ang. \textit{aura}):} pasywny efekt ciągły. Modyfikuje on statystyki stronników, zachowanie jednostek lub nakłada globalny efekt na planszę. Aura działa, dopóki istnieje jej źródło, a jej źródłem może być stronnik, zaklęcie lub inny element gry.

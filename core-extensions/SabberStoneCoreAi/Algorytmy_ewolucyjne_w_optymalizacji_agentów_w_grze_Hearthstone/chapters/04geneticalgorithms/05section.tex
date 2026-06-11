@@ -1,6 +1,6 @@
 \section{Ewolucja różnicowa}
 \label{sec:de}
-Ewolucja różnicowa (ang. \textit{Differential Evolution} --- DE) to algorytm zaproponowany przez Storna i Price'a w 1997 roku jako prosta i efektywna metaheurystyka do optymalizacji globalnej funkcji opartej na liczbach rzeczywistych \cite{Storn1997}. Mimo prostoty koncepcyjnej ewolucja różnicowa wielokrotnie wygrywała konkursy optymalizacyjne i stała się jednym z częściej stosowanych algorytmów swojej klasy, co dokumentuje literatura przeglądowa z ostatnich lat \cite{Bilal2020}.
+Ewolucja różnicowa (ang. \textit{differential evolution} --- DE) to algorytm zaproponowany przez Storna i Price'a w 1997 roku jako prosta i efektywna metaheurystyka do optymalizacji globalnej funkcji opartej na liczbach rzeczywistych \cite{Storn1997}. Mimo prostoty koncepcyjnej ewolucja różnicowa wielokrotnie wygrywała konkursy optymalizacyjne i stała się jednym z częściej stosowanych algorytmów swojej klasy, co dokumentuje literatura przeglądowa z ostatnich lat \cite{Bilal2020}.
 
 \subsection{Mechanizm działania}
 Populacja DE składa się z $NP$ osobników $\{\mathbf{x}_{i,G}\}_{i=1}^{NP}$, gdzie $G$ oznacza numer pokolenia, a każdy osobnik jest wektorem $D$-wymiarowym $\mathbf{x}_{i,G} \in \mathbb{R}^D$. Dla każdego \textit{wektora docelowego} $\mathbf{x}_{i,G}$ algorytm wykonuje trzy kroki:
